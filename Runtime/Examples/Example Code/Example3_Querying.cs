@@ -3,7 +3,7 @@ using HovelHouse.CloudKit;
 using System;
 using System.Linq;
 
-public class Example3_Querying : AbstractExample
+public class Example3_Querying : MonoBehaviour
 {
     CKDatabase database;
     string[] names;
@@ -64,20 +64,17 @@ public class Example3_Querying : AbstractExample
 
     private void OnRecordsSaved(CKRecord[] savedRecords, CKRecordID[] deletedRecordIds, NSError error)
     {
-        EnqueueOnMainThread(() =>
+        if (error != null)
         {
-            if (error != null)
-            {
-                Debug.LogError(error.LocalizedDescription);
-            }
-            else
-            {
-                Debug.Log(string.Format("Saved {0} records with names: {1}",
-                    savedRecords.Length,
-                    string.Join(",\n", savedRecords.Select(record => record.RecordID.RecordName))));
-                RunQuery();
-            }
-        });
+            Debug.LogError(error.LocalizedDescription);
+        }
+        else
+        {
+            Debug.Log(string.Format("Saved {0} records with names: {1}",
+                savedRecords.Length,
+                string.Join(",\n", savedRecords.Select(record => record.RecordID.RecordName))));
+            RunQuery();
+        }
     }
 
     private void RunQuery()
@@ -109,51 +106,45 @@ public class Example3_Querying : AbstractExample
 
     private void OnQueryComplete(CKRecord[] records, NSError error)
     {
-        EnqueueOnMainThread(() =>
+        if (error != null)
         {
-            if (error != null)
+            Debug.LogError(error.LocalizedDescription);
+        }
+        else
+        {
+            var result = records.FirstOrDefault();
+            if (result != null)
             {
-                Debug.LogError(error.LocalizedDescription);
+                Debug.Log(string.Format("found record: '{0}' with name: '{1}'",
+                    result.RecordID.RecordName, result.StringForKey("name")));
             }
-            else
-            {
-                var result = records.FirstOrDefault();
-                if (result != null)
-                {
-                    Debug.Log(string.Format("found record: '{0}' with name: '{1}'",
-                        result.RecordID.RecordName, result.StringForKey("name")));
-                }
 
-                // Let's be tidy. Delete all the records we created
-                // create an array of record id's from the records we saved
-                var recordIds = recordsToSearch.Select(record => record.RecordID).ToArray();
+            // Let's be tidy. Delete all the records we created
+            // create an array of record id's from the records we saved
+            var recordIds = recordsToSearch.Select(record => record.RecordID).ToArray();
 
-                Debug.Log("Cleaning up, deleting the records we created....");
-                var op = CKModifyRecordsOperation.initWithRecordsToSave(null, recordIds);
+            Debug.Log("Cleaning up, deleting the records we created....");
+            var op = CKModifyRecordsOperation.initWithRecordsToSave(null, recordIds);
 
-                op.ModifyRecordsCompletionBlock = OnRecordsDeleted;
-                op.Configuration.QualityOfService = NSQualityOfService.UserInitiated;
+            op.ModifyRecordsCompletionBlock = OnRecordsDeleted;
+            op.Configuration.QualityOfService = NSQualityOfService.UserInitiated;
 
-                database.AddOperation(op);
-            }
-        });
+            database.AddOperation(op);
+        }
     }
 
     private void OnRecordsDeleted(CKRecord[] savedRecords, CKRecordID[] deletedRecordIds, NSError error)
     {
-        EnqueueOnMainThread(() =>
+        if (error != null)
         {
-            if (error != null)
-            {
-                Debug.LogError(error.LocalizedDescription);
-            }
-            else
-            {
-                var str = string.Join(",\n", deletedRecordIds.Select(id => id.RecordName).ToArray());
-                Debug.Log(string.Format("Deleted records: {0}", str));
-            }
+            Debug.LogError(error.LocalizedDescription);
+        }
+        else
+        {
+            var str = string.Join(",\n", deletedRecordIds.Select(id => id.RecordName).ToArray());
+            Debug.Log(string.Format("Deleted records: {0}", str));
+        }
 
-            Debug.Log("Done");
-        });
+        Debug.Log("Done");
     }
 }

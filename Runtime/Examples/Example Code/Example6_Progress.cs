@@ -6,7 +6,7 @@ using System.Linq;
 /// <summary>
 /// Shows an example of sending large files and the progress callback
 /// </summary>
-public class Example6_Progress : AbstractExample
+public class Example6_Progress : MonoBehaviour
 {
     int numFiles = 5;
     CKRecord[] records = new CKRecord[5];
@@ -51,39 +51,32 @@ public class Example6_Progress : AbstractExample
 
     private void OnRecordsSaved(CKRecord[] savedRecords, CKRecordID[] deletedRecordIds, NSError error)
     {
-        EnqueueOnMainThread(() =>
+        if (error != null)
         {
-            if (error != null)
-            {
-                Debug.LogError(error.LocalizedDescription);
-            }
-            else
-            {
-                Debug.Log("All records saved");
-                DeleteRecords();
-            }
-        });
+            Debug.LogError(error.LocalizedDescription);
+        }
+        else
+        {
+            Debug.Log("All records saved");
+            DeleteRecords();
+        }
     }
 
     private void OnPerRecordComplete(CKRecord record, NSError error)
-    {
-        EnqueueOnMainThread(() =>
+    {   
+        if (error != null)
         {
-            if (error != null)
-            {
-                Debug.LogError(error.LocalizedDescription);
-            }
-            else
-            {
-                Debug.Log(string.Format("{0} has finished uploading", record.RecordID.RecordName));
-            }
-        });
+            Debug.LogError(error.LocalizedDescription);
+        }
+        else
+        {
+            Debug.Log(string.Format("{0} has finished uploading", record.RecordID.RecordName));
+        }
     }
 
     private void OnPerRecordProgress(CKRecord record, double progress)
     {
-        EnqueueOnMainThread(() =>
-            Debug.Log(string.Format("{0} {1}% complete", record.RecordID.RecordName, Math.Round(progress * 100f))));
+        Debug.Log(string.Format("{0} {1}% complete", record.RecordID.RecordName, Math.Round(progress * 100f)));
     }
 
     private void DeleteRecords()
@@ -97,18 +90,15 @@ public class Example6_Progress : AbstractExample
 
     private void OnRecordsDeleted(CKRecord[] savedRecords, CKRecordID[] deletedRecordIds, NSError error)
     {
-        EnqueueOnMainThread(() =>
+        if (error != null)
         {
-            if (error != null)
-            {
-                Debug.LogError(error.LocalizedDescription);
-            }
-            else
-            {
-                Debug.Log(string.Format("Sucessfully deleted {0} records", deletedRecordIds.Length));
-            }
+            Debug.LogError(error.LocalizedDescription);
+        }
+        else
+        {
+            Debug.Log(string.Format("Sucessfully deleted {0} records", deletedRecordIds.Length));
+        }
 
-            Debug.Log("Done");
-        });
+        Debug.Log("Done");
     }
 }

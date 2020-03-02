@@ -5,7 +5,7 @@ using System.Text;
 /// <summary>
 /// This example shows the basic database operations of Save, Fetch and Delete
 /// </summary>
-public class Example2_BasicDatabaseOperations : AbstractExample
+public class Example2_BasicDatabaseOperations : MonoBehaviour
 {
     private CKDatabase database;
     private CKRecord record;
@@ -32,21 +32,19 @@ public class Example2_BasicDatabaseOperations : AbstractExample
     private void OnRecordSaved(CKRecord record, NSError error)
     {
         Debug.Log("OnRecordSaved");
-        EnqueueOnMainThread(() =>
+        
+        if (error != null)
         {
-            if (error != null)
-            {
-                Debug.LogError(error.LocalizedDescription);
-            }
-            else
-            {
-                Debug.Log(string.Format("record saved with name: '{0}'",
-                    record.RecordID.RecordName));
+            Debug.LogError(error.LocalizedDescription);
+        }
+        else
+        {
+            Debug.Log(string.Format("record saved with name: '{0}'",
+                record.RecordID.RecordName));
 
-                // Let's fetch what we just saved
-                FetchRecord(record.RecordID.RecordName);
-            }
-        });
+            // Let's fetch what we just saved
+            FetchRecord(record.RecordID.RecordName);
+        }
     }
 
     private void FetchRecord(string recordName)
@@ -67,39 +65,36 @@ public class Example2_BasicDatabaseOperations : AbstractExample
 
     private void OnRecordFetched(CKRecord record, NSError error)
     {
-        EnqueueOnMainThread(() =>
+        if(error != null)
         {
-            if(error != null)
-            {
-                Debug.LogError(error.LocalizedDescription);
-            }
-            else
-            {
-                Debug.Log(string.Format("Record fetched"));
+            Debug.LogError(error.LocalizedDescription);
+        }
+        else
+        {
+            Debug.Log(string.Format("Record fetched"));
 
-                // CKRecords have a bunch of useful metadata
-                Debug.Log("CreationDate: " + record.CreationDate);
-                Debug.Log("ModificationDate: " + record.ModificationDate);
+            // CKRecords have a bunch of useful metadata
+            Debug.Log("CreationDate: " + record.CreationDate);
+            Debug.Log("ModificationDate: " + record.ModificationDate);
 
-                // The record change tag is an id that helps you keep track of the
-                // most up to date version 
-                Debug.Log("RecordChangeTag: " + record.RecordChangeTag);
+            // The record change tag is an id that helps you keep track of the
+            // most up to date version 
+            Debug.Log("RecordChangeTag: " + record.RecordChangeTag);
 
-                // The parent of this record (if any). Parent child relationships
-                // can be created using SetRefereneceForKey
-                Debug.Log("Parent: " + record.Parent);
+            // The parent of this record (if any). Parent child relationships
+            // can be created using SetRefereneceForKey
+            Debug.Log("Parent: " + record.Parent);
 
-                Debug.Log("Type: " + record.RecordType);
-                Debug.Log("Share: " + record.Share);
+            Debug.Log("Type: " + record.RecordType);
+            Debug.Log("Share: " + record.Share);
 
-                // The user id of the account to create/modify this record
-                // in a private DB I think this is just always the current user
-                Debug.Log("CreatorUserRecordID: " + record.CreatorUserRecordID);
-                Debug.Log("Last Modified User Record Id: " + record.LastModifiedUserRecordID);
+            // The user id of the account to create/modify this record
+            // in a private DB I think this is just always the current user
+            Debug.Log("CreatorUserRecordID: " + record.CreatorUserRecordID);
+            Debug.Log("Last Modified User Record Id: " + record.LastModifiedUserRecordID);
 
-                ModifyRecord();
-            }
-        });
+            ModifyRecord();
+        }
     }
 
     private void ModifyRecord()
@@ -131,41 +126,35 @@ public class Example2_BasicDatabaseOperations : AbstractExample
 
     private void OnRecordModified(CKRecord record, NSError error)
     {
-        EnqueueOnMainThread(() =>
+        if (error != null)
         {
-            if (error != null)
-            {
-                Debug.LogError(error.LocalizedDescription);
-            }
-            else
-            {
-                // Retrieve values you set using the "Object"ForKey methods...
-                Debug.Log(string.Format("record '{0}' MyNumber is:{1}",
-                    record.RecordID.RecordName, record.StringForKey("MyField")));
+            Debug.LogError(error.LocalizedDescription);
+        }
+        else
+        {
+            // Retrieve values you set using the "Object"ForKey methods...
+            Debug.Log(string.Format("record '{0}' MyNumber is:{1}",
+                record.RecordID.RecordName, record.StringForKey("MyField")));
 
-                // Notice the record change tag has changed after you modification
-                Debug.Log("RecordChangeTag: " + record.RecordChangeTag);
+            // Notice the record change tag has changed after you modification
+            Debug.Log("RecordChangeTag: " + record.RecordChangeTag);
 
-                database.DeleteRecordWithID(record.RecordID, OnRecordDeleted);
-            }
-        });
+            database.DeleteRecordWithID(record.RecordID, OnRecordDeleted);
+        }
     }
 
     private void OnRecordDeleted(CKRecordID recordId, NSError error)
     {
-        EnqueueOnMainThread(() =>
+        if (error != null)
         {
-            if (error != null)
-            {
-                Debug.LogError(error.LocalizedDescription);
-            }
-            else
-            {
-                Debug.Log(string.Format("record: '{0}' deleted", recordId.RecordName));
-            }
+            Debug.LogError(error.LocalizedDescription);
+        }
+        else
+        {
+            Debug.Log(string.Format("record: '{0}' deleted", recordId.RecordName));
+        }
 
-            Debug.Log("Done");
-        });
+        Debug.Log("Done");
     }
 }
 

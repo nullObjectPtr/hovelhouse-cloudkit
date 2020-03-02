@@ -21,8 +21,8 @@ This plugin is provided as a unity package. You can import via the Package Manag
 * Unity will now import the package into your project
  
 ### From Git URL
-* Supposedly, you can also import the package from a git url. 
-* I have not tried this, but you can find instructions on how to do this here: https://docs.unity3d.com/Manual/upm-git.html
+* You can also import the package from it's git URL: "https://github.com/nullObjectPtr/hovelhouse-cloudkit.git"
+* You can find instructions on how to do this here: https://docs.unity3d.com/Manual/upm-git.html
  
 There are three libraries provided. One dynamic library for MacOS, one static library for iOS, and one static library for TVOS.
  
@@ -38,7 +38,7 @@ In order to use cloudkit you will need the following
 * Have set a valid bundle identifier in "Player Settings->Other Settings". Being able to sign your app is a requirement since cloud-kit containers are included in your provisioning profile. 
  
 ### iOS and TVOS
-Before you build you want to make sure you have set a good bundle identifier in unity settings. Once you get to the step where you add the CloudKit capability xcode will automatically generate a container identifier you **cannot** delete. Having set the bundle identifier you want now will save you the pain of having your cloudkit dashboard junked up with a bunch of test container id's. You can read more about containers here: https://developer.apple.com/library/archive/documentation/DataManagement/Conceptual/CloudKitQuickStart/EnablingiCloudandConfiguringCloudKit/EnablingiCloudandConfiguringCloudKit.html 
+Before you build you want to make sure you have set a good bundle identifier in Unity settings. Once you get to the step where you add the CloudKit capability xcode will automatically generate a container identifier you **cannot** delete. Having set the bundle identifier you want now will save you the pain of having your cloudkit dashboard junked up with a bunch of test container id's. You can read more about containers here: https://developer.apple.com/library/archive/documentation/DataManagement/Conceptual/CloudKitQuickStart/EnablingiCloudandConfiguringCloudKit/EnablingiCloudandConfiguringCloudKit.html 
  
 * select "Build" from Unity's Build Settings menu and export as an XCode project. Do not select "Build and Run". The appropriate entitlements are required to use CloudKit, and unity will not generate them automatically, they have to be added via xcode
 * When the project is done building. Open the xcode project and select the build target.
@@ -60,9 +60,7 @@ Before you build you want to make sure you have set a good bundle identifier in 
 * TODO: a tool or script to help with this
  
 # Known Issues
-* Callbacks are not invoked on the main thread. This is probably not what you want. You'll need handle this with your method of choice, but a simple thing to do is queue an action in the callback and dequeue it in an Update loop inside a monobehaviour. There's an example of this in the samples provided.
 * Except in the case of C# callbacks and some simple null checking, there is no intermediary layer of error handling or argument validation. You are free to pass whatever garbage you want down to managed land. Basically, if your argument would crash your app in a native iOS app, passing that same argument via the plugin will crash the app. I'll add something eventually, but am not sure yet how best to handle it. Feel free to give your advice if you have input on this.
-* You probably won't be able to click on the button in the examples scene on TVOS
  
 # FAQ
 No questions yet. Be the first!
@@ -70,20 +68,21 @@ No questions yet. Be the first!
 # Road Map
  
 ### P1
-* Run callbacks on the main thread. (Breaking Change)
+* Better error handling, passing exceptions from managed code up to C#
+
+### P2
+* Post Build Scripts for easier use
+* Use weak references for storing property callbacks
+* Fix capitalization mistakes (Breaking Change)
 * Change plugin's static "initWith" functions to proper constructors (Breaking Change)
-* Override equality for CKObjects (Breaking Change)
+* Reuse existing C# instances instead of creating new when possible
 * Support field arrays in CKRecord
 * Remove the type-specific Set(Type)ForKey and replace them with overloaded versions of SetObjectForKey (Breaking Change)
-* Better error handling, passing exceptions from managed code up to C#
-* Use weak references for storing property callbacks
- 
-### P2
 * Array support for CKRecord's setObject forKey methods
-* Unit tests for everything
-* Better code examples
  
 ### P3
+* Unit tests for everything
+* Better code examples
 * Tutorials
 * Automated documentation
  

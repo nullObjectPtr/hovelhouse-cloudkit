@@ -5,7 +5,7 @@ using UnityEngine.Networking;
 using System.IO;
 using System.Text;
 
-public class Example4_CKAsset : AbstractExample
+public class Example4_CKAsset : MonoBehaviour
 {
     private CKDatabase database;
 
@@ -48,24 +48,21 @@ public class Example4_CKAsset : AbstractExample
 
     private void OnRecordSaved(CKRecord record, NSError error)
     {
-        EnqueueOnMainThread(() =>
+        if (error != null)
         {
-            if (error != null)
-            {
-                Debug.LogError(error.LocalizedDescription);
-            }
-            else
-            {
-                Debug.Log(string.Format("Record saved with name: {0}", record.RecordID.RecordName));
-                // Once saved, the FileURL may (but may not) point to a URL with the
-                // asset contents. It may still point to the local filesys
-                // See: https://developer.apple.com/documentation/cloudkit/ckasset/1515050-fileurl?language=objc
+            Debug.LogError(error.LocalizedDescription);
+        }
+        else
+        {
+            Debug.Log(string.Format("Record saved with name: {0}", record.RecordID.RecordName));
+            // Once saved, the FileURL may (but may not) point to a URL with the
+            // asset contents. It may still point to the local filesys
+            // See: https://developer.apple.com/documentation/cloudkit/ckasset/1515050-fileurl?language=objc
 
-                CKAsset asset = record.AssetForKey("MyAsset");
-                Debug.Log("Asset data is now at: " + asset.FileURL.AbsoluteString);
-                StartCoroutine(GetRequest(asset.FileURL.AbsoluteString));
-            }
-        });
+            CKAsset asset = record.AssetForKey("MyAsset");
+            Debug.Log("Asset data is now at: " + asset.FileURL.AbsoluteString);
+            StartCoroutine(GetRequest(asset.FileURL.AbsoluteString));
+        }
     }
 
     IEnumerator GetRequest(string uri)
