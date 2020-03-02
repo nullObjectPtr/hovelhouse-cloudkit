@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using HovelHouse.CloudKit;
 
-public class Example1_HelloWorld : AbstractExample
+public class Example1_HelloWorld : MonoBehaviour
 {
     private CKDatabase database;
 
@@ -24,45 +24,37 @@ public class Example1_HelloWorld : AbstractExample
     }
 
     private void OnRecordSaved(CKRecord record, NSError error)
-    {
-        EnqueueOnMainThread(() => {
-            Debug.Log("OnRecordSaved");
-            if (error != null)
-            {
-                Debug.LogError("Could not save record: " + error.LocalizedDescription);
-            }
+    { 
+        Debug.Log("OnRecordSaved");
+        if (error != null)
+        {
+            Debug.LogError("Could not save record: " + error.LocalizedDescription);
+        }
 
-            database.FetchRecordWithID(record.RecordID, OnRecordFetched);
-        });
+        database.FetchRecordWithID(record.RecordID, OnRecordFetched);  
     }
 
     private void OnRecordFetched(CKRecord record, NSError error)
-    {
-        EnqueueOnMainThread(() =>
+    {        
+        if (error != null)
         {
-            if (error != null)
-            {
-                Debug.LogError("Could not fetch record: " + error.LocalizedDescription);
-            }
-            else
-            {
-                Debug.Log(string.Format("Record fetched. Greeting is {0}", record.StringForKey("Greeting")));
-            }
+            Debug.LogError("Could not fetch record: " + error.LocalizedDescription);
+        }
+        else
+        {
+            Debug.Log(string.Format("Record fetched. Greeting is {0}", record.StringForKey("Greeting")));
+        }
 
-            database.DeleteRecordWithID(record.RecordID, OnRecordDeleted);
-        });
+        database.DeleteRecordWithID(record.RecordID, OnRecordDeleted);
     }
 
     private void OnRecordDeleted(CKRecordID recordId, NSError error)
     {
-        EnqueueOnMainThread(() =>
+        if(error != null)
         {
-            if(error != null)
-            {
-                Debug.LogError(error.LocalizedDescription);
-            }
+            Debug.LogError(error.LocalizedDescription);
+        }
 
-            Debug.Log("Done");
-        });
+        Debug.Log("Done");
     }
 }

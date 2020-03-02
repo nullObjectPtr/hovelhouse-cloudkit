@@ -1,8 +1,10 @@
 //
 //  CKDatabase.cs
 //
-//  Created by Jonathan on 02/25/2020
+//  Created by Jonathan Culp <jonathanculp@gmail.com> on 03/02/2020
 //  Copyright © 2020 HovelHouseApps. All rights reserved.
+//  Unauthorized copying of this file, via any medium is strictly prohibited
+//  Proprietary and confidential
 //
 
 using System;
@@ -15,7 +17,7 @@ using UnityEngine;
 
 namespace HovelHouse.CloudKit
 {
-    public class CKDatabase : CKObject
+    public class CKDatabase : CKObject, IDisposable
     {
         #region dll
 
@@ -238,16 +240,10 @@ namespace HovelHouse.CloudKit
             var callback = FetchRecordWithIDCallbacks[invocation];
             FetchRecordWithIDCallbacks.Remove(invocation);
             
-            try
-            {
+            Dispatcher.Instance.EnqueueOnMainThread(() =>
                 callback(
                     _record == IntPtr.Zero ? null : new CKRecord(_record),
-                    _error == IntPtr.Zero ? null : new NSError(_error));
-            }
-            catch(Exception exc)
-            {
-                Debug.LogError(exc);
-            }
+                    _error == IntPtr.Zero ? null : new NSError(_error)));
         }
 
         
@@ -279,16 +275,10 @@ namespace HovelHouse.CloudKit
             var callback = SaveRecordCallbacks[invocation];
             SaveRecordCallbacks.Remove(invocation);
             
-            try
-            {
+            Dispatcher.Instance.EnqueueOnMainThread(() =>
                 callback(
                     _record == IntPtr.Zero ? null : new CKRecord(_record),
-                    _error == IntPtr.Zero ? null : new NSError(_error));
-            }
-            catch(Exception exc)
-            {
-                Debug.LogError(exc);
-            }
+                    _error == IntPtr.Zero ? null : new NSError(_error)));
         }
 
         
@@ -320,16 +310,10 @@ namespace HovelHouse.CloudKit
             var callback = DeleteRecordWithIDCallbacks[invocation];
             DeleteRecordWithIDCallbacks.Remove(invocation);
             
-            try
-            {
+            Dispatcher.Instance.EnqueueOnMainThread(() =>
                 callback(
                     _recordID == IntPtr.Zero ? null : new CKRecordID(_recordID),
-                    _error == IntPtr.Zero ? null : new NSError(_error));
-            }
-            catch(Exception exc)
-            {
-                Debug.LogError(exc);
-            }
+                    _error == IntPtr.Zero ? null : new NSError(_error)));
         }
 
         
@@ -361,16 +345,10 @@ namespace HovelHouse.CloudKit
             var callback = FetchRecordZoneWithIDCallbacks[invocation];
             FetchRecordZoneWithIDCallbacks.Remove(invocation);
             
-            try
-            {
+            Dispatcher.Instance.EnqueueOnMainThread(() =>
                 callback(
                     recordZone == IntPtr.Zero ? null : new CKRecordZone(recordZone),
-                    error == IntPtr.Zero ? null : new NSError(error));
-            }
-            catch(Exception exc)
-            {
-                Debug.LogError(exc);
-            }
+                    error == IntPtr.Zero ? null : new NSError(error)));
         }
 
         
@@ -402,16 +380,10 @@ namespace HovelHouse.CloudKit
             var callback = SaveRecordZoneCallbacks[invocation];
             SaveRecordZoneCallbacks.Remove(invocation);
             
-            try
-            {
+            Dispatcher.Instance.EnqueueOnMainThread(() =>
                 callback(
                     recordZone == IntPtr.Zero ? null : new CKRecordZone(recordZone),
-                    error == IntPtr.Zero ? null : new NSError(error));
-            }
-            catch(Exception exc)
-            {
-                Debug.LogError(exc);
-            }
+                    error == IntPtr.Zero ? null : new NSError(error)));
         }
 
         
@@ -443,16 +415,10 @@ namespace HovelHouse.CloudKit
             var callback = DeleteRecordZoneWithIDCallbacks[invocation];
             DeleteRecordZoneWithIDCallbacks.Remove(invocation);
             
-            try
-            {
+            Dispatcher.Instance.EnqueueOnMainThread(() =>
                 callback(
                     recordZoneID == IntPtr.Zero ? null : new CKRecordZoneID(recordZoneID),
-                    error == IntPtr.Zero ? null : new NSError(error));
-            }
-            catch(Exception exc)
-            {
-                Debug.LogError(exc);
-            }
+                    error == IntPtr.Zero ? null : new NSError(error)));
         }
 
         
@@ -484,16 +450,10 @@ namespace HovelHouse.CloudKit
             var callback = FetchSubscriptionWithIDCallbacks[invocation];
             FetchSubscriptionWithIDCallbacks.Remove(invocation);
             
-            try
-            {
+            Dispatcher.Instance.EnqueueOnMainThread(() =>
                 callback(
                     _subscription == IntPtr.Zero ? null : new CKSubscription(_subscription),
-                    _error == IntPtr.Zero ? null : new NSError(_error));
-            }
-            catch(Exception exc)
-            {
-                Debug.LogError(exc);
-            }
+                    _error == IntPtr.Zero ? null : new NSError(_error)));
         }
 
         
@@ -525,16 +485,10 @@ namespace HovelHouse.CloudKit
             var callback = SaveSubscriptionCallbacks[invocation];
             SaveSubscriptionCallbacks.Remove(invocation);
             
-            try
-            {
+            Dispatcher.Instance.EnqueueOnMainThread(() =>
                 callback(
                     _subscription == IntPtr.Zero ? null : new CKSubscription(_subscription),
-                    _error == IntPtr.Zero ? null : new NSError(_error));
-            }
-            catch(Exception exc)
-            {
-                Debug.LogError(exc);
-            }
+                    _error == IntPtr.Zero ? null : new NSError(_error)));
         }
 
         
@@ -566,16 +520,10 @@ namespace HovelHouse.CloudKit
             var callback = DeleteSubscriptionWithIDCallbacks[invocation];
             DeleteSubscriptionWithIDCallbacks.Remove(invocation);
             
-            try
-            {
+            Dispatcher.Instance.EnqueueOnMainThread(() =>
                 callback(
                     Marshal.PtrToStringAuto(str),
-                    error == IntPtr.Zero ? null : new NSError(error));
-            }
-            catch(Exception exc)
-            {
-                Debug.LogError(exc);
-            }
+                    error == IntPtr.Zero ? null : new NSError(error)));
         }
 
         
@@ -604,16 +552,10 @@ namespace HovelHouse.CloudKit
             var callback = FetchAllSubscriptionsWithCompletionHandlerCallbacks[invocation];
             FetchAllSubscriptionsWithCompletionHandlerCallbacks.Remove(invocation);
             
-            try
-            {
+            Dispatcher.Instance.EnqueueOnMainThread(() =>
                 callback(
                     _subscriptionArr == null ? null : _subscriptionArr.Select(x => new CKSubscription(x)).ToArray(),
-                    _error == IntPtr.Zero ? null : new NSError(_error));
-            }
-            catch(Exception exc)
-            {
-                Debug.LogError(exc);
-            }
+                    _error == IntPtr.Zero ? null : new NSError(_error)));
         }
 
         
@@ -642,16 +584,10 @@ namespace HovelHouse.CloudKit
             var callback = FetchAllRecordZonesWithCompletionHandlerCallbacks[invocation];
             FetchAllRecordZonesWithCompletionHandlerCallbacks.Remove(invocation);
             
-            try
-            {
+            Dispatcher.Instance.EnqueueOnMainThread(() =>
                 callback(
                     _recordZones == null ? null : _recordZones.Select(x => new CKRecordZone(x)).ToArray(),
-                    _error == IntPtr.Zero ? null : new NSError(_error));
-            }
-            catch(Exception exc)
-            {
-                Debug.LogError(exc);
-            }
+                    _error == IntPtr.Zero ? null : new NSError(_error)));
         }
 
         
@@ -686,16 +622,10 @@ namespace HovelHouse.CloudKit
             var callback = PerformQueryCallbacks[invocation];
             PerformQueryCallbacks.Remove(invocation);
             
-            try
-            {
+            Dispatcher.Instance.EnqueueOnMainThread(() =>
                 callback(
                     _recordID == null ? null : _recordID.Select(x => new CKRecord(x)).ToArray(),
-                    _error == IntPtr.Zero ? null : new NSError(_error));
-            }
-            catch(Exception exc)
-            {
-                Debug.LogError(exc);
-            }
+                    _error == IntPtr.Zero ? null : new NSError(_error)));
         }
 
         
@@ -715,5 +645,50 @@ namespace HovelHouse.CloudKit
         }
         
         #endregion
+        
+        
+        #region IDisposable Support
+        #if UNITY_IPHONE || UNITY_TVOS
+        [DllImport("__Internal")]
+        #else
+        [DllImport("HHCloudKit")]
+        #endif
+        private static extern void CKDatabase_Dispose(HandleRef handle);
+            
+        private bool disposedValue = false; // To detect redundant calls
+        
+        // No base.Dispose() needed
+        // All we ever do is decrement the reference count in managed code
+        
+        private void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    // TODO: dispose managed state (managed objects).
+                }
+                
+                //Debug.Log("CKDatabase Dispose");
+                CKDatabase_Dispose(Handle);
+                disposedValue = true;
+            }
+        }
+
+        ~CKDatabase()
+        {
+            // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+            Dispose(false);
+        }
+
+        // This code added to correctly implement the disposable pattern.
+        public void Dispose()
+        {
+            // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+        #endregion
+        
     }
 }
