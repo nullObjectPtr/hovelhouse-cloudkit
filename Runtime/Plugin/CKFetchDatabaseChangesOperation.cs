@@ -1,8 +1,10 @@
 //
 //  CKFetchDatabaseChangesOperation.cs
 //
-//  Created by Jonathan on 02/25/2020
+//  Created by Jonathan Culp <jonathanculp@gmail.com> on 03/02/2020
 //  Copyright © 2020 HovelHouseApps. All rights reserved.
+//  Unauthorized copying of this file, via any medium is strictly prohibited
+//  Proprietary and confidential
 //
 
 using System;
@@ -15,7 +17,7 @@ using UnityEngine;
 
 namespace HovelHouse.CloudKit
 {
-    public class CKFetchDatabaseChangesOperation : CKObject
+    public class CKFetchDatabaseChangesOperation : CKObject, IDisposable
     {
         #region dll
 
@@ -173,15 +175,9 @@ namespace HovelHouse.CloudKit
         {
             if(ChangeTokenUpdatedHandlerCallbacks.TryGetValue(thisPtr, out Action<CKServerChangeToken> callback))
             {
-                try
-                {
+                Dispatcher.Instance.EnqueueOnMainThread(() => 
                     callback(
-                        _serverChangeToken == IntPtr.Zero ? null : new CKServerChangeToken(_serverChangeToken));
-                }
-                catch(Exception exc)
-                {
-                    Debug.LogError(exc);
-                }
+                        _serverChangeToken == IntPtr.Zero ? null : new CKServerChangeToken(_serverChangeToken)));
             }
         }
 
@@ -216,17 +212,11 @@ namespace HovelHouse.CloudKit
         {
             if(FetchDatabaseChangesCompletionHandlerCallbacks.TryGetValue(thisPtr, out Action<CKServerChangeToken,bool,NSError> callback))
             {
-                try
-                {
+                Dispatcher.Instance.EnqueueOnMainThread(() => 
                     callback(
                         _serverChangeToken == IntPtr.Zero ? null : new CKServerChangeToken(_serverChangeToken),
                         _moreComing,
-                        _operationError == IntPtr.Zero ? null : new NSError(_operationError));
-                }
-                catch(Exception exc)
-                {
-                    Debug.LogError(exc);
-                }
+                        _operationError == IntPtr.Zero ? null : new NSError(_operationError)));
             }
         }
 
@@ -261,15 +251,9 @@ namespace HovelHouse.CloudKit
         {
             if(RecordZoneWithIDChangedHandlerCallbacks.TryGetValue(thisPtr, out Action<CKRecordZoneID> callback))
             {
-                try
-                {
+                Dispatcher.Instance.EnqueueOnMainThread(() => 
                     callback(
-                        _zoneID == IntPtr.Zero ? null : new CKRecordZoneID(_zoneID));
-                }
-                catch(Exception exc)
-                {
-                    Debug.LogError(exc);
-                }
+                        _zoneID == IntPtr.Zero ? null : new CKRecordZoneID(_zoneID)));
             }
         }
 
@@ -304,15 +288,9 @@ namespace HovelHouse.CloudKit
         {
             if(RecordZoneWithIDWasDeletedHandlerCallbacks.TryGetValue(thisPtr, out Action<CKRecordZoneID> callback))
             {
-                try
-                {
+                Dispatcher.Instance.EnqueueOnMainThread(() => 
                     callback(
-                        _zoneID == IntPtr.Zero ? null : new CKRecordZoneID(_zoneID));
-                }
-                catch(Exception exc)
-                {
-                    Debug.LogError(exc);
-                }
+                        _zoneID == IntPtr.Zero ? null : new CKRecordZoneID(_zoneID)));
             }
         }
 
@@ -347,15 +325,9 @@ namespace HovelHouse.CloudKit
         {
             if(RecordZoneWithIDWasPurgedHandlerCallbacks.TryGetValue(thisPtr, out Action<CKRecordZoneID> callback))
             {
-                try
-                {
+                Dispatcher.Instance.EnqueueOnMainThread(() => 
                     callback(
-                        _zoneID == IntPtr.Zero ? null : new CKRecordZoneID(_zoneID));
-                }
-                catch(Exception exc)
-                {
-                    Debug.LogError(exc);
-                }
+                        _zoneID == IntPtr.Zero ? null : new CKRecordZoneID(_zoneID)));
             }
         }
 
@@ -387,5 +359,50 @@ namespace HovelHouse.CloudKit
         }
         
         #endregion
+        
+        
+        #region IDisposable Support
+        #if UNITY_IPHONE || UNITY_TVOS
+        [DllImport("__Internal")]
+        #else
+        [DllImport("HHCloudKit")]
+        #endif
+        private static extern void CKFetchDatabaseChangesOperation_Dispose(HandleRef handle);
+            
+        private bool disposedValue = false; // To detect redundant calls
+        
+        // No base.Dispose() needed
+        // All we ever do is decrement the reference count in managed code
+        
+        private void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    // TODO: dispose managed state (managed objects).
+                }
+                
+                //Debug.Log("CKFetchDatabaseChangesOperation Dispose");
+                CKFetchDatabaseChangesOperation_Dispose(Handle);
+                disposedValue = true;
+            }
+        }
+
+        ~CKFetchDatabaseChangesOperation()
+        {
+            // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+            Dispose(false);
+        }
+
+        // This code added to correctly implement the disposable pattern.
+        public void Dispose()
+        {
+            // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+        #endregion
+        
     }
 }

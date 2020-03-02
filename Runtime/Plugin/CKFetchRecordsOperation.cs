@@ -1,8 +1,10 @@
 //
 //  CKFetchRecordsOperation.cs
 //
-//  Created by Jonathan on 02/25/2020
+//  Created by Jonathan Culp <jonathanculp@gmail.com> on 03/02/2020
 //  Copyright © 2020 HovelHouseApps. All rights reserved.
+//  Unauthorized copying of this file, via any medium is strictly prohibited
+//  Proprietary and confidential
 //
 
 using System;
@@ -15,11 +17,18 @@ using UnityEngine;
 
 namespace HovelHouse.CloudKit
 {
-    public class CKFetchRecordsOperation : CKDatabaseOperation
+    public class CKFetchRecordsOperation : CKDatabaseOperation, IDisposable
     {
         #region dll
 
         // Class Methods
+        
+        #if UNITY_IPHONE || UNITY_TVOS
+        [DllImport("__Internal")]
+        #else
+        [DllImport("HHCloudKit")]
+        #endif
+        private static extern IntPtr CKFetchRecordsOperation_fetchCurrentUserRecordOperation();
         
 
         // Constructors
@@ -70,6 +79,13 @@ namespace HovelHouse.CloudKit
         internal CKFetchRecordsOperation(IntPtr ptr) : base(ptr) {}
         
         #region Class Methods
+        
+        public static CKFetchRecordsOperation fetchCurrentUserRecordOperation()
+        {
+            
+            var val = CKFetchRecordsOperation_fetchCurrentUserRecordOperation();
+            return val == IntPtr.Zero ? null : new CKFetchRecordsOperation(val);
+        }
         
         #endregion
 
@@ -138,5 +154,50 @@ namespace HovelHouse.CloudKit
         // TODO: PROPERTYSTRINGARRAY
         
         #endregion
+        
+        
+        #region IDisposable Support
+        #if UNITY_IPHONE || UNITY_TVOS
+        [DllImport("__Internal")]
+        #else
+        [DllImport("HHCloudKit")]
+        #endif
+        private static extern void CKFetchRecordsOperation_Dispose(HandleRef handle);
+            
+        private bool disposedValue = false; // To detect redundant calls
+        
+        // No base.Dispose() needed
+        // All we ever do is decrement the reference count in managed code
+        
+        private void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    // TODO: dispose managed state (managed objects).
+                }
+                
+                //Debug.Log("CKFetchRecordsOperation Dispose");
+                CKFetchRecordsOperation_Dispose(Handle);
+                disposedValue = true;
+            }
+        }
+
+        ~CKFetchRecordsOperation()
+        {
+            // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+            Dispose(false);
+        }
+
+        // This code added to correctly implement the disposable pattern.
+        public void Dispose()
+        {
+            // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+        #endregion
+        
     }
 }

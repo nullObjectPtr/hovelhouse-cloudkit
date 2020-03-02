@@ -1,8 +1,10 @@
 //
-//  .cs
+//  CloudKitCallbacks.cs
 //
-//  Created by Jonathan on 12/31/19.
-//  Copyright © 2019 HovelHouseApps. All rights reserved.
+//  Created by Jonathan Culp <jonathanculp@gmail.com> on 03/02/2020
+//  Copyright © 2020 HovelHouseApps. All rights reserved.
+//  Unauthorized copying of this file, via any medium is strictly prohibited
+//  Proprietary and confidential
 //
 
 using System;
@@ -100,10 +102,13 @@ namespace HovelHouse.CloudKit
 		long _subscriptionArrCount,
     	IntPtr _error);
     
-//	public delegate void CKLongLivedOperationIdsDelegate(
-//        IntPtr _this,
-//    	UNSUPPORTED_TYPE outstandingOperationIDs,
-//    	IntPtr error);
+	public delegate void CKLongLivedOperationIdsDelegate(
+        IntPtr _this, 
+        ulong invocationId,
+    	[MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.SysInt, SizeParamIndex = 3)]
+		IntPtr[] outstandingOperationIDs,
+		long outstandingOperationIDsCount,
+    	IntPtr error);
     
 	public delegate void CKLongLivedOperationDelegate(
         IntPtr _this, 

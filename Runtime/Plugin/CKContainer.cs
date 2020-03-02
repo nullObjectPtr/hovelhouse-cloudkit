@@ -1,8 +1,10 @@
 //
 //  CKContainer.cs
 //
-//  Created by Jonathan on 02/25/2020
+//  Created by Jonathan Culp <jonathanculp@gmail.com> on 03/02/2020
 //  Copyright © 2020 HovelHouseApps. All rights reserved.
+//  Unauthorized copying of this file, via any medium is strictly prohibited
+//  Proprietary and confidential
 //
 
 using System;
@@ -15,7 +17,7 @@ using UnityEngine;
 
 namespace HovelHouse.CloudKit
 {
-    public class CKContainer : CKObject
+    public class CKContainer : CKObject, IDisposable
     {
         #region dll
 
@@ -54,6 +56,16 @@ namespace HovelHouse.CloudKit
         
         
 
+        
+        #if UNITY_IPHONE || UNITY_TVOS
+        [DllImport("__Internal")]
+        #else
+        [DllImport("HHCloudKit")]
+        #endif
+        private static extern void CKContainer_fetchAllLongLivedOperationIDsWithCompletionHandler(
+            HandleRef ptr,
+            ulong invocationId, CKLongLivedOperationIdsDelegate completionHandler);
+        
         
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
@@ -263,6 +275,38 @@ namespace HovelHouse.CloudKit
         
         
         
+        public void FetchAllLongLivedOperationIDsWithCompletionHandler(
+            Action<string[],NSError> completionHandler)
+        {
+                            
+            var completionHandlerCall = new InvocationRecord(Handle);
+            FetchAllLongLivedOperationIDsWithCompletionHandlerCallbacks[completionHandlerCall] = completionHandler;
+            CKContainer_fetchAllLongLivedOperationIDsWithCompletionHandler(
+                Handle,
+                completionHandlerCall.id, FetchAllLongLivedOperationIDsWithCompletionHandlerCallback);
+            
+        }
+        
+        private static Dictionary<InvocationRecord,Action<string[],NSError>> FetchAllLongLivedOperationIDsWithCompletionHandlerCallbacks = new Dictionary<InvocationRecord,Action<string[],NSError>>();
+
+        [MonoPInvokeCallback(typeof(CKLongLivedOperationIdsDelegate))]
+        private static void FetchAllLongLivedOperationIDsWithCompletionHandlerCallback(IntPtr thisPtr, ulong invocationId, IntPtr[] outstandingOperationIDs,
+		long outstandingOperationIDsCount, IntPtr error)
+        {
+            var invocation = new InvocationRecord(thisPtr, invocationId);
+            var callback = FetchAllLongLivedOperationIDsWithCompletionHandlerCallbacks[invocation];
+            FetchAllLongLivedOperationIDsWithCompletionHandlerCallbacks.Remove(invocation);
+            
+            Dispatcher.Instance.EnqueueOnMainThread(() =>
+                callback(
+                    outstandingOperationIDs == null ? null : outstandingOperationIDs.Select(x => Marshal.PtrToStringAuto(x)).ToArray(),
+                    error == IntPtr.Zero ? null : new NSError(error)));
+        }
+
+        
+
+        
+        
         public void FetchUserRecordIDWithCompletionHandler(
             Action<CKRecordID,NSError> completionHandler)
         {
@@ -284,16 +328,10 @@ namespace HovelHouse.CloudKit
             var callback = FetchUserRecordIDWithCompletionHandlerCallbacks[invocation];
             FetchUserRecordIDWithCompletionHandlerCallbacks.Remove(invocation);
             
-            try
-            {
+            Dispatcher.Instance.EnqueueOnMainThread(() =>
                 callback(
                     _recordID == IntPtr.Zero ? null : new CKRecordID(_recordID),
-                    _error == IntPtr.Zero ? null : new NSError(_error));
-            }
-            catch(Exception exc)
-            {
-                Debug.LogError(exc);
-            }
+                    _error == IntPtr.Zero ? null : new NSError(_error)));
         }
 
         
@@ -325,16 +363,10 @@ namespace HovelHouse.CloudKit
             var callback = DiscoverUserIdentityWithEmailAddressCallbacks[invocation];
             DiscoverUserIdentityWithEmailAddressCallbacks.Remove(invocation);
             
-            try
-            {
+            Dispatcher.Instance.EnqueueOnMainThread(() =>
                 callback(
                     userIdentity == IntPtr.Zero ? null : new CKUserIdentity(userIdentity),
-                    error == IntPtr.Zero ? null : new NSError(error));
-            }
-            catch(Exception exc)
-            {
-                Debug.LogError(exc);
-            }
+                    error == IntPtr.Zero ? null : new NSError(error)));
         }
 
         
@@ -366,16 +398,10 @@ namespace HovelHouse.CloudKit
             var callback = FetchShareParticipantWithEmailAddressCallbacks[invocation];
             FetchShareParticipantWithEmailAddressCallbacks.Remove(invocation);
             
-            try
-            {
+            Dispatcher.Instance.EnqueueOnMainThread(() =>
                 callback(
                     shareParticipant == IntPtr.Zero ? null : new CKShareParticipant(shareParticipant),
-                    error == IntPtr.Zero ? null : new NSError(error));
-            }
-            catch(Exception exc)
-            {
-                Debug.LogError(exc);
-            }
+                    error == IntPtr.Zero ? null : new NSError(error)));
         }
 
         
@@ -407,16 +433,10 @@ namespace HovelHouse.CloudKit
             var callback = FetchShareParticipantWithPhoneNumberCallbacks[invocation];
             FetchShareParticipantWithPhoneNumberCallbacks.Remove(invocation);
             
-            try
-            {
+            Dispatcher.Instance.EnqueueOnMainThread(() =>
                 callback(
                     shareParticipant == IntPtr.Zero ? null : new CKShareParticipant(shareParticipant),
-                    error == IntPtr.Zero ? null : new NSError(error));
-            }
-            catch(Exception exc)
-            {
-                Debug.LogError(exc);
-            }
+                    error == IntPtr.Zero ? null : new NSError(error)));
         }
 
         
@@ -448,16 +468,10 @@ namespace HovelHouse.CloudKit
             var callback = FetchShareParticipantWithUserRecordIDCallbacks[invocation];
             FetchShareParticipantWithUserRecordIDCallbacks.Remove(invocation);
             
-            try
-            {
+            Dispatcher.Instance.EnqueueOnMainThread(() =>
                 callback(
                     shareParticipant == IntPtr.Zero ? null : new CKShareParticipant(shareParticipant),
-                    error == IntPtr.Zero ? null : new NSError(error));
-            }
-            catch(Exception exc)
-            {
-                Debug.LogError(exc);
-            }
+                    error == IntPtr.Zero ? null : new NSError(error)));
         }
 
         
@@ -489,16 +503,10 @@ namespace HovelHouse.CloudKit
             var callback = FetchLongLivedOperationWithIDCallbacks[invocation];
             FetchLongLivedOperationWithIDCallbacks.Remove(invocation);
             
-            try
-            {
+            Dispatcher.Instance.EnqueueOnMainThread(() =>
                 callback(
                     operationID == IntPtr.Zero ? null : new CKOperation(operationID),
-                    error == IntPtr.Zero ? null : new NSError(error));
-            }
-            catch(Exception exc)
-            {
-                Debug.LogError(exc);
-            }
+                    error == IntPtr.Zero ? null : new NSError(error)));
         }
 
         
@@ -530,16 +538,10 @@ namespace HovelHouse.CloudKit
             var callback = AcceptShareMetadataCallbacks[invocation];
             AcceptShareMetadataCallbacks.Remove(invocation);
             
-            try
-            {
+            Dispatcher.Instance.EnqueueOnMainThread(() =>
                 callback(
                     acceptedShare == IntPtr.Zero ? null : new CKShare(acceptedShare),
-                    error == IntPtr.Zero ? null : new NSError(error));
-            }
-            catch(Exception exc)
-            {
-                Debug.LogError(exc);
-            }
+                    error == IntPtr.Zero ? null : new NSError(error)));
         }
 
         
@@ -569,16 +571,10 @@ namespace HovelHouse.CloudKit
             var callback = RequestApplicationPermissionCallbacks[invocation];
             RequestApplicationPermissionCallbacks.Remove(invocation);
             
-            try
-            {
+            Dispatcher.Instance.EnqueueOnMainThread(() =>
                 callback(
                     applicationPermissionsStatus,
-                    error == IntPtr.Zero ? null : new NSError(error));
-            }
-            catch(Exception exc)
-            {
-                Debug.LogError(exc);
-            }
+                    error == IntPtr.Zero ? null : new NSError(error)));
         }
 
         
@@ -606,16 +602,10 @@ namespace HovelHouse.CloudKit
             var callback = AccountStatusWithCompletionHandlerCallbacks[invocation];
             AccountStatusWithCompletionHandlerCallbacks.Remove(invocation);
             
-            try
-            {
+            Dispatcher.Instance.EnqueueOnMainThread(() =>
                 callback(
                     accountStatus,
-                    error == IntPtr.Zero ? null : new NSError(error));
-            }
-            catch(Exception exc)
-            {
-                Debug.LogError(exc);
-            }
+                    error == IntPtr.Zero ? null : new NSError(error)));
         }
 
         
@@ -645,16 +635,10 @@ namespace HovelHouse.CloudKit
             var callback = StatusForApplicationPermissionCallbacks[invocation];
             StatusForApplicationPermissionCallbacks.Remove(invocation);
             
-            try
-            {
+            Dispatcher.Instance.EnqueueOnMainThread(() =>
                 callback(
                     applicationPermissionsStatus,
-                    error == IntPtr.Zero ? null : new NSError(error));
-            }
-            catch(Exception exc)
-            {
-                Debug.LogError(exc);
-            }
+                    error == IntPtr.Zero ? null : new NSError(error)));
         }
 
         
@@ -702,16 +686,10 @@ namespace HovelHouse.CloudKit
             var callback = FetchShareMetadataWithURLCallbacks[invocation];
             FetchShareMetadataWithURLCallbacks.Remove(invocation);
             
-            try
-            {
+            Dispatcher.Instance.EnqueueOnMainThread(() =>
                 callback(
                     metadata == IntPtr.Zero ? null : new CKShareMetadata(metadata),
-                    error == IntPtr.Zero ? null : new NSError(error));
-            }
-            catch(Exception exc)
-            {
-                Debug.LogError(exc);
-            }
+                    error == IntPtr.Zero ? null : new NSError(error)));
         }
 
         
@@ -758,5 +736,50 @@ namespace HovelHouse.CloudKit
         }
         
         #endregion
+        
+        
+        #region IDisposable Support
+        #if UNITY_IPHONE || UNITY_TVOS
+        [DllImport("__Internal")]
+        #else
+        [DllImport("HHCloudKit")]
+        #endif
+        private static extern void CKContainer_Dispose(HandleRef handle);
+            
+        private bool disposedValue = false; // To detect redundant calls
+        
+        // No base.Dispose() needed
+        // All we ever do is decrement the reference count in managed code
+        
+        private void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    // TODO: dispose managed state (managed objects).
+                }
+                
+                //Debug.Log("CKContainer Dispose");
+                CKContainer_Dispose(Handle);
+                disposedValue = true;
+            }
+        }
+
+        ~CKContainer()
+        {
+            // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+            Dispose(false);
+        }
+
+        // This code added to correctly implement the disposable pattern.
+        public void Dispose()
+        {
+            // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+        #endregion
+        
     }
 }

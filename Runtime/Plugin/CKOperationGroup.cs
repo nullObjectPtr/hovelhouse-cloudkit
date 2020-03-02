@@ -1,8 +1,10 @@
 //
 //  CKOperationGroup.cs
 //
-//  Created by Jonathan on 02/25/2020
+//  Created by Jonathan Culp <jonathanculp@gmail.com> on 03/02/2020
 //  Copyright © 2020 HovelHouseApps. All rights reserved.
+//  Unauthorized copying of this file, via any medium is strictly prohibited
+//  Proprietary and confidential
 //
 
 using System;
@@ -15,7 +17,7 @@ using UnityEngine;
 
 namespace HovelHouse.CloudKit
 {
-    public class CKOperationGroup : CKObject
+    public class CKOperationGroup : CKObject, IDisposable
     {
         #region dll
 
@@ -239,5 +241,50 @@ namespace HovelHouse.CloudKit
         }
         
         #endregion
+        
+        
+        #region IDisposable Support
+        #if UNITY_IPHONE || UNITY_TVOS
+        [DllImport("__Internal")]
+        #else
+        [DllImport("HHCloudKit")]
+        #endif
+        private static extern void CKOperationGroup_Dispose(HandleRef handle);
+            
+        private bool disposedValue = false; // To detect redundant calls
+        
+        // No base.Dispose() needed
+        // All we ever do is decrement the reference count in managed code
+        
+        private void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    // TODO: dispose managed state (managed objects).
+                }
+                
+                //Debug.Log("CKOperationGroup Dispose");
+                CKOperationGroup_Dispose(Handle);
+                disposedValue = true;
+            }
+        }
+
+        ~CKOperationGroup()
+        {
+            // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+            Dispose(false);
+        }
+
+        // This code added to correctly implement the disposable pattern.
+        public void Dispose()
+        {
+            // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+        #endregion
+        
     }
 }
