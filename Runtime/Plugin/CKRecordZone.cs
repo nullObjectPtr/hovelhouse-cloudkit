@@ -28,7 +28,8 @@ namespace HovelHouse.CloudKit
         #else
         [DllImport("HHCloudKit")]
         #endif
-        private static extern IntPtr CKRecordZone_defaultRecordZone();
+        private static extern IntPtr CKRecordZone_defaultRecordZone(
+            out IntPtr exceptionPtr);
         
 
         // Constructors
@@ -39,7 +40,9 @@ namespace HovelHouse.CloudKit
         [DllImport("HHCloudKit")]
         #endif
         private static extern IntPtr CKRecordZone_initWithZoneName(
-            string zoneName);
+            string zoneName, 
+            out IntPtr exceptionPtr
+            );
         
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
@@ -47,7 +50,9 @@ namespace HovelHouse.CloudKit
         [DllImport("HHCloudKit")]
         #endif
         private static extern IntPtr CKRecordZone_initWithZoneID(
-            IntPtr zoneID);
+            IntPtr zoneID, 
+            out IntPtr exceptionPtr
+            );
         
 
         // Instance Methods
@@ -77,12 +82,21 @@ namespace HovelHouse.CloudKit
         
         #region Class Methods
         
-        public static CKRecordZone defaultRecordZone()
-        {
+        
+        public static CKRecordZone DefaultRecordZone()
+        { 
+            var val = CKRecordZone_defaultRecordZone(out IntPtr exceptionPtr);
+
+            if(exceptionPtr != IntPtr.Zero)
+            {
+                var nativeException = new NSException(exceptionPtr);
+                throw new CloudKitException(nativeException, nativeException.Reason);
+            }
             
-            var val = CKRecordZone_defaultRecordZone();
             return val == IntPtr.Zero ? null : new CKRecordZone(val);
         }
+        
+
         
         #endregion
 
@@ -90,24 +104,42 @@ namespace HovelHouse.CloudKit
         
         public static CKRecordZone initWithZoneName(
             string zoneName
-        ){
+            )
+        {
             if(zoneName == null)
                 throw new ArgumentNullException(nameof(zoneName));
             
             IntPtr ptr = CKRecordZone_initWithZoneName(
-                zoneName);
+                zoneName, 
+                out IntPtr exceptionPtr);
+
+            if(exceptionPtr != IntPtr.Zero)
+            {
+                var nativeException = new NSException(exceptionPtr);
+                throw new CloudKitException(nativeException, nativeException.Reason);
+            }
+
             return new CKRecordZone(ptr);
         }
         
         
         public static CKRecordZone initWithZoneID(
             CKRecordZoneID zoneID
-        ){
+            )
+        {
             if(zoneID == null)
                 throw new ArgumentNullException(nameof(zoneID));
             
             IntPtr ptr = CKRecordZone_initWithZoneID(
-                zoneID != null ? HandleRef.ToIntPtr(zoneID.Handle) : IntPtr.Zero);
+                zoneID != null ? HandleRef.ToIntPtr(zoneID.Handle) : IntPtr.Zero, 
+                out IntPtr exceptionPtr);
+
+            if(exceptionPtr != IntPtr.Zero)
+            {
+                var nativeException = new NSException(exceptionPtr);
+                throw new CloudKitException(nativeException, nativeException.Reason);
+            }
+
             return new CKRecordZone(ptr);
         }
         

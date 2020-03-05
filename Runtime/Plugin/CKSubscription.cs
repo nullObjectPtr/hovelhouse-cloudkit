@@ -46,7 +46,7 @@ namespace HovelHouse.CloudKit
         #else
         [DllImport("HHCloudKit")]
         #endif
-        private static extern void CKSubscription_SetPropNotificationInfo(HandleRef ptr, IntPtr notificationInfo);
+        private static extern void CKSubscription_SetPropNotificationInfo(HandleRef ptr, IntPtr notificationInfo, out IntPtr exceptionPtr);
         
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
@@ -91,7 +91,7 @@ namespace HovelHouse.CloudKit
             }
             set
             {
-                CKSubscription_SetPropNotificationInfo(Handle, value != null ? HandleRef.ToIntPtr(value.Handle) : IntPtr.Zero);
+                CKSubscription_SetPropNotificationInfo(Handle, value != null ? HandleRef.ToIntPtr(value.Handle) : IntPtr.Zero, out IntPtr exceptionPtr);
             }
         }
         

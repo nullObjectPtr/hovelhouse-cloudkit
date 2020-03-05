@@ -46,7 +46,7 @@ namespace HovelHouse.CloudKit
         #else
         [DllImport("HHCloudKit")]
         #endif
-        private static extern void CKOperationConfiguration_SetPropAllowsCellularAccess(HandleRef ptr, bool allowsCellularAccess);
+        private static extern void CKOperationConfiguration_SetPropAllowsCellularAccess(HandleRef ptr, bool allowsCellularAccess, out IntPtr exceptionPtr);
         
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
@@ -60,7 +60,7 @@ namespace HovelHouse.CloudKit
         #else
         [DllImport("HHCloudKit")]
         #endif
-        private static extern void CKOperationConfiguration_SetPropContainer(HandleRef ptr, IntPtr container);
+        private static extern void CKOperationConfiguration_SetPropContainer(HandleRef ptr, IntPtr container, out IntPtr exceptionPtr);
         
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
@@ -74,7 +74,7 @@ namespace HovelHouse.CloudKit
         #else
         [DllImport("HHCloudKit")]
         #endif
-        private static extern void CKOperationConfiguration_SetPropQualityOfService(HandleRef ptr, long qualityOfService);
+        private static extern void CKOperationConfiguration_SetPropQualityOfService(HandleRef ptr, long qualityOfService, out IntPtr exceptionPtr);
         
         #endregion
 
@@ -105,7 +105,7 @@ namespace HovelHouse.CloudKit
             }
             set
             {
-                CKOperationConfiguration_SetPropAllowsCellularAccess(Handle, value);
+                CKOperationConfiguration_SetPropAllowsCellularAccess(Handle, value, out IntPtr exceptionPtr);
             }
         }
         
@@ -118,7 +118,7 @@ namespace HovelHouse.CloudKit
             }
             set
             {
-                CKOperationConfiguration_SetPropContainer(Handle, value != null ? HandleRef.ToIntPtr(value.Handle) : IntPtr.Zero);
+                CKOperationConfiguration_SetPropContainer(Handle, value != null ? HandleRef.ToIntPtr(value.Handle) : IntPtr.Zero, out IntPtr exceptionPtr);
             }
         }
         
@@ -131,7 +131,7 @@ namespace HovelHouse.CloudKit
             }
             set
             {
-                CKOperationConfiguration_SetPropQualityOfService(Handle, (long) value);
+                CKOperationConfiguration_SetPropQualityOfService(Handle, (long) value, out IntPtr exceptionPtr);
             }
         }
         

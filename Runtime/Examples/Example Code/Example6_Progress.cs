@@ -22,7 +22,7 @@ public class Example6_Progress : MonoBehaviour
     {
         Debug.Log("Example 6 - Per Record Progress");
 
-        database = CKContainer.defaultContainer().PrivateCloudDatabase;
+        database = CKContainer.DefaultContainer().PrivateCloudDatabase;
 
         // Let's create 5 files at 1MB a piece
         // So we have enough data to see some upload progress

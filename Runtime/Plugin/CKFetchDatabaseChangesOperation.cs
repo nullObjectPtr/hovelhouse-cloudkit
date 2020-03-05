@@ -31,7 +31,9 @@ namespace HovelHouse.CloudKit
         #else
         [DllImport("HHCloudKit")]
         #endif
-        private static extern IntPtr CKFetchDatabaseChangesOperation_init();
+        private static extern IntPtr CKFetchDatabaseChangesOperation_init(
+            out IntPtr exceptionPtr
+            );
         
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
@@ -39,7 +41,9 @@ namespace HovelHouse.CloudKit
         [DllImport("HHCloudKit")]
         #endif
         private static extern IntPtr CKFetchDatabaseChangesOperation_initWithPreviousServerChangeToken(
-            IntPtr previousServerChangeToken);
+            IntPtr previousServerChangeToken, 
+            out IntPtr exceptionPtr
+            );
         
 
         // Instance Methods
@@ -53,31 +57,31 @@ namespace HovelHouse.CloudKit
         #else
         [DllImport("HHCloudKit")]
         #endif
-        private static extern void CKFetchDatabaseChangesOperation_SetPropChangeTokenUpdatedHandler(HandleRef ptr, ChangeTokenUpdatedDelegate changeTokenUpdatedHandler);
+        private static extern void CKFetchDatabaseChangesOperation_SetPropChangeTokenUpdatedHandler(HandleRef ptr, ChangeTokenUpdatedDelegate changeTokenUpdatedHandler, out IntPtr exceptionPtr);
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
         #else
         [DllImport("HHCloudKit")]
         #endif
-        private static extern void CKFetchDatabaseChangesOperation_SetPropFetchDatabaseChangesCompletionHandler(HandleRef ptr, FetchDatabaseChangesCompletionDelegate fetchDatabaseChangesCompletionHandler);
+        private static extern void CKFetchDatabaseChangesOperation_SetPropFetchDatabaseChangesCompletionHandler(HandleRef ptr, FetchDatabaseChangesCompletionDelegate fetchDatabaseChangesCompletionHandler, out IntPtr exceptionPtr);
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
         #else
         [DllImport("HHCloudKit")]
         #endif
-        private static extern void CKFetchDatabaseChangesOperation_SetPropRecordZoneWithIDChangedHandler(HandleRef ptr, RecordZoneWithIDChangedDelegate recordZoneWithIDChangedHandler);
+        private static extern void CKFetchDatabaseChangesOperation_SetPropRecordZoneWithIDChangedHandler(HandleRef ptr, RecordZoneWithIDChangedDelegate recordZoneWithIDChangedHandler, out IntPtr exceptionPtr);
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
         #else
         [DllImport("HHCloudKit")]
         #endif
-        private static extern void CKFetchDatabaseChangesOperation_SetPropRecordZoneWithIDWasDeletedHandler(HandleRef ptr, RecordZoneWithIDWasDeletedDelegate recordZoneWithIDWasDeletedHandler);
+        private static extern void CKFetchDatabaseChangesOperation_SetPropRecordZoneWithIDWasDeletedHandler(HandleRef ptr, RecordZoneWithIDWasDeletedDelegate recordZoneWithIDWasDeletedHandler, out IntPtr exceptionPtr);
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
         #else
         [DllImport("HHCloudKit")]
         #endif
-        private static extern void CKFetchDatabaseChangesOperation_SetPropRecordZoneWithIDWasPurgedHandler(HandleRef ptr, RecordZoneWithIDWasPurgedDelegate recordZoneWithIDWasPurgedHandler);
+        private static extern void CKFetchDatabaseChangesOperation_SetPropRecordZoneWithIDWasPurgedHandler(HandleRef ptr, RecordZoneWithIDWasPurgedDelegate recordZoneWithIDWasPurgedHandler, out IntPtr exceptionPtr);
         
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
@@ -91,7 +95,7 @@ namespace HovelHouse.CloudKit
         #else
         [DllImport("HHCloudKit")]
         #endif
-        private static extern void CKFetchDatabaseChangesOperation_SetPropPreviousServerChangeToken(HandleRef ptr, IntPtr previousServerChangeToken);
+        private static extern void CKFetchDatabaseChangesOperation_SetPropPreviousServerChangeToken(HandleRef ptr, IntPtr previousServerChangeToken, out IntPtr exceptionPtr);
         
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
@@ -105,7 +109,7 @@ namespace HovelHouse.CloudKit
         #else
         [DllImport("HHCloudKit")]
         #endif
-        private static extern void CKFetchDatabaseChangesOperation_SetPropFetchAllChanges(HandleRef ptr, bool fetchAllChanges);
+        private static extern void CKFetchDatabaseChangesOperation_SetPropFetchAllChanges(HandleRef ptr, bool fetchAllChanges, out IntPtr exceptionPtr);
         
         #endregion
 
@@ -118,19 +122,37 @@ namespace HovelHouse.CloudKit
         #region Constructors
         
         public static CKFetchDatabaseChangesOperation init(
-        ){
+            )
+        {
             
-            IntPtr ptr = CKFetchDatabaseChangesOperation_init();
+            IntPtr ptr = CKFetchDatabaseChangesOperation_init(
+                out IntPtr exceptionPtr);
+
+            if(exceptionPtr != IntPtr.Zero)
+            {
+                var nativeException = new NSException(exceptionPtr);
+                throw new CloudKitException(nativeException, nativeException.Reason);
+            }
+
             return new CKFetchDatabaseChangesOperation(ptr);
         }
         
         
         public static CKFetchDatabaseChangesOperation initWithPreviousServerChangeToken(
             CKServerChangeToken previousServerChangeToken
-        ){
+            )
+        {
             
             IntPtr ptr = CKFetchDatabaseChangesOperation_initWithPreviousServerChangeToken(
-                previousServerChangeToken != null ? HandleRef.ToIntPtr(previousServerChangeToken.Handle) : IntPtr.Zero);
+                previousServerChangeToken != null ? HandleRef.ToIntPtr(previousServerChangeToken.Handle) : IntPtr.Zero, 
+                out IntPtr exceptionPtr);
+
+            if(exceptionPtr != IntPtr.Zero)
+            {
+                var nativeException = new NSException(exceptionPtr);
+                throw new CloudKitException(nativeException, nativeException.Reason);
+            }
+
             return new CKFetchDatabaseChangesOperation(ptr);
         }
         
@@ -164,7 +186,13 @@ namespace HovelHouse.CloudKit
                 {
                     ChangeTokenUpdatedHandlerCallbacks[myPtr] = value;
                 }
-                CKFetchDatabaseChangesOperation_SetPropChangeTokenUpdatedHandler(Handle, ChangeTokenUpdatedHandlerCallback);
+                CKFetchDatabaseChangesOperation_SetPropChangeTokenUpdatedHandler(Handle, ChangeTokenUpdatedHandlerCallback, out IntPtr exceptionPtr);
+
+                if(exceptionPtr != IntPtr.Zero)
+                {
+                    var nativeException = new NSException(exceptionPtr);
+                    throw new CloudKitException(nativeException, nativeException.Reason);
+                }
             }
         }
 
@@ -201,7 +229,13 @@ namespace HovelHouse.CloudKit
                 {
                     FetchDatabaseChangesCompletionHandlerCallbacks[myPtr] = value;
                 }
-                CKFetchDatabaseChangesOperation_SetPropFetchDatabaseChangesCompletionHandler(Handle, FetchDatabaseChangesCompletionHandlerCallback);
+                CKFetchDatabaseChangesOperation_SetPropFetchDatabaseChangesCompletionHandler(Handle, FetchDatabaseChangesCompletionHandlerCallback, out IntPtr exceptionPtr);
+
+                if(exceptionPtr != IntPtr.Zero)
+                {
+                    var nativeException = new NSException(exceptionPtr);
+                    throw new CloudKitException(nativeException, nativeException.Reason);
+                }
             }
         }
 
@@ -240,7 +274,13 @@ namespace HovelHouse.CloudKit
                 {
                     RecordZoneWithIDChangedHandlerCallbacks[myPtr] = value;
                 }
-                CKFetchDatabaseChangesOperation_SetPropRecordZoneWithIDChangedHandler(Handle, RecordZoneWithIDChangedHandlerCallback);
+                CKFetchDatabaseChangesOperation_SetPropRecordZoneWithIDChangedHandler(Handle, RecordZoneWithIDChangedHandlerCallback, out IntPtr exceptionPtr);
+
+                if(exceptionPtr != IntPtr.Zero)
+                {
+                    var nativeException = new NSException(exceptionPtr);
+                    throw new CloudKitException(nativeException, nativeException.Reason);
+                }
             }
         }
 
@@ -277,7 +317,13 @@ namespace HovelHouse.CloudKit
                 {
                     RecordZoneWithIDWasDeletedHandlerCallbacks[myPtr] = value;
                 }
-                CKFetchDatabaseChangesOperation_SetPropRecordZoneWithIDWasDeletedHandler(Handle, RecordZoneWithIDWasDeletedHandlerCallback);
+                CKFetchDatabaseChangesOperation_SetPropRecordZoneWithIDWasDeletedHandler(Handle, RecordZoneWithIDWasDeletedHandlerCallback, out IntPtr exceptionPtr);
+
+                if(exceptionPtr != IntPtr.Zero)
+                {
+                    var nativeException = new NSException(exceptionPtr);
+                    throw new CloudKitException(nativeException, nativeException.Reason);
+                }
             }
         }
 
@@ -314,7 +360,13 @@ namespace HovelHouse.CloudKit
                 {
                     RecordZoneWithIDWasPurgedHandlerCallbacks[myPtr] = value;
                 }
-                CKFetchDatabaseChangesOperation_SetPropRecordZoneWithIDWasPurgedHandler(Handle, RecordZoneWithIDWasPurgedHandlerCallback);
+                CKFetchDatabaseChangesOperation_SetPropRecordZoneWithIDWasPurgedHandler(Handle, RecordZoneWithIDWasPurgedHandlerCallback, out IntPtr exceptionPtr);
+
+                if(exceptionPtr != IntPtr.Zero)
+                {
+                    var nativeException = new NSException(exceptionPtr);
+                    throw new CloudKitException(nativeException, nativeException.Reason);
+                }
             }
         }
 
@@ -341,7 +393,7 @@ namespace HovelHouse.CloudKit
             }
             set
             {
-                CKFetchDatabaseChangesOperation_SetPropPreviousServerChangeToken(Handle, value != null ? HandleRef.ToIntPtr(value.Handle) : IntPtr.Zero);
+                CKFetchDatabaseChangesOperation_SetPropPreviousServerChangeToken(Handle, value != null ? HandleRef.ToIntPtr(value.Handle) : IntPtr.Zero, out IntPtr exceptionPtr);
             }
         }
         
@@ -354,7 +406,7 @@ namespace HovelHouse.CloudKit
             }
             set
             {
-                CKFetchDatabaseChangesOperation_SetPropFetchAllChanges(Handle, value);
+                CKFetchDatabaseChangesOperation_SetPropFetchAllChanges(Handle, value, out IntPtr exceptionPtr);
             }
         }
         

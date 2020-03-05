@@ -46,7 +46,7 @@ namespace HovelHouse.CloudKit
         #else
         [DllImport("HHCloudKit")]
         #endif
-        private static extern void NSPersonNameComponents_SetPropNamePrefix(HandleRef ptr, string namePrefix);
+        private static extern void NSPersonNameComponents_SetPropNamePrefix(HandleRef ptr, string namePrefix, out IntPtr exceptionPtr);
         
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
@@ -60,7 +60,7 @@ namespace HovelHouse.CloudKit
         #else
         [DllImport("HHCloudKit")]
         #endif
-        private static extern void NSPersonNameComponents_SetPropGivenName(HandleRef ptr, string givenName);
+        private static extern void NSPersonNameComponents_SetPropGivenName(HandleRef ptr, string givenName, out IntPtr exceptionPtr);
         
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
@@ -74,7 +74,7 @@ namespace HovelHouse.CloudKit
         #else
         [DllImport("HHCloudKit")]
         #endif
-        private static extern void NSPersonNameComponents_SetPropMiddleName(HandleRef ptr, string middleName);
+        private static extern void NSPersonNameComponents_SetPropMiddleName(HandleRef ptr, string middleName, out IntPtr exceptionPtr);
         
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
@@ -88,7 +88,7 @@ namespace HovelHouse.CloudKit
         #else
         [DllImport("HHCloudKit")]
         #endif
-        private static extern void NSPersonNameComponents_SetPropFamilyName(HandleRef ptr, string familyName);
+        private static extern void NSPersonNameComponents_SetPropFamilyName(HandleRef ptr, string familyName, out IntPtr exceptionPtr);
         
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
@@ -102,7 +102,7 @@ namespace HovelHouse.CloudKit
         #else
         [DllImport("HHCloudKit")]
         #endif
-        private static extern void NSPersonNameComponents_SetPropNameSuffix(HandleRef ptr, string nameSuffix);
+        private static extern void NSPersonNameComponents_SetPropNameSuffix(HandleRef ptr, string nameSuffix, out IntPtr exceptionPtr);
         
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
@@ -116,7 +116,7 @@ namespace HovelHouse.CloudKit
         #else
         [DllImport("HHCloudKit")]
         #endif
-        private static extern void NSPersonNameComponents_SetPropNickname(HandleRef ptr, string nickname);
+        private static extern void NSPersonNameComponents_SetPropNickname(HandleRef ptr, string nickname, out IntPtr exceptionPtr);
         
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
@@ -130,7 +130,7 @@ namespace HovelHouse.CloudKit
         #else
         [DllImport("HHCloudKit")]
         #endif
-        private static extern void NSPersonNameComponents_SetPropPhoneticRepresentation(HandleRef ptr, IntPtr phoneticRepresentation);
+        private static extern void NSPersonNameComponents_SetPropPhoneticRepresentation(HandleRef ptr, IntPtr phoneticRepresentation, out IntPtr exceptionPtr);
         
         #endregion
 
@@ -161,7 +161,7 @@ namespace HovelHouse.CloudKit
             }
             set
             {
-                NSPersonNameComponents_SetPropNamePrefix(Handle, value);
+                NSPersonNameComponents_SetPropNamePrefix(Handle, value, out IntPtr exceptionPtr);
             }
         }
         
@@ -174,7 +174,7 @@ namespace HovelHouse.CloudKit
             }
             set
             {
-                NSPersonNameComponents_SetPropGivenName(Handle, value);
+                NSPersonNameComponents_SetPropGivenName(Handle, value, out IntPtr exceptionPtr);
             }
         }
         
@@ -187,7 +187,7 @@ namespace HovelHouse.CloudKit
             }
             set
             {
-                NSPersonNameComponents_SetPropMiddleName(Handle, value);
+                NSPersonNameComponents_SetPropMiddleName(Handle, value, out IntPtr exceptionPtr);
             }
         }
         
@@ -200,7 +200,7 @@ namespace HovelHouse.CloudKit
             }
             set
             {
-                NSPersonNameComponents_SetPropFamilyName(Handle, value);
+                NSPersonNameComponents_SetPropFamilyName(Handle, value, out IntPtr exceptionPtr);
             }
         }
         
@@ -213,7 +213,7 @@ namespace HovelHouse.CloudKit
             }
             set
             {
-                NSPersonNameComponents_SetPropNameSuffix(Handle, value);
+                NSPersonNameComponents_SetPropNameSuffix(Handle, value, out IntPtr exceptionPtr);
             }
         }
         
@@ -226,7 +226,7 @@ namespace HovelHouse.CloudKit
             }
             set
             {
-                NSPersonNameComponents_SetPropNickname(Handle, value);
+                NSPersonNameComponents_SetPropNickname(Handle, value, out IntPtr exceptionPtr);
             }
         }
         
@@ -239,7 +239,7 @@ namespace HovelHouse.CloudKit
             }
             set
             {
-                NSPersonNameComponents_SetPropPhoneticRepresentation(Handle, value != null ? HandleRef.ToIntPtr(value.Handle) : IntPtr.Zero);
+                NSPersonNameComponents_SetPropPhoneticRepresentation(Handle, value != null ? HandleRef.ToIntPtr(value.Handle) : IntPtr.Zero, out IntPtr exceptionPtr);
             }
         }
         

@@ -31,7 +31,9 @@ namespace HovelHouse.CloudKit
         #else
         [DllImport("HHCloudKit")]
         #endif
-        private static extern IntPtr CKDiscoverUserIdentitiesOperation_init();
+        private static extern IntPtr CKDiscoverUserIdentitiesOperation_init(
+            out IntPtr exceptionPtr
+            );
         
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
@@ -41,7 +43,9 @@ namespace HovelHouse.CloudKit
         private static extern IntPtr CKDiscoverUserIdentitiesOperation_initWithUserIdentityLookupInfos(
             [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.SysInt, SizeParamIndex = 2)]
             IntPtr[] userIdentityLookupInfos,
-			int userIdentityLookupInfosCount);
+			int userIdentityLookupInfosCount, 
+            out IntPtr exceptionPtr
+            );
         
 
         // Instance Methods
@@ -64,13 +68,13 @@ namespace HovelHouse.CloudKit
         [DllImport("HHCloudKit")]
         #endif
         private static extern void CKDiscoverUserIdentitiesOperation_SetPropUserIdentityLookupInfos(HandleRef ptr, IntPtr[] userIdentityLookupInfos,
-			int userIdentityLookupInfosCount);
+			int userIdentityLookupInfosCount, out IntPtr exceptionPtr);
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
         #else
         [DllImport("HHCloudKit")]
         #endif
-        private static extern void CKDiscoverUserIdentitiesOperation_SetPropDiscoverUserIdentitiesCompletionHandler(HandleRef ptr, DiscoverUserIdentitiesCompletionDelegate discoverUserIdentitiesCompletionHandler);
+        private static extern void CKDiscoverUserIdentitiesOperation_SetPropDiscoverUserIdentitiesCompletionHandler(HandleRef ptr, DiscoverUserIdentitiesCompletionDelegate discoverUserIdentitiesCompletionHandler, out IntPtr exceptionPtr);
         
         #endregion
 
@@ -83,22 +87,40 @@ namespace HovelHouse.CloudKit
         #region Constructors
         
         public static CKDiscoverUserIdentitiesOperation init(
-        ){
+            )
+        {
             
-            IntPtr ptr = CKDiscoverUserIdentitiesOperation_init();
+            IntPtr ptr = CKDiscoverUserIdentitiesOperation_init(
+                out IntPtr exceptionPtr);
+
+            if(exceptionPtr != IntPtr.Zero)
+            {
+                var nativeException = new NSException(exceptionPtr);
+                throw new CloudKitException(nativeException, nativeException.Reason);
+            }
+
             return new CKDiscoverUserIdentitiesOperation(ptr);
         }
         
         
         public static CKDiscoverUserIdentitiesOperation initWithUserIdentityLookupInfos(
             CKUserIdentityLookupInfo[] userIdentityLookupInfos
-        ){
+            )
+        {
             if(userIdentityLookupInfos == null)
                 throw new ArgumentNullException(nameof(userIdentityLookupInfos));
             
             IntPtr ptr = CKDiscoverUserIdentitiesOperation_initWithUserIdentityLookupInfos(
                 userIdentityLookupInfos == null ? null : userIdentityLookupInfos.Select(x => HandleRef.ToIntPtr(x.Handle)).ToArray(),
-				userIdentityLookupInfos == null ? 0 : userIdentityLookupInfos.Length);
+				userIdentityLookupInfos == null ? 0 : userIdentityLookupInfos.Length, 
+                out IntPtr exceptionPtr);
+
+            if(exceptionPtr != IntPtr.Zero)
+            {
+                var nativeException = new NSException(exceptionPtr);
+                throw new CloudKitException(nativeException, nativeException.Reason);
+            }
+
             return new CKDiscoverUserIdentitiesOperation(ptr);
         }
         
@@ -137,7 +159,13 @@ namespace HovelHouse.CloudKit
             set
             {
                 CKDiscoverUserIdentitiesOperation_SetPropUserIdentityLookupInfos(Handle, value == null ? null : value.Select(x => HandleRef.ToIntPtr(x.Handle)).ToArray(),
-				value == null ? 0 : value.Length);
+				value == null ? 0 : value.Length, out IntPtr exceptionPtr);
+                
+                if(exceptionPtr != IntPtr.Zero)
+                {
+                    var nativeException = new NSException(exceptionPtr);
+                    throw new CloudKitException(nativeException, nativeException.Reason);
+                }
             }
         }
 
@@ -161,7 +189,13 @@ namespace HovelHouse.CloudKit
                 {
                     DiscoverUserIdentitiesCompletionHandlerCallbacks[myPtr] = value;
                 }
-                CKDiscoverUserIdentitiesOperation_SetPropDiscoverUserIdentitiesCompletionHandler(Handle, DiscoverUserIdentitiesCompletionHandlerCallback);
+                CKDiscoverUserIdentitiesOperation_SetPropDiscoverUserIdentitiesCompletionHandler(Handle, DiscoverUserIdentitiesCompletionHandlerCallback, out IntPtr exceptionPtr);
+
+                if(exceptionPtr != IntPtr.Zero)
+                {
+                    var nativeException = new NSException(exceptionPtr);
+                    throw new CloudKitException(nativeException, nativeException.Reason);
+                }
             }
         }
 

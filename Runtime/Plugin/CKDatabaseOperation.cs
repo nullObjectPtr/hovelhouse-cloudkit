@@ -46,7 +46,7 @@ namespace HovelHouse.CloudKit
         #else
         [DllImport("HHCloudKit")]
         #endif
-        private static extern void CKDatabaseOperation_SetPropDatabase(HandleRef ptr, IntPtr database);
+        private static extern void CKDatabaseOperation_SetPropDatabase(HandleRef ptr, IntPtr database, out IntPtr exceptionPtr);
         
         #endregion
 
@@ -77,7 +77,7 @@ namespace HovelHouse.CloudKit
             }
             set
             {
-                CKDatabaseOperation_SetPropDatabase(Handle, value != null ? HandleRef.ToIntPtr(value.Handle) : IntPtr.Zero);
+                CKDatabaseOperation_SetPropDatabase(Handle, value != null ? HandleRef.ToIntPtr(value.Handle) : IntPtr.Zero, out IntPtr exceptionPtr);
             }
         }
         

@@ -15,7 +15,7 @@ public class Example1_HelloWorld : MonoBehaviour
     {
         Debug.Log("Example1 - Hello World");
 
-        database = CKContainer.defaultContainer().PrivateCloudDatabase;
+        database = CKContainer.DefaultContainer().PrivateCloudDatabase;
 
         var record = CKRecord.initWithRecordType("Hello");
         record.SetString("Hello World", "Greeting");

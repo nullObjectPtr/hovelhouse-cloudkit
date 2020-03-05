@@ -33,7 +33,9 @@ namespace HovelHouse.CloudKit
         #endif
         private static extern IntPtr CKQuery_initWithRecordType_predicate(
             string recordType, 
-            IntPtr predicate);
+            IntPtr predicate, 
+            out IntPtr exceptionPtr
+            );
         
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
@@ -41,7 +43,9 @@ namespace HovelHouse.CloudKit
         [DllImport("HHCloudKit")]
         #endif
         private static extern IntPtr CKQuery_initWithCoder(
-            IntPtr aDecoder);
+            IntPtr aDecoder, 
+            out IntPtr exceptionPtr
+            );
         
 
         // Instance Methods
@@ -64,7 +68,7 @@ namespace HovelHouse.CloudKit
         [DllImport("HHCloudKit")]
         #endif
         private static extern void CKQuery_SetPropSortDescriptors(HandleRef ptr, IntPtr[] sortDescriptors,
-			int sortDescriptorsCount);
+			int sortDescriptorsCount, out IntPtr exceptionPtr);
         
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
@@ -93,27 +97,45 @@ namespace HovelHouse.CloudKit
         public static CKQuery initWithRecordType(
             string recordType, 
             NSPredicate predicate
-        ){
+            )
+        {
             if(recordType == null)
                 throw new ArgumentNullException(nameof(recordType));
             if(predicate == null)
                 throw new ArgumentNullException(nameof(predicate));
             
             IntPtr ptr = CKQuery_initWithRecordType_predicate(
-                recordType,
-                predicate != null ? HandleRef.ToIntPtr(predicate.Handle) : IntPtr.Zero);
+                recordType, 
+                predicate != null ? HandleRef.ToIntPtr(predicate.Handle) : IntPtr.Zero, 
+                out IntPtr exceptionPtr);
+
+            if(exceptionPtr != IntPtr.Zero)
+            {
+                var nativeException = new NSException(exceptionPtr);
+                throw new CloudKitException(nativeException, nativeException.Reason);
+            }
+
             return new CKQuery(ptr);
         }
         
         
         public static CKQuery initWithCoder(
             NSCoder aDecoder
-        ){
+            )
+        {
             if(aDecoder == null)
                 throw new ArgumentNullException(nameof(aDecoder));
             
             IntPtr ptr = CKQuery_initWithCoder(
-                aDecoder != null ? HandleRef.ToIntPtr(aDecoder.Handle) : IntPtr.Zero);
+                aDecoder != null ? HandleRef.ToIntPtr(aDecoder.Handle) : IntPtr.Zero, 
+                out IntPtr exceptionPtr);
+
+            if(exceptionPtr != IntPtr.Zero)
+            {
+                var nativeException = new NSException(exceptionPtr);
+                throw new CloudKitException(nativeException, nativeException.Reason);
+            }
+
             return new CKQuery(ptr);
         }
         
@@ -152,7 +174,13 @@ namespace HovelHouse.CloudKit
             set
             {
                 CKQuery_SetPropSortDescriptors(Handle, value == null ? null : value.Select(x => HandleRef.ToIntPtr(x.Handle)).ToArray(),
-				value == null ? 0 : value.Length);
+				value == null ? 0 : value.Length, out IntPtr exceptionPtr);
+                
+                if(exceptionPtr != IntPtr.Zero)
+                {
+                    var nativeException = new NSException(exceptionPtr);
+                    throw new CloudKitException(nativeException, nativeException.Reason);
+                }
             }
         }
 

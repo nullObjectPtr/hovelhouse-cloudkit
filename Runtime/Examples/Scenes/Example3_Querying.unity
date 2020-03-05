@@ -191,7 +191,6 @@ GameObject:
   m_Component:
   - component: {fileID: 27}
   - component: {fileID: 26}
-  - component: {fileID: 25}
   - component: {fileID: 24}
   - component: {fileID: 23}
   m_Layer: 0
@@ -210,14 +209,6 @@ AudioListener:
   m_GameObject: {fileID: 22}
   m_Enabled: 1
 --- !u!124 &24
-Behaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 22}
-  m_Enabled: 1
---- !u!92 &25
 Behaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -400,30 +391,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 658437e784efb4e6b85e9664792ee7d0, type: 3}
---- !u!114 &751772900 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5891416463927975052, guid: 658437e784efb4e6b85e9664792ee7d0,
-    type: 3}
-  m_PrefabInstance: {fileID: 751772899}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 1392445389, guid: f70555f144d8491a825f0804e09c671c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &751772901 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5891416463876132294, guid: 658437e784efb4e6b85e9664792ee7d0,
-    type: 3}
-  m_PrefabInstance: {fileID: 751772899}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 708705254, guid: f70555f144d8491a825f0804e09c671c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1486684316
 GameObject:
   m_ObjectHideFlags: 0
@@ -453,8 +420,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c7a64ffabe1b476c903d55b170069f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  text: {fileID: 751772901}
-  BackButton: {fileID: 751772900}
 --- !u!4 &1486684318
 Transform:
   m_ObjectHideFlags: 0

@@ -29,7 +29,8 @@ namespace HovelHouse.CloudKit
         [DllImport("HHCloudKit")]
         #endif
         private static extern IntPtr NSPredicate_predicateWithValue(
-            bool value);
+            bool value,
+            out IntPtr exceptionPtr);
         
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
@@ -37,7 +38,8 @@ namespace HovelHouse.CloudKit
         [DllImport("HHCloudKit")]
         #endif
         private static extern IntPtr NSPredicate_predicateWithFormat(
-            string predicateFormat);
+            string predicateFormat,
+            out IntPtr exceptionPtr);
         
 
         // Constructors
@@ -63,21 +65,45 @@ namespace HovelHouse.CloudKit
         
         #region Class Methods
         
-        public static NSPredicate predicateWithValue(
+        
+        public static NSPredicate PredicateWithValue(
             bool value)
-        {
+        { 
             
-            var val = NSPredicate_predicateWithValue(value);
+            var val = NSPredicate_predicateWithValue(
+                value, 
+                out IntPtr exceptionPtr);
+
+            if(exceptionPtr != IntPtr.Zero)
+            {
+                var nativeException = new NSException(exceptionPtr);
+                throw new CloudKitException(nativeException, nativeException.Reason);
+            }
+            
             return val == IntPtr.Zero ? null : new NSPredicate(val);
         }
         
-        public static NSPredicate predicateWithFormat(
+
+        
+        
+        public static NSPredicate PredicateWithFormat(
             string predicateFormat)
-        {
+        { 
             
-            var val = NSPredicate_predicateWithFormat(predicateFormat);
+            var val = NSPredicate_predicateWithFormat(
+                predicateFormat, 
+                out IntPtr exceptionPtr);
+
+            if(exceptionPtr != IntPtr.Zero)
+            {
+                var nativeException = new NSException(exceptionPtr);
+                throw new CloudKitException(nativeException, nativeException.Reason);
+            }
+            
             return val == IntPtr.Zero ? null : new NSPredicate(val);
         }
+        
+
         
         #endregion
 

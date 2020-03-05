@@ -32,7 +32,9 @@ namespace HovelHouse.CloudKit
         [DllImport("HHCloudKit")]
         #endif
         private static extern IntPtr CKUserIdentityLookupInfo_initWithEmailAddress(
-            string emailAddress);
+            string emailAddress, 
+            out IntPtr exceptionPtr
+            );
         
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
@@ -40,7 +42,9 @@ namespace HovelHouse.CloudKit
         [DllImport("HHCloudKit")]
         #endif
         private static extern IntPtr CKUserIdentityLookupInfo_initWithPhoneNumber(
-            string phoneNumber);
+            string phoneNumber, 
+            out IntPtr exceptionPtr
+            );
         
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
@@ -48,7 +52,9 @@ namespace HovelHouse.CloudKit
         [DllImport("HHCloudKit")]
         #endif
         private static extern IntPtr CKUserIdentityLookupInfo_initWithUserRecordID(
-            IntPtr userRecordID);
+            IntPtr userRecordID, 
+            out IntPtr exceptionPtr
+            );
         
 
         // Instance Methods
@@ -91,36 +97,63 @@ namespace HovelHouse.CloudKit
         
         public static CKUserIdentityLookupInfo initWithEmailAddress(
             string emailAddress
-        ){
+            )
+        {
             if(emailAddress == null)
                 throw new ArgumentNullException(nameof(emailAddress));
             
             IntPtr ptr = CKUserIdentityLookupInfo_initWithEmailAddress(
-                emailAddress);
+                emailAddress, 
+                out IntPtr exceptionPtr);
+
+            if(exceptionPtr != IntPtr.Zero)
+            {
+                var nativeException = new NSException(exceptionPtr);
+                throw new CloudKitException(nativeException, nativeException.Reason);
+            }
+
             return new CKUserIdentityLookupInfo(ptr);
         }
         
         
         public static CKUserIdentityLookupInfo initWithPhoneNumber(
             string phoneNumber
-        ){
+            )
+        {
             if(phoneNumber == null)
                 throw new ArgumentNullException(nameof(phoneNumber));
             
             IntPtr ptr = CKUserIdentityLookupInfo_initWithPhoneNumber(
-                phoneNumber);
+                phoneNumber, 
+                out IntPtr exceptionPtr);
+
+            if(exceptionPtr != IntPtr.Zero)
+            {
+                var nativeException = new NSException(exceptionPtr);
+                throw new CloudKitException(nativeException, nativeException.Reason);
+            }
+
             return new CKUserIdentityLookupInfo(ptr);
         }
         
         
         public static CKUserIdentityLookupInfo initWithUserRecordID(
             CKRecordID userRecordID
-        ){
+            )
+        {
             if(userRecordID == null)
                 throw new ArgumentNullException(nameof(userRecordID));
             
             IntPtr ptr = CKUserIdentityLookupInfo_initWithUserRecordID(
-                userRecordID != null ? HandleRef.ToIntPtr(userRecordID.Handle) : IntPtr.Zero);
+                userRecordID != null ? HandleRef.ToIntPtr(userRecordID.Handle) : IntPtr.Zero, 
+                out IntPtr exceptionPtr);
+
+            if(exceptionPtr != IntPtr.Zero)
+            {
+                var nativeException = new NSException(exceptionPtr);
+                throw new CloudKitException(nativeException, nativeException.Reason);
+            }
+
             return new CKUserIdentityLookupInfo(ptr);
         }
         

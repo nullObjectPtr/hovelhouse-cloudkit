@@ -31,7 +31,9 @@ namespace HovelHouse.CloudKit
         #else
         [DllImport("HHCloudKit")]
         #endif
-        private static extern IntPtr CKFetchShareMetadataOperation_init();
+        private static extern IntPtr CKFetchShareMetadataOperation_init(
+            out IntPtr exceptionPtr
+            );
         
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
@@ -41,7 +43,9 @@ namespace HovelHouse.CloudKit
         private static extern IntPtr CKFetchShareMetadataOperation_initWithShareURLs(
             [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.SysInt, SizeParamIndex = 2)]
             IntPtr[] shareURLs,
-			int shareURLsCount);
+			int shareURLsCount, 
+            out IntPtr exceptionPtr
+            );
         
 
         // Instance Methods
@@ -63,7 +67,7 @@ namespace HovelHouse.CloudKit
         #else
         [DllImport("HHCloudKit")]
         #endif
-        private static extern void CKFetchShareMetadataOperation_SetPropShouldFetchRootRecord(HandleRef ptr, bool shouldFetchRootRecord);
+        private static extern void CKFetchShareMetadataOperation_SetPropShouldFetchRootRecord(HandleRef ptr, bool shouldFetchRootRecord, out IntPtr exceptionPtr);
         // TODO: DLLPROPERTYSTRINGARRAY
         
         #if UNITY_IPHONE || UNITY_TVOS
@@ -79,19 +83,19 @@ namespace HovelHouse.CloudKit
         [DllImport("HHCloudKit")]
         #endif
         private static extern void CKFetchShareMetadataOperation_SetPropShareURLs(HandleRef ptr, IntPtr[] shareURLs,
-			int shareURLsCount);
+			int shareURLsCount, out IntPtr exceptionPtr);
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
         #else
         [DllImport("HHCloudKit")]
         #endif
-        private static extern void CKFetchShareMetadataOperation_SetPropFetchShareMetadataCompletionHandler(HandleRef ptr, FetchShareMetadataCompletionDelegate fetchShareMetadataCompletionHandler);
+        private static extern void CKFetchShareMetadataOperation_SetPropFetchShareMetadataCompletionHandler(HandleRef ptr, FetchShareMetadataCompletionDelegate fetchShareMetadataCompletionHandler, out IntPtr exceptionPtr);
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
         #else
         [DllImport("HHCloudKit")]
         #endif
-        private static extern void CKFetchShareMetadataOperation_SetPropPerShareMetadataHandler(HandleRef ptr, PerShareMetadataDelegate perShareMetadataHandler);
+        private static extern void CKFetchShareMetadataOperation_SetPropPerShareMetadataHandler(HandleRef ptr, PerShareMetadataDelegate perShareMetadataHandler, out IntPtr exceptionPtr);
         
         #endregion
 
@@ -104,22 +108,40 @@ namespace HovelHouse.CloudKit
         #region Constructors
         
         public static CKFetchShareMetadataOperation init(
-        ){
+            )
+        {
             
-            IntPtr ptr = CKFetchShareMetadataOperation_init();
+            IntPtr ptr = CKFetchShareMetadataOperation_init(
+                out IntPtr exceptionPtr);
+
+            if(exceptionPtr != IntPtr.Zero)
+            {
+                var nativeException = new NSException(exceptionPtr);
+                throw new CloudKitException(nativeException, nativeException.Reason);
+            }
+
             return new CKFetchShareMetadataOperation(ptr);
         }
         
         
         public static CKFetchShareMetadataOperation initWithShareURLs(
             NSURL[] shareURLs
-        ){
+            )
+        {
             if(shareURLs == null)
                 throw new ArgumentNullException(nameof(shareURLs));
             
             IntPtr ptr = CKFetchShareMetadataOperation_initWithShareURLs(
                 shareURLs == null ? null : shareURLs.Select(x => HandleRef.ToIntPtr(x.Handle)).ToArray(),
-				shareURLs == null ? 0 : shareURLs.Length);
+				shareURLs == null ? 0 : shareURLs.Length, 
+                out IntPtr exceptionPtr);
+
+            if(exceptionPtr != IntPtr.Zero)
+            {
+                var nativeException = new NSException(exceptionPtr);
+                throw new CloudKitException(nativeException, nativeException.Reason);
+            }
+
             return new CKFetchShareMetadataOperation(ptr);
         }
         
@@ -143,7 +165,7 @@ namespace HovelHouse.CloudKit
             }
             set
             {
-                CKFetchShareMetadataOperation_SetPropShouldFetchRootRecord(Handle, value);
+                CKFetchShareMetadataOperation_SetPropShouldFetchRootRecord(Handle, value, out IntPtr exceptionPtr);
             }
         }
         
@@ -173,7 +195,13 @@ namespace HovelHouse.CloudKit
             set
             {
                 CKFetchShareMetadataOperation_SetPropShareURLs(Handle, value == null ? null : value.Select(x => HandleRef.ToIntPtr(x.Handle)).ToArray(),
-				value == null ? 0 : value.Length);
+				value == null ? 0 : value.Length, out IntPtr exceptionPtr);
+                
+                if(exceptionPtr != IntPtr.Zero)
+                {
+                    var nativeException = new NSException(exceptionPtr);
+                    throw new CloudKitException(nativeException, nativeException.Reason);
+                }
             }
         }
 
@@ -197,7 +225,13 @@ namespace HovelHouse.CloudKit
                 {
                     FetchShareMetadataCompletionHandlerCallbacks[myPtr] = value;
                 }
-                CKFetchShareMetadataOperation_SetPropFetchShareMetadataCompletionHandler(Handle, FetchShareMetadataCompletionHandlerCallback);
+                CKFetchShareMetadataOperation_SetPropFetchShareMetadataCompletionHandler(Handle, FetchShareMetadataCompletionHandlerCallback, out IntPtr exceptionPtr);
+
+                if(exceptionPtr != IntPtr.Zero)
+                {
+                    var nativeException = new NSException(exceptionPtr);
+                    throw new CloudKitException(nativeException, nativeException.Reason);
+                }
             }
         }
 
@@ -234,7 +268,13 @@ namespace HovelHouse.CloudKit
                 {
                     PerShareMetadataHandlerCallbacks[myPtr] = value;
                 }
-                CKFetchShareMetadataOperation_SetPropPerShareMetadataHandler(Handle, PerShareMetadataHandlerCallback);
+                CKFetchShareMetadataOperation_SetPropPerShareMetadataHandler(Handle, PerShareMetadataHandlerCallback, out IntPtr exceptionPtr);
+
+                if(exceptionPtr != IntPtr.Zero)
+                {
+                    var nativeException = new NSException(exceptionPtr);
+                    throw new CloudKitException(nativeException, nativeException.Reason);
+                }
             }
         }
 

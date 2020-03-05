@@ -31,7 +31,9 @@ namespace HovelHouse.CloudKit
         #else
         [DllImport("HHCloudKit")]
         #endif
-        private static extern IntPtr CKModifyRecordsOperation_init();
+        private static extern IntPtr CKModifyRecordsOperation_init(
+            out IntPtr exceptionPtr
+            );
         
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
@@ -44,7 +46,9 @@ namespace HovelHouse.CloudKit
 			int recordsCount, 
             [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.SysInt, SizeParamIndex = 4)]
             IntPtr[] recordIDs,
-			int recordIDsCount);
+			int recordIDsCount, 
+            out IntPtr exceptionPtr
+            );
         
 
         // Instance Methods
@@ -67,7 +71,7 @@ namespace HovelHouse.CloudKit
         [DllImport("HHCloudKit")]
         #endif
         private static extern void CKModifyRecordsOperation_SetPropRecordsToSave(HandleRef ptr, IntPtr[] recordsToSave,
-			int recordsToSaveCount);
+			int recordsToSaveCount, out IntPtr exceptionPtr);
         
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
@@ -82,7 +86,7 @@ namespace HovelHouse.CloudKit
         [DllImport("HHCloudKit")]
         #endif
         private static extern void CKModifyRecordsOperation_SetPropRecordIDsToDelete(HandleRef ptr, IntPtr[] recordIDsToDelete,
-			int recordIDsToDeleteCount);
+			int recordIDsToDeleteCount, out IntPtr exceptionPtr);
         
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
@@ -96,7 +100,7 @@ namespace HovelHouse.CloudKit
         #else
         [DllImport("HHCloudKit")]
         #endif
-        private static extern void CKModifyRecordsOperation_SetPropSavePolicy(HandleRef ptr, long savePolicy);
+        private static extern void CKModifyRecordsOperation_SetPropSavePolicy(HandleRef ptr, long savePolicy, out IntPtr exceptionPtr);
         
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
@@ -110,25 +114,25 @@ namespace HovelHouse.CloudKit
         #else
         [DllImport("HHCloudKit")]
         #endif
-        private static extern void CKModifyRecordsOperation_SetPropAtomic(HandleRef ptr, bool atomic);
+        private static extern void CKModifyRecordsOperation_SetPropAtomic(HandleRef ptr, bool atomic, out IntPtr exceptionPtr);
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
         #else
         [DllImport("HHCloudKit")]
         #endif
-        private static extern void CKModifyRecordsOperation_SetPropModifyRecordsCompletionBlock(HandleRef ptr, ModifyRecordsCompletionDelegate modifyRecordsCompletionBlock);
+        private static extern void CKModifyRecordsOperation_SetPropModifyRecordsCompletionBlock(HandleRef ptr, ModifyRecordsCompletionDelegate modifyRecordsCompletionBlock, out IntPtr exceptionPtr);
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
         #else
         [DllImport("HHCloudKit")]
         #endif
-        private static extern void CKModifyRecordsOperation_SetPropPerRecordCompletionBlock(HandleRef ptr, PerRecordCompletionDelegate perRecordCompletionBlock);
+        private static extern void CKModifyRecordsOperation_SetPropPerRecordCompletionBlock(HandleRef ptr, PerRecordCompletionDelegate perRecordCompletionBlock, out IntPtr exceptionPtr);
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
         #else
         [DllImport("HHCloudKit")]
         #endif
-        private static extern void CKModifyRecordsOperation_SetPropPerRecordProgressBlock(HandleRef ptr, PerRecordProgressDelegate perRecordProgressBlock);
+        private static extern void CKModifyRecordsOperation_SetPropPerRecordProgressBlock(HandleRef ptr, PerRecordProgressDelegate perRecordProgressBlock, out IntPtr exceptionPtr);
         
         #endregion
 
@@ -141,9 +145,18 @@ namespace HovelHouse.CloudKit
         #region Constructors
         
         public static CKModifyRecordsOperation init(
-        ){
+            )
+        {
             
-            IntPtr ptr = CKModifyRecordsOperation_init();
+            IntPtr ptr = CKModifyRecordsOperation_init(
+                out IntPtr exceptionPtr);
+
+            if(exceptionPtr != IntPtr.Zero)
+            {
+                var nativeException = new NSException(exceptionPtr);
+                throw new CloudKitException(nativeException, nativeException.Reason);
+            }
+
             return new CKModifyRecordsOperation(ptr);
         }
         
@@ -151,13 +164,22 @@ namespace HovelHouse.CloudKit
         public static CKModifyRecordsOperation initWithRecordsToSave(
             CKRecord[] records, 
             CKRecordID[] recordIDs
-        ){
+            )
+        {
             
             IntPtr ptr = CKModifyRecordsOperation_initWithRecordsToSave_recordIDsToDelete(
                 records == null ? null : records.Select(x => HandleRef.ToIntPtr(x.Handle)).ToArray(),
-				records == null ? 0 : records.Length,
+				records == null ? 0 : records.Length, 
                 recordIDs == null ? null : recordIDs.Select(x => HandleRef.ToIntPtr(x.Handle)).ToArray(),
-				recordIDs == null ? 0 : recordIDs.Length);
+				recordIDs == null ? 0 : recordIDs.Length, 
+                out IntPtr exceptionPtr);
+
+            if(exceptionPtr != IntPtr.Zero)
+            {
+                var nativeException = new NSException(exceptionPtr);
+                throw new CloudKitException(nativeException, nativeException.Reason);
+            }
+
             return new CKModifyRecordsOperation(ptr);
         }
         
@@ -196,7 +218,13 @@ namespace HovelHouse.CloudKit
             set
             {
                 CKModifyRecordsOperation_SetPropRecordsToSave(Handle, value == null ? null : value.Select(x => HandleRef.ToIntPtr(x.Handle)).ToArray(),
-				value == null ? 0 : value.Length);
+				value == null ? 0 : value.Length, out IntPtr exceptionPtr);
+                
+                if(exceptionPtr != IntPtr.Zero)
+                {
+                    var nativeException = new NSException(exceptionPtr);
+                    throw new CloudKitException(nativeException, nativeException.Reason);
+                }
             }
         }
 
@@ -225,7 +253,13 @@ namespace HovelHouse.CloudKit
             set
             {
                 CKModifyRecordsOperation_SetPropRecordIDsToDelete(Handle, value == null ? null : value.Select(x => HandleRef.ToIntPtr(x.Handle)).ToArray(),
-				value == null ? 0 : value.Length);
+				value == null ? 0 : value.Length, out IntPtr exceptionPtr);
+                
+                if(exceptionPtr != IntPtr.Zero)
+                {
+                    var nativeException = new NSException(exceptionPtr);
+                    throw new CloudKitException(nativeException, nativeException.Reason);
+                }
             }
         }
 
@@ -239,7 +273,7 @@ namespace HovelHouse.CloudKit
             }
             set
             {
-                CKModifyRecordsOperation_SetPropSavePolicy(Handle, (long) value);
+                CKModifyRecordsOperation_SetPropSavePolicy(Handle, (long) value, out IntPtr exceptionPtr);
             }
         }
         
@@ -252,7 +286,7 @@ namespace HovelHouse.CloudKit
             }
             set
             {
-                CKModifyRecordsOperation_SetPropAtomic(Handle, value);
+                CKModifyRecordsOperation_SetPropAtomic(Handle, value, out IntPtr exceptionPtr);
             }
         }
         
@@ -275,7 +309,13 @@ namespace HovelHouse.CloudKit
                 {
                     ModifyRecordsCompletionBlockCallbacks[myPtr] = value;
                 }
-                CKModifyRecordsOperation_SetPropModifyRecordsCompletionBlock(Handle, ModifyRecordsCompletionBlockCallback);
+                CKModifyRecordsOperation_SetPropModifyRecordsCompletionBlock(Handle, ModifyRecordsCompletionBlockCallback, out IntPtr exceptionPtr);
+
+                if(exceptionPtr != IntPtr.Zero)
+                {
+                    var nativeException = new NSException(exceptionPtr);
+                    throw new CloudKitException(nativeException, nativeException.Reason);
+                }
             }
         }
 
@@ -316,7 +356,13 @@ namespace HovelHouse.CloudKit
                 {
                     PerRecordCompletionBlockCallbacks[myPtr] = value;
                 }
-                CKModifyRecordsOperation_SetPropPerRecordCompletionBlock(Handle, PerRecordCompletionBlockCallback);
+                CKModifyRecordsOperation_SetPropPerRecordCompletionBlock(Handle, PerRecordCompletionBlockCallback, out IntPtr exceptionPtr);
+
+                if(exceptionPtr != IntPtr.Zero)
+                {
+                    var nativeException = new NSException(exceptionPtr);
+                    throw new CloudKitException(nativeException, nativeException.Reason);
+                }
             }
         }
 
@@ -354,7 +400,13 @@ namespace HovelHouse.CloudKit
                 {
                     PerRecordProgressBlockCallbacks[myPtr] = value;
                 }
-                CKModifyRecordsOperation_SetPropPerRecordProgressBlock(Handle, PerRecordProgressBlockCallback);
+                CKModifyRecordsOperation_SetPropPerRecordProgressBlock(Handle, PerRecordProgressBlockCallback, out IntPtr exceptionPtr);
+
+                if(exceptionPtr != IntPtr.Zero)
+                {
+                    var nativeException = new NSException(exceptionPtr);
+                    throw new CloudKitException(nativeException, nativeException.Reason);
+                }
             }
         }
 

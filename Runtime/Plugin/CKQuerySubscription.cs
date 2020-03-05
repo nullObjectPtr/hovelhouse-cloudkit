@@ -34,7 +34,9 @@ namespace HovelHouse.CloudKit
         private static extern IntPtr CKQuerySubscription_initWithRecordType_predicate_options(
             string recordType, 
             IntPtr predicate, 
-            long querySubscriptionOptions);
+            long querySubscriptionOptions, 
+            out IntPtr exceptionPtr
+            );
         
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
@@ -45,7 +47,9 @@ namespace HovelHouse.CloudKit
             string recordType, 
             IntPtr predicate, 
             string subscriptionID, 
-            long querySubscriptionOptions);
+            long querySubscriptionOptions, 
+            out IntPtr exceptionPtr
+            );
         
 
         // Instance Methods
@@ -88,7 +92,7 @@ namespace HovelHouse.CloudKit
         #else
         [DllImport("HHCloudKit")]
         #endif
-        private static extern void CKQuerySubscription_SetPropZoneID(HandleRef ptr, IntPtr zoneID);
+        private static extern void CKQuerySubscription_SetPropZoneID(HandleRef ptr, IntPtr zoneID, out IntPtr exceptionPtr);
         
         #endregion
 
@@ -104,16 +108,25 @@ namespace HovelHouse.CloudKit
             string recordType, 
             NSPredicate predicate, 
             CKQuerySubscriptionOptions querySubscriptionOptions
-        ){
+            )
+        {
             if(recordType == null)
                 throw new ArgumentNullException(nameof(recordType));
             if(predicate == null)
                 throw new ArgumentNullException(nameof(predicate));
             
             IntPtr ptr = CKQuerySubscription_initWithRecordType_predicate_options(
-                recordType,
-                predicate != null ? HandleRef.ToIntPtr(predicate.Handle) : IntPtr.Zero,
-                (long) querySubscriptionOptions);
+                recordType, 
+                predicate != null ? HandleRef.ToIntPtr(predicate.Handle) : IntPtr.Zero, 
+                (long) querySubscriptionOptions, 
+                out IntPtr exceptionPtr);
+
+            if(exceptionPtr != IntPtr.Zero)
+            {
+                var nativeException = new NSException(exceptionPtr);
+                throw new CloudKitException(nativeException, nativeException.Reason);
+            }
+
             return new CKQuerySubscription(ptr);
         }
         
@@ -123,7 +136,8 @@ namespace HovelHouse.CloudKit
             NSPredicate predicate, 
             string subscriptionID, 
             CKQuerySubscriptionOptions querySubscriptionOptions
-        ){
+            )
+        {
             if(recordType == null)
                 throw new ArgumentNullException(nameof(recordType));
             if(predicate == null)
@@ -132,10 +146,18 @@ namespace HovelHouse.CloudKit
                 throw new ArgumentNullException(nameof(subscriptionID));
             
             IntPtr ptr = CKQuerySubscription_initWithRecordType_predicate_subscriptionID_options(
-                recordType,
-                predicate != null ? HandleRef.ToIntPtr(predicate.Handle) : IntPtr.Zero,
-                subscriptionID,
-                (long) querySubscriptionOptions);
+                recordType, 
+                predicate != null ? HandleRef.ToIntPtr(predicate.Handle) : IntPtr.Zero, 
+                subscriptionID, 
+                (long) querySubscriptionOptions, 
+                out IntPtr exceptionPtr);
+
+            if(exceptionPtr != IntPtr.Zero)
+            {
+                var nativeException = new NSException(exceptionPtr);
+                throw new CloudKitException(nativeException, nativeException.Reason);
+            }
+
             return new CKQuerySubscription(ptr);
         }
         
@@ -186,7 +208,7 @@ namespace HovelHouse.CloudKit
             }
             set
             {
-                CKQuerySubscription_SetPropZoneID(Handle, value != null ? HandleRef.ToIntPtr(value.Handle) : IntPtr.Zero);
+                CKQuerySubscription_SetPropZoneID(Handle, value != null ? HandleRef.ToIntPtr(value.Handle) : IntPtr.Zero, out IntPtr exceptionPtr);
             }
         }
         

@@ -32,7 +32,9 @@ namespace HovelHouse.CloudKit
         [DllImport("HHCloudKit")]
         #endif
         private static extern IntPtr CKLocationSortDescriptor_initWithCoder(
-            IntPtr aDecoder);
+            IntPtr aDecoder, 
+            out IntPtr exceptionPtr
+            );
         
 
         // Instance Methods
@@ -54,12 +56,21 @@ namespace HovelHouse.CloudKit
         
         public static CKLocationSortDescriptor initWithCoder(
             NSCoder aDecoder
-        ){
+            )
+        {
             if(aDecoder == null)
                 throw new ArgumentNullException(nameof(aDecoder));
             
             IntPtr ptr = CKLocationSortDescriptor_initWithCoder(
-                aDecoder != null ? HandleRef.ToIntPtr(aDecoder.Handle) : IntPtr.Zero);
+                aDecoder != null ? HandleRef.ToIntPtr(aDecoder.Handle) : IntPtr.Zero, 
+                out IntPtr exceptionPtr);
+
+            if(exceptionPtr != IntPtr.Zero)
+            {
+                var nativeException = new NSException(exceptionPtr);
+                throw new CloudKitException(nativeException, nativeException.Reason);
+            }
+
             return new CKLocationSortDescriptor(ptr);
         }
         

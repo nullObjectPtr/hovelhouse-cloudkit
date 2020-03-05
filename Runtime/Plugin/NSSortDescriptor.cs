@@ -32,7 +32,9 @@ namespace HovelHouse.CloudKit
         [DllImport("HHCloudKit")]
         #endif
         private static extern IntPtr NSSortDescriptor_initWithCoder(
-            IntPtr coder);
+            IntPtr coder, 
+            out IntPtr exceptionPtr
+            );
         
 
         // Instance Methods
@@ -45,8 +47,8 @@ namespace HovelHouse.CloudKit
         [DllImport("HHCloudKit")]
         #endif
         private static extern void NSSortDescriptor_allowEvaluation(
-            HandleRef ptr);
-        
+            HandleRef ptr, 
+            out IntPtr exceptionPtr);
         
 
         // Properties
@@ -77,12 +79,21 @@ namespace HovelHouse.CloudKit
         
         public static NSSortDescriptor initWithCoder(
             NSCoder coder
-        ){
+            )
+        {
             if(coder == null)
                 throw new ArgumentNullException(nameof(coder));
             
             IntPtr ptr = NSSortDescriptor_initWithCoder(
-                coder != null ? HandleRef.ToIntPtr(coder.Handle) : IntPtr.Zero);
+                coder != null ? HandleRef.ToIntPtr(coder.Handle) : IntPtr.Zero, 
+                out IntPtr exceptionPtr);
+
+            if(exceptionPtr != IntPtr.Zero)
+            {
+                var nativeException = new NSException(exceptionPtr);
+                throw new CloudKitException(nativeException, nativeException.Reason);
+            }
+
             return new NSSortDescriptor(ptr);
         }
         
@@ -95,11 +106,15 @@ namespace HovelHouse.CloudKit
         
         
         public void AllowEvaluation()
-        {
-                            
-            ;
+        { 
             NSSortDescriptor_allowEvaluation(
-                Handle);
+                Handle, out IntPtr exceptionPtr);
+
+            if(exceptionPtr != IntPtr.Zero)
+            {
+                var nativeException = new NSException(exceptionPtr);
+                throw new CloudKitException(nativeException, nativeException.Reason);
+            }
             
         }
         

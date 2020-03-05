@@ -29,7 +29,8 @@ namespace HovelHouse.CloudKit
         [DllImport("HHCloudKit")]
         #endif
         private static extern IntPtr NSURL_URLWithString(
-            string URLString);
+            string URLString,
+            out IntPtr exceptionPtr);
         
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
@@ -37,7 +38,8 @@ namespace HovelHouse.CloudKit
         [DllImport("HHCloudKit")]
         #endif
         private static extern IntPtr NSURL_fileURLWithPath(
-            string path);
+            string path,
+            out IntPtr exceptionPtr);
         
 
         // Constructors
@@ -63,25 +65,49 @@ namespace HovelHouse.CloudKit
         
         #region Class Methods
         
+        
         public static NSURL URLWithString(
             string URLString)
-        {
+        { 
             if(URLString == null)
                 throw new ArgumentNullException(nameof(URLString));
             
-            var val = NSURL_URLWithString(URLString);
+            var val = NSURL_URLWithString(
+                URLString, 
+                out IntPtr exceptionPtr);
+
+            if(exceptionPtr != IntPtr.Zero)
+            {
+                var nativeException = new NSException(exceptionPtr);
+                throw new CloudKitException(nativeException, nativeException.Reason);
+            }
+            
             return val == IntPtr.Zero ? null : new NSURL(val);
         }
         
-        public static NSURL fileURLWithPath(
+
+        
+        
+        public static NSURL FileURLWithPath(
             string path)
-        {
+        { 
             if(path == null)
                 throw new ArgumentNullException(nameof(path));
             
-            var val = NSURL_fileURLWithPath(path);
+            var val = NSURL_fileURLWithPath(
+                path, 
+                out IntPtr exceptionPtr);
+
+            if(exceptionPtr != IntPtr.Zero)
+            {
+                var nativeException = new NSException(exceptionPtr);
+                throw new CloudKitException(nativeException, nativeException.Reason);
+            }
+            
             return val == IntPtr.Zero ? null : new NSURL(val);
         }
+        
+
         
         #endregion
 

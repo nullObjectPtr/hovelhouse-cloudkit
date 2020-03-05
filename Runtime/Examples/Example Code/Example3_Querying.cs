@@ -18,7 +18,7 @@ public class Example3_Querying : MonoBehaviour
     private void Run()
     {
         Debug.Log("Example 3 - Querying");
-        database = CKContainer.defaultContainer().PrivateCloudDatabase;
+        database = CKContainer.DefaultContainer().PrivateCloudDatabase;
 
         // We need a bunch of records to search through
         names = new String[] {
@@ -95,7 +95,7 @@ public class Example3_Querying : MonoBehaviour
         // like regular expressions.
         // See https://nshipster.com/nspredicate/ for a quick intro to the kinds
         // of queries you can run. Were just going to do a simple key,value search
-        CKQuery query = CKQuery.initWithRecordType("Person", NSPredicate.predicateWithFormat(queryStr));
+        CKQuery query = CKQuery.initWithRecordType("Person", NSPredicate.PredicateWithFormat(queryStr));
 
         // The second argument here is the container to search in. Unless you
         // are using custom containers, you'll want to pass null for the

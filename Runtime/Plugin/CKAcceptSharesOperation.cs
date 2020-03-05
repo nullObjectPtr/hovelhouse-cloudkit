@@ -31,7 +31,9 @@ namespace HovelHouse.CloudKit
         #else
         [DllImport("HHCloudKit")]
         #endif
-        private static extern IntPtr CKAcceptSharesOperation_init();
+        private static extern IntPtr CKAcceptSharesOperation_init(
+            out IntPtr exceptionPtr
+            );
         
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
@@ -41,7 +43,9 @@ namespace HovelHouse.CloudKit
         private static extern IntPtr CKAcceptSharesOperation_initWithShareMetadatas(
             [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.SysInt, SizeParamIndex = 2)]
             IntPtr[] shareMetadatas,
-			int shareMetadatasCount);
+			int shareMetadatasCount, 
+            out IntPtr exceptionPtr
+            );
         
 
         // Instance Methods
@@ -64,19 +68,19 @@ namespace HovelHouse.CloudKit
         [DllImport("HHCloudKit")]
         #endif
         private static extern void CKAcceptSharesOperation_SetPropShareMetadatas(HandleRef ptr, IntPtr[] shareMetadatas,
-			int shareMetadatasCount);
+			int shareMetadatasCount, out IntPtr exceptionPtr);
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
         #else
         [DllImport("HHCloudKit")]
         #endif
-        private static extern void CKAcceptSharesOperation_SetPropAcceptSharesHandler(HandleRef ptr, AcceptSharesCompletionDelegate acceptSharesHandler);
+        private static extern void CKAcceptSharesOperation_SetPropAcceptSharesHandler(HandleRef ptr, AcceptSharesCompletionDelegate acceptSharesHandler, out IntPtr exceptionPtr);
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
         #else
         [DllImport("HHCloudKit")]
         #endif
-        private static extern void CKAcceptSharesOperation_SetPropPerShareCompletionHandler(HandleRef ptr, PerShareCompletionDelegate perShareCompletionHandler);
+        private static extern void CKAcceptSharesOperation_SetPropPerShareCompletionHandler(HandleRef ptr, PerShareCompletionDelegate perShareCompletionHandler, out IntPtr exceptionPtr);
         
         #endregion
 
@@ -89,22 +93,40 @@ namespace HovelHouse.CloudKit
         #region Constructors
         
         public static CKAcceptSharesOperation init(
-        ){
+            )
+        {
             
-            IntPtr ptr = CKAcceptSharesOperation_init();
+            IntPtr ptr = CKAcceptSharesOperation_init(
+                out IntPtr exceptionPtr);
+
+            if(exceptionPtr != IntPtr.Zero)
+            {
+                var nativeException = new NSException(exceptionPtr);
+                throw new CloudKitException(nativeException, nativeException.Reason);
+            }
+
             return new CKAcceptSharesOperation(ptr);
         }
         
         
         public static CKAcceptSharesOperation initWithShareMetadatas(
             CKShareMetadata[] shareMetadatas
-        ){
+            )
+        {
             if(shareMetadatas == null)
                 throw new ArgumentNullException(nameof(shareMetadatas));
             
             IntPtr ptr = CKAcceptSharesOperation_initWithShareMetadatas(
                 shareMetadatas == null ? null : shareMetadatas.Select(x => HandleRef.ToIntPtr(x.Handle)).ToArray(),
-				shareMetadatas == null ? 0 : shareMetadatas.Length);
+				shareMetadatas == null ? 0 : shareMetadatas.Length, 
+                out IntPtr exceptionPtr);
+
+            if(exceptionPtr != IntPtr.Zero)
+            {
+                var nativeException = new NSException(exceptionPtr);
+                throw new CloudKitException(nativeException, nativeException.Reason);
+            }
+
             return new CKAcceptSharesOperation(ptr);
         }
         
@@ -143,7 +165,13 @@ namespace HovelHouse.CloudKit
             set
             {
                 CKAcceptSharesOperation_SetPropShareMetadatas(Handle, value == null ? null : value.Select(x => HandleRef.ToIntPtr(x.Handle)).ToArray(),
-				value == null ? 0 : value.Length);
+				value == null ? 0 : value.Length, out IntPtr exceptionPtr);
+                
+                if(exceptionPtr != IntPtr.Zero)
+                {
+                    var nativeException = new NSException(exceptionPtr);
+                    throw new CloudKitException(nativeException, nativeException.Reason);
+                }
             }
         }
 
@@ -167,7 +195,13 @@ namespace HovelHouse.CloudKit
                 {
                     AcceptSharesHandlerCallbacks[myPtr] = value;
                 }
-                CKAcceptSharesOperation_SetPropAcceptSharesHandler(Handle, AcceptSharesHandlerCallback);
+                CKAcceptSharesOperation_SetPropAcceptSharesHandler(Handle, AcceptSharesHandlerCallback, out IntPtr exceptionPtr);
+
+                if(exceptionPtr != IntPtr.Zero)
+                {
+                    var nativeException = new NSException(exceptionPtr);
+                    throw new CloudKitException(nativeException, nativeException.Reason);
+                }
             }
         }
 
@@ -204,7 +238,13 @@ namespace HovelHouse.CloudKit
                 {
                     PerShareCompletionHandlerCallbacks[myPtr] = value;
                 }
-                CKAcceptSharesOperation_SetPropPerShareCompletionHandler(Handle, PerShareCompletionHandlerCallback);
+                CKAcceptSharesOperation_SetPropPerShareCompletionHandler(Handle, PerShareCompletionHandlerCallback, out IntPtr exceptionPtr);
+
+                if(exceptionPtr != IntPtr.Zero)
+                {
+                    var nativeException = new NSException(exceptionPtr);
+                    throw new CloudKitException(nativeException, nativeException.Reason);
+                }
             }
         }
 

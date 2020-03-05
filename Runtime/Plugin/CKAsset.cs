@@ -32,7 +32,9 @@ namespace HovelHouse.CloudKit
         [DllImport("HHCloudKit")]
         #endif
         private static extern IntPtr CKAsset_initWithFileURL(
-            IntPtr fileURL);
+            IntPtr fileURL, 
+            out IntPtr exceptionPtr
+            );
         
 
         // Instance Methods
@@ -61,12 +63,21 @@ namespace HovelHouse.CloudKit
         
         public static CKAsset initWithFileURL(
             NSURL fileURL
-        ){
+            )
+        {
             if(fileURL == null)
                 throw new ArgumentNullException(nameof(fileURL));
             
             IntPtr ptr = CKAsset_initWithFileURL(
-                fileURL != null ? HandleRef.ToIntPtr(fileURL.Handle) : IntPtr.Zero);
+                fileURL != null ? HandleRef.ToIntPtr(fileURL.Handle) : IntPtr.Zero, 
+                out IntPtr exceptionPtr);
+
+            if(exceptionPtr != IntPtr.Zero)
+            {
+                var nativeException = new NSException(exceptionPtr);
+                throw new CloudKitException(nativeException, nativeException.Reason);
+            }
+
             return new CKAsset(ptr);
         }
         

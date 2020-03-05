@@ -31,7 +31,9 @@ namespace HovelHouse.CloudKit
         #else
         [DllImport("HHCloudKit")]
         #endif
-        private static extern IntPtr CKFetchRecordZoneChangesOperation_init();
+        private static extern IntPtr CKFetchRecordZoneChangesOperation_init(
+            out IntPtr exceptionPtr
+            );
         
 
         // Instance Methods
@@ -45,7 +47,7 @@ namespace HovelHouse.CloudKit
         #else
         [DllImport("HHCloudKit")]
         #endif
-        private static extern void CKFetchRecordZoneChangesOperation_SetPropRecordWithIDWasDeletedHandler(HandleRef ptr, RecordWithIDWasDeletedDelegate recordWithIDWasDeletedHandler);
+        private static extern void CKFetchRecordZoneChangesOperation_SetPropRecordWithIDWasDeletedHandler(HandleRef ptr, RecordWithIDWasDeletedDelegate recordWithIDWasDeletedHandler, out IntPtr exceptionPtr);
         
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
@@ -59,7 +61,7 @@ namespace HovelHouse.CloudKit
         #else
         [DllImport("HHCloudKit")]
         #endif
-        private static extern void CKFetchRecordZoneChangesOperation_SetPropFetchAllChanges(HandleRef ptr, bool fetchAllChanges);
+        private static extern void CKFetchRecordZoneChangesOperation_SetPropFetchAllChanges(HandleRef ptr, bool fetchAllChanges, out IntPtr exceptionPtr);
         
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
@@ -74,7 +76,7 @@ namespace HovelHouse.CloudKit
         [DllImport("HHCloudKit")]
         #endif
         private static extern void CKFetchRecordZoneChangesOperation_SetPropRecordZoneIDs(HandleRef ptr, IntPtr[] recordZoneIDs,
-			int recordZoneIDsCount);
+			int recordZoneIDsCount, out IntPtr exceptionPtr);
         
         #endregion
 
@@ -87,9 +89,18 @@ namespace HovelHouse.CloudKit
         #region Constructors
         
         public static CKFetchRecordZoneChangesOperation init(
-        ){
+            )
+        {
             
-            IntPtr ptr = CKFetchRecordZoneChangesOperation_init();
+            IntPtr ptr = CKFetchRecordZoneChangesOperation_init(
+                out IntPtr exceptionPtr);
+
+            if(exceptionPtr != IntPtr.Zero)
+            {
+                var nativeException = new NSException(exceptionPtr);
+                throw new CloudKitException(nativeException, nativeException.Reason);
+            }
+
             return new CKFetchRecordZoneChangesOperation(ptr);
         }
         
@@ -123,7 +134,13 @@ namespace HovelHouse.CloudKit
                 {
                     RecordWithIDWasDeletedHandlerCallbacks[myPtr] = value;
                 }
-                CKFetchRecordZoneChangesOperation_SetPropRecordWithIDWasDeletedHandler(Handle, RecordWithIDWasDeletedHandlerCallback);
+                CKFetchRecordZoneChangesOperation_SetPropRecordWithIDWasDeletedHandler(Handle, RecordWithIDWasDeletedHandlerCallback, out IntPtr exceptionPtr);
+
+                if(exceptionPtr != IntPtr.Zero)
+                {
+                    var nativeException = new NSException(exceptionPtr);
+                    throw new CloudKitException(nativeException, nativeException.Reason);
+                }
             }
         }
 
@@ -151,7 +168,7 @@ namespace HovelHouse.CloudKit
             }
             set
             {
-                CKFetchRecordZoneChangesOperation_SetPropFetchAllChanges(Handle, value);
+                CKFetchRecordZoneChangesOperation_SetPropFetchAllChanges(Handle, value, out IntPtr exceptionPtr);
             }
         }
         
@@ -179,7 +196,13 @@ namespace HovelHouse.CloudKit
             set
             {
                 CKFetchRecordZoneChangesOperation_SetPropRecordZoneIDs(Handle, value == null ? null : value.Select(x => HandleRef.ToIntPtr(x.Handle)).ToArray(),
-				value == null ? 0 : value.Length);
+				value == null ? 0 : value.Length, out IntPtr exceptionPtr);
+                
+                if(exceptionPtr != IntPtr.Zero)
+                {
+                    var nativeException = new NSException(exceptionPtr);
+                    throw new CloudKitException(nativeException, nativeException.Reason);
+                }
             }
         }
 

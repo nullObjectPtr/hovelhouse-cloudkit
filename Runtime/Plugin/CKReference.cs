@@ -33,7 +33,9 @@ namespace HovelHouse.CloudKit
         #endif
         private static extern IntPtr CKReference_initWithRecordID_action(
             IntPtr recordID, 
-            long action);
+            long action, 
+            out IntPtr exceptionPtr
+            );
         
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
@@ -42,7 +44,9 @@ namespace HovelHouse.CloudKit
         #endif
         private static extern IntPtr CKReference_initWithRecord_action(
             IntPtr record, 
-            long action);
+            long action, 
+            out IntPtr exceptionPtr
+            );
         
 
         // Instance Methods
@@ -79,13 +83,22 @@ namespace HovelHouse.CloudKit
         public static CKReference initWithRecordID(
             CKRecordID recordID, 
             CKReferenceAction action
-        ){
+            )
+        {
             if(recordID == null)
                 throw new ArgumentNullException(nameof(recordID));
             
             IntPtr ptr = CKReference_initWithRecordID_action(
-                recordID != null ? HandleRef.ToIntPtr(recordID.Handle) : IntPtr.Zero,
-                (long) action);
+                recordID != null ? HandleRef.ToIntPtr(recordID.Handle) : IntPtr.Zero, 
+                (long) action, 
+                out IntPtr exceptionPtr);
+
+            if(exceptionPtr != IntPtr.Zero)
+            {
+                var nativeException = new NSException(exceptionPtr);
+                throw new CloudKitException(nativeException, nativeException.Reason);
+            }
+
             return new CKReference(ptr);
         }
         
@@ -93,13 +106,22 @@ namespace HovelHouse.CloudKit
         public static CKReference initWithRecord(
             CKRecord record, 
             CKReferenceAction action
-        ){
+            )
+        {
             if(record == null)
                 throw new ArgumentNullException(nameof(record));
             
             IntPtr ptr = CKReference_initWithRecord_action(
-                record != null ? HandleRef.ToIntPtr(record.Handle) : IntPtr.Zero,
-                (long) action);
+                record != null ? HandleRef.ToIntPtr(record.Handle) : IntPtr.Zero, 
+                (long) action, 
+                out IntPtr exceptionPtr);
+
+            if(exceptionPtr != IntPtr.Zero)
+            {
+                var nativeException = new NSException(exceptionPtr);
+                throw new CloudKitException(nativeException, nativeException.Reason);
+            }
+
             return new CKReference(ptr);
         }
         

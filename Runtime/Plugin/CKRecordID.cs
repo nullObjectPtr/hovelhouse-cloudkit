@@ -32,7 +32,9 @@ namespace HovelHouse.CloudKit
         [DllImport("HHCloudKit")]
         #endif
         private static extern IntPtr CKRecordID_initWithRecordName(
-            string recordName);
+            string recordName, 
+            out IntPtr exceptionPtr
+            );
         
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
@@ -41,7 +43,9 @@ namespace HovelHouse.CloudKit
         #endif
         private static extern IntPtr CKRecordID_initWithRecordName_zoneID(
             string recordName, 
-            IntPtr zoneID);
+            IntPtr zoneID, 
+            out IntPtr exceptionPtr
+            );
         
 
         // Instance Methods
@@ -77,12 +81,21 @@ namespace HovelHouse.CloudKit
         
         public static CKRecordID initWithRecordName(
             string recordName
-        ){
+            )
+        {
             if(recordName == null)
                 throw new ArgumentNullException(nameof(recordName));
             
             IntPtr ptr = CKRecordID_initWithRecordName(
-                recordName);
+                recordName, 
+                out IntPtr exceptionPtr);
+
+            if(exceptionPtr != IntPtr.Zero)
+            {
+                var nativeException = new NSException(exceptionPtr);
+                throw new CloudKitException(nativeException, nativeException.Reason);
+            }
+
             return new CKRecordID(ptr);
         }
         
@@ -90,15 +103,24 @@ namespace HovelHouse.CloudKit
         public static CKRecordID initWithRecordName(
             string recordName, 
             CKRecordZoneID zoneID
-        ){
+            )
+        {
             if(recordName == null)
                 throw new ArgumentNullException(nameof(recordName));
             if(zoneID == null)
                 throw new ArgumentNullException(nameof(zoneID));
             
             IntPtr ptr = CKRecordID_initWithRecordName_zoneID(
-                recordName,
-                zoneID != null ? HandleRef.ToIntPtr(zoneID.Handle) : IntPtr.Zero);
+                recordName, 
+                zoneID != null ? HandleRef.ToIntPtr(zoneID.Handle) : IntPtr.Zero, 
+                out IntPtr exceptionPtr);
+
+            if(exceptionPtr != IntPtr.Zero)
+            {
+                var nativeException = new NSException(exceptionPtr);
+                throw new CloudKitException(nativeException, nativeException.Reason);
+            }
+
             return new CKRecordID(ptr);
         }
         

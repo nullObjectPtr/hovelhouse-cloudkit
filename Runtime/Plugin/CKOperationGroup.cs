@@ -31,7 +31,9 @@ namespace HovelHouse.CloudKit
         #else
         [DllImport("HHCloudKit")]
         #endif
-        private static extern IntPtr CKOperationGroup_init();
+        private static extern IntPtr CKOperationGroup_init(
+            out IntPtr exceptionPtr
+            );
         
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
@@ -39,7 +41,9 @@ namespace HovelHouse.CloudKit
         [DllImport("HHCloudKit")]
         #endif
         private static extern IntPtr CKOperationGroup_initWithCoder(
-            IntPtr aDecoder);
+            IntPtr aDecoder, 
+            out IntPtr exceptionPtr
+            );
         
 
         // Instance Methods
@@ -61,7 +65,7 @@ namespace HovelHouse.CloudKit
         #else
         [DllImport("HHCloudKit")]
         #endif
-        private static extern void CKOperationGroup_SetPropDefaultConfiguration(HandleRef ptr, IntPtr defaultConfiguration);
+        private static extern void CKOperationGroup_SetPropDefaultConfiguration(HandleRef ptr, IntPtr defaultConfiguration, out IntPtr exceptionPtr);
         
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
@@ -75,7 +79,7 @@ namespace HovelHouse.CloudKit
         #else
         [DllImport("HHCloudKit")]
         #endif
-        private static extern void CKOperationGroup_SetPropExpectedReceiveSize(HandleRef ptr, long expectedReceiveSize);
+        private static extern void CKOperationGroup_SetPropExpectedReceiveSize(HandleRef ptr, long expectedReceiveSize, out IntPtr exceptionPtr);
         
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
@@ -89,7 +93,7 @@ namespace HovelHouse.CloudKit
         #else
         [DllImport("HHCloudKit")]
         #endif
-        private static extern void CKOperationGroup_SetPropExpectedSendSize(HandleRef ptr, long expectedSendSize);
+        private static extern void CKOperationGroup_SetPropExpectedSendSize(HandleRef ptr, long expectedSendSize, out IntPtr exceptionPtr);
         
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
@@ -103,7 +107,7 @@ namespace HovelHouse.CloudKit
         #else
         [DllImport("HHCloudKit")]
         #endif
-        private static extern void CKOperationGroup_SetPropName(HandleRef ptr, string name);
+        private static extern void CKOperationGroup_SetPropName(HandleRef ptr, string name, out IntPtr exceptionPtr);
         
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
@@ -124,7 +128,7 @@ namespace HovelHouse.CloudKit
         #else
         [DllImport("HHCloudKit")]
         #endif
-        private static extern void CKOperationGroup_SetPropQuantity(HandleRef ptr, ulong quantity);
+        private static extern void CKOperationGroup_SetPropQuantity(HandleRef ptr, ulong quantity, out IntPtr exceptionPtr);
         
         #endregion
 
@@ -137,21 +141,39 @@ namespace HovelHouse.CloudKit
         #region Constructors
         
         public static CKOperationGroup init(
-        ){
+            )
+        {
             
-            IntPtr ptr = CKOperationGroup_init();
+            IntPtr ptr = CKOperationGroup_init(
+                out IntPtr exceptionPtr);
+
+            if(exceptionPtr != IntPtr.Zero)
+            {
+                var nativeException = new NSException(exceptionPtr);
+                throw new CloudKitException(nativeException, nativeException.Reason);
+            }
+
             return new CKOperationGroup(ptr);
         }
         
         
         public static CKOperationGroup initWithCoder(
             NSCoder aDecoder
-        ){
+            )
+        {
             if(aDecoder == null)
                 throw new ArgumentNullException(nameof(aDecoder));
             
             IntPtr ptr = CKOperationGroup_initWithCoder(
-                aDecoder != null ? HandleRef.ToIntPtr(aDecoder.Handle) : IntPtr.Zero);
+                aDecoder != null ? HandleRef.ToIntPtr(aDecoder.Handle) : IntPtr.Zero, 
+                out IntPtr exceptionPtr);
+
+            if(exceptionPtr != IntPtr.Zero)
+            {
+                var nativeException = new NSException(exceptionPtr);
+                throw new CloudKitException(nativeException, nativeException.Reason);
+            }
+
             return new CKOperationGroup(ptr);
         }
         
@@ -175,7 +197,7 @@ namespace HovelHouse.CloudKit
             }
             set
             {
-                CKOperationGroup_SetPropDefaultConfiguration(Handle, value != null ? HandleRef.ToIntPtr(value.Handle) : IntPtr.Zero);
+                CKOperationGroup_SetPropDefaultConfiguration(Handle, value != null ? HandleRef.ToIntPtr(value.Handle) : IntPtr.Zero, out IntPtr exceptionPtr);
             }
         }
         
@@ -188,7 +210,7 @@ namespace HovelHouse.CloudKit
             }
             set
             {
-                CKOperationGroup_SetPropExpectedReceiveSize(Handle, (long) value);
+                CKOperationGroup_SetPropExpectedReceiveSize(Handle, (long) value, out IntPtr exceptionPtr);
             }
         }
         
@@ -201,7 +223,7 @@ namespace HovelHouse.CloudKit
             }
             set
             {
-                CKOperationGroup_SetPropExpectedSendSize(Handle, (long) value);
+                CKOperationGroup_SetPropExpectedSendSize(Handle, (long) value, out IntPtr exceptionPtr);
             }
         }
         
@@ -214,7 +236,7 @@ namespace HovelHouse.CloudKit
             }
             set
             {
-                CKOperationGroup_SetPropName(Handle, value);
+                CKOperationGroup_SetPropName(Handle, value, out IntPtr exceptionPtr);
             }
         }
         
@@ -236,7 +258,7 @@ namespace HovelHouse.CloudKit
             }
             set
             {
-                CKOperationGroup_SetPropQuantity(Handle, value);
+                CKOperationGroup_SetPropQuantity(Handle, value, out IntPtr exceptionPtr);
             }
         }
         
