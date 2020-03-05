@@ -37,9 +37,9 @@ namespace HovelHouse.CloudKit
         [DllImport("HHCloudKit")]
         #endif
         private static extern void CKDatabase_addOperation(
-            HandleRef ptr,
-            IntPtr operation);
-        
+            HandleRef ptr, 
+            IntPtr operation,
+            out IntPtr exceptionPtr);
         
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
@@ -47,10 +47,10 @@ namespace HovelHouse.CloudKit
         [DllImport("HHCloudKit")]
         #endif
         private static extern void CKDatabase_fetchRecordWithID_completionHandler(
-            HandleRef ptr,
+            HandleRef ptr, 
             IntPtr recordID,
-            ulong invocationId, CKRecordDelegate completionHandler);
-        
+            ulong invocationId, CKRecordDelegate completionHandler,
+            out IntPtr exceptionPtr);
         
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
@@ -58,10 +58,10 @@ namespace HovelHouse.CloudKit
         [DllImport("HHCloudKit")]
         #endif
         private static extern void CKDatabase_saveRecord_completionHandler(
-            HandleRef ptr,
+            HandleRef ptr, 
             IntPtr record,
-            ulong invocationId, CKRecordDelegate completionHandler);
-        
+            ulong invocationId, CKRecordDelegate completionHandler,
+            out IntPtr exceptionPtr);
         
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
@@ -69,10 +69,10 @@ namespace HovelHouse.CloudKit
         [DllImport("HHCloudKit")]
         #endif
         private static extern void CKDatabase_deleteRecordWithID_completionHandler(
-            HandleRef ptr,
+            HandleRef ptr, 
             IntPtr recordID,
-            ulong invocationId, CKRecordIDDelegate completionHandler);
-        
+            ulong invocationId, CKRecordIDDelegate completionHandler,
+            out IntPtr exceptionPtr);
         
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
@@ -80,10 +80,10 @@ namespace HovelHouse.CloudKit
         [DllImport("HHCloudKit")]
         #endif
         private static extern void CKDatabase_fetchRecordZoneWithID_completionHandler(
-            HandleRef ptr,
+            HandleRef ptr, 
             IntPtr zoneID,
-            ulong invocationId, CKRecordZoneDelegate completionHandler);
-        
+            ulong invocationId, CKRecordZoneDelegate completionHandler,
+            out IntPtr exceptionPtr);
         
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
@@ -91,10 +91,10 @@ namespace HovelHouse.CloudKit
         [DllImport("HHCloudKit")]
         #endif
         private static extern void CKDatabase_saveRecordZone_completionHandler(
-            HandleRef ptr,
+            HandleRef ptr, 
             IntPtr zone,
-            ulong invocationId, CKRecordZoneDelegate completionHandler);
-        
+            ulong invocationId, CKRecordZoneDelegate completionHandler,
+            out IntPtr exceptionPtr);
         
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
@@ -102,10 +102,10 @@ namespace HovelHouse.CloudKit
         [DllImport("HHCloudKit")]
         #endif
         private static extern void CKDatabase_deleteRecordZoneWithID_completionHandler(
-            HandleRef ptr,
+            HandleRef ptr, 
             IntPtr zoneID,
-            ulong invocationId, CKRecordZoneIDDelegate completionHandler);
-        
+            ulong invocationId, CKRecordZoneIDDelegate completionHandler,
+            out IntPtr exceptionPtr);
         
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
@@ -113,10 +113,10 @@ namespace HovelHouse.CloudKit
         [DllImport("HHCloudKit")]
         #endif
         private static extern void CKDatabase_fetchSubscriptionWithID_completionHandler(
-            HandleRef ptr,
+            HandleRef ptr, 
             string subscriptionID,
-            ulong invocationId, CKSubscriptionDelegate completionHandler);
-        
+            ulong invocationId, CKSubscriptionDelegate completionHandler,
+            out IntPtr exceptionPtr);
         
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
@@ -124,10 +124,10 @@ namespace HovelHouse.CloudKit
         [DllImport("HHCloudKit")]
         #endif
         private static extern void CKDatabase_saveSubscription_completionHandler(
-            HandleRef ptr,
+            HandleRef ptr, 
             IntPtr subscription,
-            ulong invocationId, CKSubscriptionDelegate completionHandler);
-        
+            ulong invocationId, CKSubscriptionDelegate completionHandler,
+            out IntPtr exceptionPtr);
         
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
@@ -135,10 +135,10 @@ namespace HovelHouse.CloudKit
         [DllImport("HHCloudKit")]
         #endif
         private static extern void CKDatabase_deleteSubscriptionWithID_completionHandler(
-            HandleRef ptr,
+            HandleRef ptr, 
             string subscriptionID,
-            ulong invocationId, NSStringDelegate completionHandler);
-        
+            ulong invocationId, NSStringDelegate completionHandler,
+            out IntPtr exceptionPtr);
         
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
@@ -146,9 +146,9 @@ namespace HovelHouse.CloudKit
         [DllImport("HHCloudKit")]
         #endif
         private static extern void CKDatabase_fetchAllSubscriptionsWithCompletionHandler(
-            HandleRef ptr,
-            ulong invocationId, CKSubscriptionArrayDelegate completionHandler);
-        
+            HandleRef ptr, 
+            ulong invocationId, CKSubscriptionArrayDelegate completionHandler,
+            out IntPtr exceptionPtr);
         
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
@@ -156,9 +156,9 @@ namespace HovelHouse.CloudKit
         [DllImport("HHCloudKit")]
         #endif
         private static extern void CKDatabase_fetchAllRecordZonesWithCompletionHandler(
-            HandleRef ptr,
-            ulong invocationId, CKRecordZoneListDelegate completionHandler);
-        
+            HandleRef ptr, 
+            ulong invocationId, CKRecordZoneListDelegate completionHandler,
+            out IntPtr exceptionPtr);
         
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
@@ -166,11 +166,11 @@ namespace HovelHouse.CloudKit
         [DllImport("HHCloudKit")]
         #endif
         private static extern void CKDatabase_performQuery_inZoneWithID_completionHandler(
-            HandleRef ptr,
+            HandleRef ptr, 
             IntPtr query,
             IntPtr zoneID,
-            ulong invocationId, CKRecordListDelegate completionHandler);
-        
+            ulong invocationId, CKRecordListDelegate completionHandler,
+            out IntPtr exceptionPtr);
         
 
         // Properties
@@ -201,14 +201,20 @@ namespace HovelHouse.CloudKit
         
         public void AddOperation(
             CKDatabaseOperation operation)
-        {
+        { 
             if(operation == null)
                 throw new ArgumentNullException(nameof(operation));
-                            
-            ;
+            
             CKDatabase_addOperation(
-                Handle,
-                operation != null ? HandleRef.ToIntPtr(operation.Handle) : IntPtr.Zero);
+                Handle, 
+                operation != null ? HandleRef.ToIntPtr(operation.Handle) : IntPtr.Zero, 
+                out IntPtr exceptionPtr);
+
+            if(exceptionPtr != IntPtr.Zero)
+            {
+                var nativeException = new NSException(exceptionPtr);
+                throw new CloudKitException(nativeException, nativeException.Reason);
+            }
             
         }
         
@@ -218,16 +224,26 @@ namespace HovelHouse.CloudKit
         public void FetchRecordWithID(
             CKRecordID recordID, 
             Action<CKRecord,NSError> completionHandler)
-        {
+        { 
             if(recordID == null)
                 throw new ArgumentNullException(nameof(recordID));
-                            
+            
+            
             var completionHandlerCall = new InvocationRecord(Handle);
             FetchRecordWithIDCallbacks[completionHandlerCall] = completionHandler;
+            
             CKDatabase_fetchRecordWithID_completionHandler(
-                Handle,
-                recordID != null ? HandleRef.ToIntPtr(recordID.Handle) : IntPtr.Zero,
-                completionHandlerCall.id, FetchRecordWithIDCallback);
+                Handle, 
+                recordID != null ? HandleRef.ToIntPtr(recordID.Handle) : IntPtr.Zero, 
+                
+                completionHandlerCall.id, FetchRecordWithIDCallback, 
+                out IntPtr exceptionPtr);
+
+            if(exceptionPtr != IntPtr.Zero)
+            {
+                var nativeException = new NSException(exceptionPtr);
+                throw new CloudKitException(nativeException, nativeException.Reason);
+            }
             
         }
         
@@ -253,16 +269,26 @@ namespace HovelHouse.CloudKit
         public void SaveRecord(
             CKRecord record, 
             Action<CKRecord,NSError> completionHandler)
-        {
+        { 
             if(record == null)
                 throw new ArgumentNullException(nameof(record));
-                            
+            
+            
             var completionHandlerCall = new InvocationRecord(Handle);
             SaveRecordCallbacks[completionHandlerCall] = completionHandler;
+            
             CKDatabase_saveRecord_completionHandler(
-                Handle,
-                record != null ? HandleRef.ToIntPtr(record.Handle) : IntPtr.Zero,
-                completionHandlerCall.id, SaveRecordCallback);
+                Handle, 
+                record != null ? HandleRef.ToIntPtr(record.Handle) : IntPtr.Zero, 
+                
+                completionHandlerCall.id, SaveRecordCallback, 
+                out IntPtr exceptionPtr);
+
+            if(exceptionPtr != IntPtr.Zero)
+            {
+                var nativeException = new NSException(exceptionPtr);
+                throw new CloudKitException(nativeException, nativeException.Reason);
+            }
             
         }
         
@@ -288,16 +314,26 @@ namespace HovelHouse.CloudKit
         public void DeleteRecordWithID(
             CKRecordID recordID, 
             Action<CKRecordID,NSError> completionHandler)
-        {
+        { 
             if(recordID == null)
                 throw new ArgumentNullException(nameof(recordID));
-                            
+            
+            
             var completionHandlerCall = new InvocationRecord(Handle);
             DeleteRecordWithIDCallbacks[completionHandlerCall] = completionHandler;
+            
             CKDatabase_deleteRecordWithID_completionHandler(
-                Handle,
-                recordID != null ? HandleRef.ToIntPtr(recordID.Handle) : IntPtr.Zero,
-                completionHandlerCall.id, DeleteRecordWithIDCallback);
+                Handle, 
+                recordID != null ? HandleRef.ToIntPtr(recordID.Handle) : IntPtr.Zero, 
+                
+                completionHandlerCall.id, DeleteRecordWithIDCallback, 
+                out IntPtr exceptionPtr);
+
+            if(exceptionPtr != IntPtr.Zero)
+            {
+                var nativeException = new NSException(exceptionPtr);
+                throw new CloudKitException(nativeException, nativeException.Reason);
+            }
             
         }
         
@@ -323,16 +359,26 @@ namespace HovelHouse.CloudKit
         public void FetchRecordZoneWithID(
             CKRecordZoneID zoneID, 
             Action<CKRecordZone,NSError> completionHandler)
-        {
+        { 
             if(zoneID == null)
                 throw new ArgumentNullException(nameof(zoneID));
-                            
+            
+            
             var completionHandlerCall = new InvocationRecord(Handle);
             FetchRecordZoneWithIDCallbacks[completionHandlerCall] = completionHandler;
+            
             CKDatabase_fetchRecordZoneWithID_completionHandler(
-                Handle,
-                zoneID != null ? HandleRef.ToIntPtr(zoneID.Handle) : IntPtr.Zero,
-                completionHandlerCall.id, FetchRecordZoneWithIDCallback);
+                Handle, 
+                zoneID != null ? HandleRef.ToIntPtr(zoneID.Handle) : IntPtr.Zero, 
+                
+                completionHandlerCall.id, FetchRecordZoneWithIDCallback, 
+                out IntPtr exceptionPtr);
+
+            if(exceptionPtr != IntPtr.Zero)
+            {
+                var nativeException = new NSException(exceptionPtr);
+                throw new CloudKitException(nativeException, nativeException.Reason);
+            }
             
         }
         
@@ -358,16 +404,26 @@ namespace HovelHouse.CloudKit
         public void SaveRecordZone(
             CKRecordZone zone, 
             Action<CKRecordZone,NSError> completionHandler)
-        {
+        { 
             if(zone == null)
                 throw new ArgumentNullException(nameof(zone));
-                            
+            
+            
             var completionHandlerCall = new InvocationRecord(Handle);
             SaveRecordZoneCallbacks[completionHandlerCall] = completionHandler;
+            
             CKDatabase_saveRecordZone_completionHandler(
-                Handle,
-                zone != null ? HandleRef.ToIntPtr(zone.Handle) : IntPtr.Zero,
-                completionHandlerCall.id, SaveRecordZoneCallback);
+                Handle, 
+                zone != null ? HandleRef.ToIntPtr(zone.Handle) : IntPtr.Zero, 
+                
+                completionHandlerCall.id, SaveRecordZoneCallback, 
+                out IntPtr exceptionPtr);
+
+            if(exceptionPtr != IntPtr.Zero)
+            {
+                var nativeException = new NSException(exceptionPtr);
+                throw new CloudKitException(nativeException, nativeException.Reason);
+            }
             
         }
         
@@ -393,16 +449,26 @@ namespace HovelHouse.CloudKit
         public void DeleteRecordZoneWithID(
             CKRecordZoneID zoneID, 
             Action<CKRecordZoneID,NSError> completionHandler)
-        {
+        { 
             if(zoneID == null)
                 throw new ArgumentNullException(nameof(zoneID));
-                            
+            
+            
             var completionHandlerCall = new InvocationRecord(Handle);
             DeleteRecordZoneWithIDCallbacks[completionHandlerCall] = completionHandler;
+            
             CKDatabase_deleteRecordZoneWithID_completionHandler(
-                Handle,
-                zoneID != null ? HandleRef.ToIntPtr(zoneID.Handle) : IntPtr.Zero,
-                completionHandlerCall.id, DeleteRecordZoneWithIDCallback);
+                Handle, 
+                zoneID != null ? HandleRef.ToIntPtr(zoneID.Handle) : IntPtr.Zero, 
+                
+                completionHandlerCall.id, DeleteRecordZoneWithIDCallback, 
+                out IntPtr exceptionPtr);
+
+            if(exceptionPtr != IntPtr.Zero)
+            {
+                var nativeException = new NSException(exceptionPtr);
+                throw new CloudKitException(nativeException, nativeException.Reason);
+            }
             
         }
         
@@ -428,16 +494,26 @@ namespace HovelHouse.CloudKit
         public void FetchSubscriptionWithID(
             string subscriptionID, 
             Action<CKSubscription,NSError> completionHandler)
-        {
+        { 
             if(subscriptionID == null)
                 throw new ArgumentNullException(nameof(subscriptionID));
-                            
+            
+            
             var completionHandlerCall = new InvocationRecord(Handle);
             FetchSubscriptionWithIDCallbacks[completionHandlerCall] = completionHandler;
+            
             CKDatabase_fetchSubscriptionWithID_completionHandler(
-                Handle,
-                subscriptionID,
-                completionHandlerCall.id, FetchSubscriptionWithIDCallback);
+                Handle, 
+                subscriptionID, 
+                
+                completionHandlerCall.id, FetchSubscriptionWithIDCallback, 
+                out IntPtr exceptionPtr);
+
+            if(exceptionPtr != IntPtr.Zero)
+            {
+                var nativeException = new NSException(exceptionPtr);
+                throw new CloudKitException(nativeException, nativeException.Reason);
+            }
             
         }
         
@@ -463,16 +539,26 @@ namespace HovelHouse.CloudKit
         public void SaveSubscription(
             CKSubscription subscription, 
             Action<CKSubscription,NSError> completionHandler)
-        {
+        { 
             if(subscription == null)
                 throw new ArgumentNullException(nameof(subscription));
-                            
+            
+            
             var completionHandlerCall = new InvocationRecord(Handle);
             SaveSubscriptionCallbacks[completionHandlerCall] = completionHandler;
+            
             CKDatabase_saveSubscription_completionHandler(
-                Handle,
-                subscription != null ? HandleRef.ToIntPtr(subscription.Handle) : IntPtr.Zero,
-                completionHandlerCall.id, SaveSubscriptionCallback);
+                Handle, 
+                subscription != null ? HandleRef.ToIntPtr(subscription.Handle) : IntPtr.Zero, 
+                
+                completionHandlerCall.id, SaveSubscriptionCallback, 
+                out IntPtr exceptionPtr);
+
+            if(exceptionPtr != IntPtr.Zero)
+            {
+                var nativeException = new NSException(exceptionPtr);
+                throw new CloudKitException(nativeException, nativeException.Reason);
+            }
             
         }
         
@@ -498,16 +584,26 @@ namespace HovelHouse.CloudKit
         public void DeleteSubscriptionWithID(
             string subscriptionID, 
             Action<string,NSError> completionHandler)
-        {
+        { 
             if(subscriptionID == null)
                 throw new ArgumentNullException(nameof(subscriptionID));
-                            
+            
+            
             var completionHandlerCall = new InvocationRecord(Handle);
             DeleteSubscriptionWithIDCallbacks[completionHandlerCall] = completionHandler;
+            
             CKDatabase_deleteSubscriptionWithID_completionHandler(
-                Handle,
-                subscriptionID,
-                completionHandlerCall.id, DeleteSubscriptionWithIDCallback);
+                Handle, 
+                subscriptionID, 
+                
+                completionHandlerCall.id, DeleteSubscriptionWithIDCallback, 
+                out IntPtr exceptionPtr);
+
+            if(exceptionPtr != IntPtr.Zero)
+            {
+                var nativeException = new NSException(exceptionPtr);
+                throw new CloudKitException(nativeException, nativeException.Reason);
+            }
             
         }
         
@@ -532,13 +628,21 @@ namespace HovelHouse.CloudKit
         
         public void FetchAllSubscriptionsWithCompletionHandler(
             Action<CKSubscription[],NSError> completionHandler)
-        {
-                            
+        { 
+            
             var completionHandlerCall = new InvocationRecord(Handle);
             FetchAllSubscriptionsWithCompletionHandlerCallbacks[completionHandlerCall] = completionHandler;
+            
             CKDatabase_fetchAllSubscriptionsWithCompletionHandler(
-                Handle,
-                completionHandlerCall.id, FetchAllSubscriptionsWithCompletionHandlerCallback);
+                Handle, 
+                completionHandlerCall.id, FetchAllSubscriptionsWithCompletionHandlerCallback, 
+                out IntPtr exceptionPtr);
+
+            if(exceptionPtr != IntPtr.Zero)
+            {
+                var nativeException = new NSException(exceptionPtr);
+                throw new CloudKitException(nativeException, nativeException.Reason);
+            }
             
         }
         
@@ -564,13 +668,21 @@ namespace HovelHouse.CloudKit
         
         public void FetchAllRecordZonesWithCompletionHandler(
             Action<CKRecordZone[],NSError> completionHandler)
-        {
-                            
+        { 
+            
             var completionHandlerCall = new InvocationRecord(Handle);
             FetchAllRecordZonesWithCompletionHandlerCallbacks[completionHandlerCall] = completionHandler;
+            
             CKDatabase_fetchAllRecordZonesWithCompletionHandler(
-                Handle,
-                completionHandlerCall.id, FetchAllRecordZonesWithCompletionHandlerCallback);
+                Handle, 
+                completionHandlerCall.id, FetchAllRecordZonesWithCompletionHandlerCallback, 
+                out IntPtr exceptionPtr);
+
+            if(exceptionPtr != IntPtr.Zero)
+            {
+                var nativeException = new NSException(exceptionPtr);
+                throw new CloudKitException(nativeException, nativeException.Reason);
+            }
             
         }
         
@@ -598,17 +710,29 @@ namespace HovelHouse.CloudKit
             CKQuery query, 
             CKRecordZoneID zoneID, 
             Action<CKRecord[],NSError> completionHandler)
-        {
+        { 
             if(query == null)
                 throw new ArgumentNullException(nameof(query));
-                            
+            
+            
+            
             var completionHandlerCall = new InvocationRecord(Handle);
             PerformQueryCallbacks[completionHandlerCall] = completionHandler;
+            
             CKDatabase_performQuery_inZoneWithID_completionHandler(
-                Handle,
-                query != null ? HandleRef.ToIntPtr(query.Handle) : IntPtr.Zero,
-                zoneID != null ? HandleRef.ToIntPtr(zoneID.Handle) : IntPtr.Zero,
-                completionHandlerCall.id, PerformQueryCallback);
+                Handle, 
+                query != null ? HandleRef.ToIntPtr(query.Handle) : IntPtr.Zero, 
+                
+                zoneID != null ? HandleRef.ToIntPtr(zoneID.Handle) : IntPtr.Zero, 
+                
+                completionHandlerCall.id, PerformQueryCallback, 
+                out IntPtr exceptionPtr);
+
+            if(exceptionPtr != IntPtr.Zero)
+            {
+                var nativeException = new NSException(exceptionPtr);
+                throw new CloudKitException(nativeException, nativeException.Reason);
+            }
             
         }
         

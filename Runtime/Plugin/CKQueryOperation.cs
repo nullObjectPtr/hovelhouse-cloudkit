@@ -31,7 +31,9 @@ namespace HovelHouse.CloudKit
         #else
         [DllImport("HHCloudKit")]
         #endif
-        private static extern IntPtr CKQueryOperation_init();
+        private static extern IntPtr CKQueryOperation_init(
+            out IntPtr exceptionPtr
+            );
         
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
@@ -39,7 +41,9 @@ namespace HovelHouse.CloudKit
         [DllImport("HHCloudKit")]
         #endif
         private static extern IntPtr CKQueryOperation_initWithQuery(
-            IntPtr query);
+            IntPtr query, 
+            out IntPtr exceptionPtr
+            );
         
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
@@ -47,7 +51,9 @@ namespace HovelHouse.CloudKit
         [DllImport("HHCloudKit")]
         #endif
         private static extern IntPtr CKQueryOperation_initWithCursor(
-            IntPtr cursor);
+            IntPtr cursor, 
+            out IntPtr exceptionPtr
+            );
         
 
         // Instance Methods
@@ -69,7 +75,7 @@ namespace HovelHouse.CloudKit
         #else
         [DllImport("HHCloudKit")]
         #endif
-        private static extern void CKQueryOperation_SetPropQuery(HandleRef ptr, IntPtr query);
+        private static extern void CKQueryOperation_SetPropQuery(HandleRef ptr, IntPtr query, out IntPtr exceptionPtr);
         
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
@@ -83,7 +89,7 @@ namespace HovelHouse.CloudKit
         #else
         [DllImport("HHCloudKit")]
         #endif
-        private static extern void CKQueryOperation_SetPropCursor(HandleRef ptr, IntPtr cursor);
+        private static extern void CKQueryOperation_SetPropCursor(HandleRef ptr, IntPtr cursor, out IntPtr exceptionPtr);
         
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
@@ -97,20 +103,20 @@ namespace HovelHouse.CloudKit
         #else
         [DllImport("HHCloudKit")]
         #endif
-        private static extern void CKQueryOperation_SetPropZoneID(HandleRef ptr, IntPtr zoneID);
+        private static extern void CKQueryOperation_SetPropZoneID(HandleRef ptr, IntPtr zoneID, out IntPtr exceptionPtr);
         // TODO: DLLPROPERTYSTRINGARRAY
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
         #else
         [DllImport("HHCloudKit")]
         #endif
-        private static extern void CKQueryOperation_SetPropRecordFetchedHandler(HandleRef ptr, RecordFetchedDelegate recordFetchedHandler);
+        private static extern void CKQueryOperation_SetPropRecordFetchedHandler(HandleRef ptr, RecordFetchedDelegate recordFetchedHandler, out IntPtr exceptionPtr);
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
         #else
         [DllImport("HHCloudKit")]
         #endif
-        private static extern void CKQueryOperation_SetPropQueryCompletionHandler(HandleRef ptr, QueryCompletionDelegate queryCompletionHandler);
+        private static extern void CKQueryOperation_SetPropQueryCompletionHandler(HandleRef ptr, QueryCompletionDelegate queryCompletionHandler, out IntPtr exceptionPtr);
         
         #endregion
 
@@ -123,33 +129,60 @@ namespace HovelHouse.CloudKit
         #region Constructors
         
         public static CKQueryOperation init(
-        ){
+            )
+        {
             
-            IntPtr ptr = CKQueryOperation_init();
+            IntPtr ptr = CKQueryOperation_init(
+                out IntPtr exceptionPtr);
+
+            if(exceptionPtr != IntPtr.Zero)
+            {
+                var nativeException = new NSException(exceptionPtr);
+                throw new CloudKitException(nativeException, nativeException.Reason);
+            }
+
             return new CKQueryOperation(ptr);
         }
         
         
         public static CKQueryOperation initWithQuery(
             CKQuery query
-        ){
+            )
+        {
             if(query == null)
                 throw new ArgumentNullException(nameof(query));
             
             IntPtr ptr = CKQueryOperation_initWithQuery(
-                query != null ? HandleRef.ToIntPtr(query.Handle) : IntPtr.Zero);
+                query != null ? HandleRef.ToIntPtr(query.Handle) : IntPtr.Zero, 
+                out IntPtr exceptionPtr);
+
+            if(exceptionPtr != IntPtr.Zero)
+            {
+                var nativeException = new NSException(exceptionPtr);
+                throw new CloudKitException(nativeException, nativeException.Reason);
+            }
+
             return new CKQueryOperation(ptr);
         }
         
         
         public static CKQueryOperation initWithCursor(
             CKQueryCursor cursor
-        ){
+            )
+        {
             if(cursor == null)
                 throw new ArgumentNullException(nameof(cursor));
             
             IntPtr ptr = CKQueryOperation_initWithCursor(
-                cursor != null ? HandleRef.ToIntPtr(cursor.Handle) : IntPtr.Zero);
+                cursor != null ? HandleRef.ToIntPtr(cursor.Handle) : IntPtr.Zero, 
+                out IntPtr exceptionPtr);
+
+            if(exceptionPtr != IntPtr.Zero)
+            {
+                var nativeException = new NSException(exceptionPtr);
+                throw new CloudKitException(nativeException, nativeException.Reason);
+            }
+
             return new CKQueryOperation(ptr);
         }
         
@@ -173,7 +206,7 @@ namespace HovelHouse.CloudKit
             }
             set
             {
-                CKQueryOperation_SetPropQuery(Handle, value != null ? HandleRef.ToIntPtr(value.Handle) : IntPtr.Zero);
+                CKQueryOperation_SetPropQuery(Handle, value != null ? HandleRef.ToIntPtr(value.Handle) : IntPtr.Zero, out IntPtr exceptionPtr);
             }
         }
         
@@ -186,7 +219,7 @@ namespace HovelHouse.CloudKit
             }
             set
             {
-                CKQueryOperation_SetPropCursor(Handle, value != null ? HandleRef.ToIntPtr(value.Handle) : IntPtr.Zero);
+                CKQueryOperation_SetPropCursor(Handle, value != null ? HandleRef.ToIntPtr(value.Handle) : IntPtr.Zero, out IntPtr exceptionPtr);
             }
         }
         
@@ -199,7 +232,7 @@ namespace HovelHouse.CloudKit
             }
             set
             {
-                CKQueryOperation_SetPropZoneID(Handle, value != null ? HandleRef.ToIntPtr(value.Handle) : IntPtr.Zero);
+                CKQueryOperation_SetPropZoneID(Handle, value != null ? HandleRef.ToIntPtr(value.Handle) : IntPtr.Zero, out IntPtr exceptionPtr);
             }
         }
         
@@ -224,7 +257,13 @@ namespace HovelHouse.CloudKit
                 {
                     RecordFetchedHandlerCallbacks[myPtr] = value;
                 }
-                CKQueryOperation_SetPropRecordFetchedHandler(Handle, RecordFetchedHandlerCallback);
+                CKQueryOperation_SetPropRecordFetchedHandler(Handle, RecordFetchedHandlerCallback, out IntPtr exceptionPtr);
+
+                if(exceptionPtr != IntPtr.Zero)
+                {
+                    var nativeException = new NSException(exceptionPtr);
+                    throw new CloudKitException(nativeException, nativeException.Reason);
+                }
             }
         }
 
@@ -261,7 +300,13 @@ namespace HovelHouse.CloudKit
                 {
                     QueryCompletionHandlerCallbacks[myPtr] = value;
                 }
-                CKQueryOperation_SetPropQueryCompletionHandler(Handle, QueryCompletionHandlerCallback);
+                CKQueryOperation_SetPropQueryCompletionHandler(Handle, QueryCompletionHandlerCallback, out IntPtr exceptionPtr);
+
+                if(exceptionPtr != IntPtr.Zero)
+                {
+                    var nativeException = new NSException(exceptionPtr);
+                    throw new CloudKitException(nativeException, nativeException.Reason);
+                }
             }
         }
 

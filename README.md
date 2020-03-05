@@ -35,32 +35,26 @@ The plugin comes with some examples that you can run to validate everything is w
 ## Building
 In order to use cloudkit you will need the following
 * An active (as in, paid, up to date and not suspended) account with the apple developer program. You will not be able to add the appropriate CloudKit capability to your project without one. Attempting to run your build without it can result in confusing error messages
-* Have set a valid bundle identifier in "Player Settings->Other Settings". Being able to sign your app is a requirement since cloud-kit containers are included in your provisioning profile. 
+* Have set a valid bundle identifier in "Player Settings->Other Settings". Being able to sign your app is a requirement since cloud-kit containers are included in your provisioning profile
+* Have set the "Target Minimum iOS Version" to 11.0 or higher
  
 ### iOS and TVOS
 Before you build you want to make sure you have set a good bundle identifier in Unity settings. Once you get to the step where you add the CloudKit capability xcode will automatically generate a container identifier you **cannot** delete. Having set the bundle identifier you want now will save you the pain of having your cloudkit dashboard junked up with a bunch of test container id's. You can read more about containers here: https://developer.apple.com/library/archive/documentation/DataManagement/Conceptual/CloudKitQuickStart/EnablingiCloudandConfiguringCloudKit/EnablingiCloudandConfiguringCloudKit.html 
  
-* select "Build" from Unity's Build Settings menu and export as an XCode project. Do not select "Build and Run". The appropriate entitlements are required to use CloudKit, and unity will not generate them automatically, they have to be added via xcode
-* When the project is done building. Open the xcode project and select the build target.
-* Click on the "Signing and Capabilities" tab next to "General"
-* Underneath the tab bar containing the "Signing and Capabilities" tab will be another one. Click tab labeled "+ Capability"
-* In the menu that pops up. Scroll down the list on the left until you find the "iCloud" capability. If you do not have an up-to-date apple developer account, the "iCloud" capability will not be shown.
-* Double click it to add the capability to the project.
-* There should be a new drop-down menu labeled "iCloud" underneath the one labeled "signing"
-* in the services section, click the check-box next to "CloudKit". Xcode will automatically add the appropriate entitlements and generate a new provision for you.
-* Below the "services" list, is a list of container identifiers you can use. XCode _is supposed to_ automatically create a default container for your app, but personally speaking _i've never seen this work_
-* If xcode does not automatically generate a default container for you, you can create one manually. Although you can create any container you wish, the example scenes in the plugin all use the default container, so they will not run if you do not set this up. 
-* Hit the little "+" button underneath the container. You can now enter a container identifier. Keep in mind that container id's **cannot** be deleted. Enter you app's default container Id, which is of the form "iCloud.YourBundleIdenifier". For example, if your bundle identifier is "com.mygamecompany.mygame" then you should make your container identifier "iCloud.com.mygamecompany.mygame". 
-* Build and Run!
+ * The plugin adds the appropriate CloudKit entitlements as a post process build step. On first launch a BuildSettings asset will be created in the folder "Assets/Plugins/HovelHouse/CloudKit/Resources" with default options.
+ ** By default, key-value storage and iCloud Documents are disabled.
+ ** The default container is automatically added, but can be disabled
+ ** You can add custom containers here
+ ** If you have your own post process build scripts, and this conflicts with that, you can disable this step by unchecking the "Enable Post Process Build" checkbox.
  
 ### MacOS
-* If you've made a MacOS build yet, then you already know that unity doesn't support exporting to an XCode project. It is therefore recommended that you first create an iOS or TVOS build before attempting to create a MacOS build. By doing so, xcode will automatically create the appropriate CloudKit container for your app, and you will not need to create one manually (which is a big pain)
+* If you've made a MacOS build yet, then you already know that unity doesn't support exporting to an XCode project. It is therefore recommended that you first create an iOS or TVOS build before attempting to create a MacOS build. By doing so, xcode will automatically create the appropriate CloudKit container for your app, and you will not need to create one manually on the apple developer website (which is a big pain)
 * Unity's inability to generate an xcode project for macOS causes problems for apps that require custom entitlements to run. Sadly, CloudKit is a framework that requires the appropriate entitlements. Attempting to execute a cloud kit api method without them will result in your application exiting with an error. In order to use this plugin on your MacOS build, you'll need to use a command line program to insert the appropriate entitlements and re-sign your app.
 * TODO: specific details about how to do this
 * TODO: a tool or script to help with this
  
 # Known Issues
-* Except in the case of C# callbacks and some simple null checking, there is no intermediary layer of error handling or argument validation. You are free to pass whatever garbage you want down to managed land. Basically, if your argument would crash your app in a native iOS app, passing that same argument via the plugin will crash the app. I'll add something eventually, but am not sure yet how best to handle it. Feel free to give your advice if you have input on this.
+Again, some of the API isn't yet covered.
  
 # FAQ
 No questions yet. Be the first!
@@ -68,24 +62,28 @@ No questions yet. Be the first!
 # Road Map
  
 ### P1
-* Better error handling, passing exceptions from managed code up to C#
+- Fix capitalization mistakes (Breaking Change)
+- Change plugin's static "initWith" functions to proper constructors (Breaking Change)
+- Callback functions for CKFetchRecordsOperation
+- Fix compile warnings
 
 ### P2
-* Post Build Scripts for easier use
+* Get continuous integration up and running with UnityCloudBuild
 * Use weak references for storing property callbacks
-* Fix capitalization mistakes (Breaking Change)
-* Change plugin's static "initWith" functions to proper constructors (Breaking Change)
 * Reuse existing C# instances instead of creating new when possible
 * Support field arrays in CKRecord
 * Remove the type-specific Set(Type)ForKey and replace them with overloaded versions of SetObjectForKey (Breaking Change)
 * Array support for CKRecord's setObject forKey methods
+* Figure out where example scenes are supposed to live, if you're not supposed to have scenes in packages.
  
 ### P3
+* Support website
 * Unit tests for everything
 * Better code examples
 * Tutorials
 * Automated documentation
  
 ### P4
+* Add classes / methods not supported on TVOS, and conditionally compile them out of TVOS
 * ? you let me know
 * CloudSaveManager? - a save system that helps with cloud saves and conforms to apple's save paradigm

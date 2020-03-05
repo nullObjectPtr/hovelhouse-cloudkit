@@ -1,5 +1,5 @@
 //
-//  CKRecordZoneID.cs
+//  NSException.cs
 //
 //  Created by Jonathan Culp <jonathanculp@gmail.com> on 03/02/2020
 //  Copyright © 2020 HovelHouseApps. All rights reserved.
@@ -17,7 +17,7 @@ using UnityEngine;
 
 namespace HovelHouse.CloudKit
 {
-    public class CKRecordZoneID : CKObject, IDisposable
+    public class NSException : CKObject, IDisposable
     {
         #region dll
 
@@ -25,17 +25,6 @@ namespace HovelHouse.CloudKit
         
 
         // Constructors
-        
-        #if UNITY_IPHONE || UNITY_TVOS
-        [DllImport("__Internal")]
-        #else
-        [DllImport("HHCloudKit")]
-        #endif
-        private static extern IntPtr CKRecordZoneID_initWithZoneName_ownerName(
-            string zoneName, 
-            string ownerName, 
-            out IntPtr exceptionPtr
-            );
         
 
         // Instance Methods
@@ -50,49 +39,25 @@ namespace HovelHouse.CloudKit
         #else
         [DllImport("HHCloudKit")]
         #endif
-        private static extern IntPtr CKRecordZoneID_GetPropZoneName(HandleRef ptr);
+        private static extern IntPtr NSException_GetPropName(HandleRef ptr);
         
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
         #else
         [DllImport("HHCloudKit")]
         #endif
-        private static extern IntPtr CKRecordZoneID_GetPropOwnerName(HandleRef ptr);
+        private static extern IntPtr NSException_GetPropReason(HandleRef ptr);
+        // TODO: DLLPROPERTYSTRINGARRAY
         
         #endregion
 
-        internal CKRecordZoneID(IntPtr ptr) : base(ptr) {}
+        internal NSException(IntPtr ptr) : base(ptr) {}
         
         #region Class Methods
         
         #endregion
 
         #region Constructors
-        
-        public static CKRecordZoneID initWithZoneName(
-            string zoneName, 
-            string ownerName
-            )
-        {
-            if(zoneName == null)
-                throw new ArgumentNullException(nameof(zoneName));
-            if(ownerName == null)
-                throw new ArgumentNullException(nameof(ownerName));
-            
-            IntPtr ptr = CKRecordZoneID_initWithZoneName_ownerName(
-                zoneName, 
-                ownerName, 
-                out IntPtr exceptionPtr);
-
-            if(exceptionPtr != IntPtr.Zero)
-            {
-                var nativeException = new NSException(exceptionPtr);
-                throw new CloudKitException(nativeException, nativeException.Reason);
-            }
-
-            return new CKRecordZoneID(ptr);
-        }
-        
         
         #endregion
 
@@ -104,23 +69,25 @@ namespace HovelHouse.CloudKit
 
         #region Properties
         
-        public string ZoneName 
+        public string Name 
         {
             get 
             { 
-                IntPtr zoneName = CKRecordZoneID_GetPropZoneName(Handle);
-                return Marshal.PtrToStringAuto(zoneName);
+                IntPtr name = NSException_GetPropName(Handle);
+                return Marshal.PtrToStringAuto(name);
             }
         }
         
-        public string OwnerName 
+        public string Reason 
         {
             get 
             { 
-                IntPtr ownerName = CKRecordZoneID_GetPropOwnerName(Handle);
-                return Marshal.PtrToStringAuto(ownerName);
+                IntPtr reason = NSException_GetPropReason(Handle);
+                return Marshal.PtrToStringAuto(reason);
             }
         }
+        
+        // TODO: PROPERTYSTRINGARRAY
         
         #endregion
         
@@ -131,7 +98,7 @@ namespace HovelHouse.CloudKit
         #else
         [DllImport("HHCloudKit")]
         #endif
-        private static extern void CKRecordZoneID_Dispose(HandleRef handle);
+        private static extern void NSException_Dispose(HandleRef handle);
             
         private bool disposedValue = false; // To detect redundant calls
         
@@ -147,13 +114,13 @@ namespace HovelHouse.CloudKit
                     // TODO: dispose managed state (managed objects).
                 }
                 
-                //Debug.Log("CKRecordZoneID Dispose");
-                CKRecordZoneID_Dispose(Handle);
+                //Debug.Log("NSException Dispose");
+                NSException_Dispose(Handle);
                 disposedValue = true;
             }
         }
 
-        ~CKRecordZoneID()
+        ~NSException()
         {
             // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
             Dispose(false);

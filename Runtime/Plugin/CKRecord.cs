@@ -32,7 +32,9 @@ namespace HovelHouse.CloudKit
         [DllImport("HHCloudKit")]
         #endif
         private static extern IntPtr CKRecord_initWithRecordType(
-            string recordType);
+            string recordType, 
+            out IntPtr exceptionPtr
+            );
         
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
@@ -41,7 +43,9 @@ namespace HovelHouse.CloudKit
         #endif
         private static extern IntPtr CKRecord_initWithRecordType_zoneID(
             string recordType, 
-            IntPtr zoneID);
+            IntPtr zoneID, 
+            out IntPtr exceptionPtr
+            );
         
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
@@ -50,7 +54,9 @@ namespace HovelHouse.CloudKit
         #endif
         private static extern IntPtr CKRecord_initWithRecordType_recordID(
             string recordType, 
-            IntPtr recordID);
+            IntPtr recordID, 
+            out IntPtr exceptionPtr
+            );
         
 
         // Instance Methods
@@ -91,7 +97,6 @@ namespace HovelHouse.CloudKit
             ref long count);
         
         
-        
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
         #else
@@ -103,18 +108,15 @@ namespace HovelHouse.CloudKit
             ref IntPtr source,
             ref long length);
         
-        
-        
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
         #else
         [DllImport("HHCloudKit")]
         #endif
         private static extern IntPtr CKRecord_stringForKey(
-            HandleRef ptr,
-            string key);
-        
-        
+            HandleRef ptr, 
+            string key,
+            out IntPtr exceptionPtr);
         
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
@@ -122,10 +124,9 @@ namespace HovelHouse.CloudKit
         [DllImport("HHCloudKit")]
         #endif
         private static extern long CKRecord_intForKey(
-            HandleRef ptr,
-            string key);
-        
-        
+            HandleRef ptr, 
+            string key,
+            out IntPtr exceptionPtr);
         
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
@@ -133,10 +134,9 @@ namespace HovelHouse.CloudKit
         [DllImport("HHCloudKit")]
         #endif
         private static extern double CKRecord_doubleForKey(
-            HandleRef ptr,
-            string key);
-        
-        
+            HandleRef ptr, 
+            string key,
+            out IntPtr exceptionPtr);
         
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
@@ -144,20 +144,9 @@ namespace HovelHouse.CloudKit
         [DllImport("HHCloudKit")]
         #endif
         private static extern IntPtr CKRecord_assetForKey(
-            HandleRef ptr,
-            string key);
-        
-        
-        
-        #if UNITY_IPHONE || UNITY_TVOS
-        [DllImport("__Internal")]
-        #else
-        [DllImport("HHCloudKit")]
-        #endif
-        private static extern IntPtr CKRecord_referenceForKey(
-            HandleRef ptr,
-            string key);
-        
+            HandleRef ptr, 
+            string key,
+            out IntPtr exceptionPtr);
         
 
         
@@ -167,9 +156,9 @@ namespace HovelHouse.CloudKit
         [DllImport("HHCloudKit")]
         #endif
         private static extern void CKRecord_encodeSystemFieldsWithCoder(
-            HandleRef ptr,
-            IntPtr coder);
-        
+            HandleRef ptr, 
+            IntPtr coder,
+            out IntPtr exceptionPtr);
         
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
@@ -177,9 +166,9 @@ namespace HovelHouse.CloudKit
         [DllImport("HHCloudKit")]
         #endif
         private static extern void CKRecord_setParentReferenceFromRecord(
-            HandleRef ptr,
-            IntPtr parentRecord);
-        
+            HandleRef ptr, 
+            IntPtr parentRecord,
+            out IntPtr exceptionPtr);
         
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
@@ -187,9 +176,9 @@ namespace HovelHouse.CloudKit
         [DllImport("HHCloudKit")]
         #endif
         private static extern void CKRecord_setParentReferenceFromRecordID(
-            HandleRef ptr,
-            IntPtr parentRecordID);
-        
+            HandleRef ptr, 
+            IntPtr parentRecordID,
+            out IntPtr exceptionPtr);
         
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
@@ -203,17 +192,16 @@ namespace HovelHouse.CloudKit
             long length,
             string key);
         
-        
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
         #else
         [DllImport("HHCloudKit")]
         #endif
         private static extern void CKRecord_setReference_forKey(
-            HandleRef ptr,
+            HandleRef ptr, 
             IntPtr reference,
-            string key);
-        
+            string key,
+            out IntPtr exceptionPtr);
         
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
@@ -221,10 +209,10 @@ namespace HovelHouse.CloudKit
         [DllImport("HHCloudKit")]
         #endif
         private static extern void CKRecord_setAsset_forKey(
-            HandleRef ptr,
+            HandleRef ptr, 
             IntPtr obj,
-            string key);
-        
+            string key,
+            out IntPtr exceptionPtr);
         
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
@@ -232,10 +220,10 @@ namespace HovelHouse.CloudKit
         [DllImport("HHCloudKit")]
         #endif
         private static extern void CKRecord_setString_forKey(
-            HandleRef ptr,
+            HandleRef ptr, 
             string obj,
-            string key);
-        
+            string key,
+            out IntPtr exceptionPtr);
         
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
@@ -243,10 +231,10 @@ namespace HovelHouse.CloudKit
         [DllImport("HHCloudKit")]
         #endif
         private static extern void CKRecord_setInt_forKey(
-            HandleRef ptr,
+            HandleRef ptr, 
             long obj,
-            string key);
-        
+            string key,
+            out IntPtr exceptionPtr);
         
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
@@ -254,10 +242,10 @@ namespace HovelHouse.CloudKit
         [DllImport("HHCloudKit")]
         #endif
         private static extern void CKRecord_setDouble_forKey(
-            HandleRef ptr,
+            HandleRef ptr, 
             double obj,
-            string key);
-        
+            string key,
+            out IntPtr exceptionPtr);
         
 
         // Properties
@@ -323,7 +311,7 @@ namespace HovelHouse.CloudKit
         #else
         [DllImport("HHCloudKit")]
         #endif
-        private static extern void CKRecord_SetPropParent(HandleRef ptr, IntPtr parent);
+        private static extern void CKRecord_SetPropParent(HandleRef ptr, IntPtr parent, out IntPtr exceptionPtr);
         
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
@@ -344,12 +332,21 @@ namespace HovelHouse.CloudKit
         
         public static CKRecord initWithRecordType(
             string recordType
-        ){
+            )
+        {
             if(recordType == null)
                 throw new ArgumentNullException(nameof(recordType));
             
             IntPtr ptr = CKRecord_initWithRecordType(
-                recordType);
+                recordType, 
+                out IntPtr exceptionPtr);
+
+            if(exceptionPtr != IntPtr.Zero)
+            {
+                var nativeException = new NSException(exceptionPtr);
+                throw new CloudKitException(nativeException, nativeException.Reason);
+            }
+
             return new CKRecord(ptr);
         }
         
@@ -357,15 +354,24 @@ namespace HovelHouse.CloudKit
         public static CKRecord initWithRecordType(
             string recordType, 
             CKRecordZoneID zoneID
-        ){
+            )
+        {
             if(recordType == null)
                 throw new ArgumentNullException(nameof(recordType));
             if(zoneID == null)
                 throw new ArgumentNullException(nameof(zoneID));
             
             IntPtr ptr = CKRecord_initWithRecordType_zoneID(
-                recordType,
-                zoneID != null ? HandleRef.ToIntPtr(zoneID.Handle) : IntPtr.Zero);
+                recordType, 
+                zoneID != null ? HandleRef.ToIntPtr(zoneID.Handle) : IntPtr.Zero, 
+                out IntPtr exceptionPtr);
+
+            if(exceptionPtr != IntPtr.Zero)
+            {
+                var nativeException = new NSException(exceptionPtr);
+                throw new CloudKitException(nativeException, nativeException.Reason);
+            }
+
             return new CKRecord(ptr);
         }
         
@@ -373,15 +379,24 @@ namespace HovelHouse.CloudKit
         public static CKRecord initWithRecordType(
             string recordType, 
             CKRecordID recordID
-        ){
+            )
+        {
             if(recordType == null)
                 throw new ArgumentNullException(nameof(recordType));
             if(recordID == null)
                 throw new ArgumentNullException(nameof(recordID));
             
             IntPtr ptr = CKRecord_initWithRecordType_recordID(
-                recordType,
-                recordID != null ? HandleRef.ToIntPtr(recordID.Handle) : IntPtr.Zero);
+                recordType, 
+                recordID != null ? HandleRef.ToIntPtr(recordID.Handle) : IntPtr.Zero, 
+                out IntPtr exceptionPtr);
+
+            if(exceptionPtr != IntPtr.Zero)
+            {
+                var nativeException = new NSException(exceptionPtr);
+                throw new CloudKitException(nativeException, nativeException.Reason);
+            }
+
             return new CKRecord(ptr);
         }
         
@@ -500,14 +515,21 @@ namespace HovelHouse.CloudKit
         
         public string StringForKey(
             string key)
-        {
+        { 
             if(key == null)
                 throw new ArgumentNullException(nameof(key));
-                            
-            ;
+            
             var val = CKRecord_stringForKey(
-                Handle,
-                key);
+                Handle, 
+                key, 
+                out IntPtr exceptionPtr);
+
+            if(exceptionPtr != IntPtr.Zero)
+            {
+                var nativeException = new NSException(exceptionPtr);
+                throw new CloudKitException(nativeException, nativeException.Reason);
+            }
+            
             return Marshal.PtrToStringAuto(val);
         }
         
@@ -516,14 +538,21 @@ namespace HovelHouse.CloudKit
         
         public long IntForKey(
             string key)
-        {
+        { 
             if(key == null)
                 throw new ArgumentNullException(nameof(key));
-                            
-            ;
+            
             var val = CKRecord_intForKey(
-                Handle,
-                key);
+                Handle, 
+                key, 
+                out IntPtr exceptionPtr);
+
+            if(exceptionPtr != IntPtr.Zero)
+            {
+                var nativeException = new NSException(exceptionPtr);
+                throw new CloudKitException(nativeException, nativeException.Reason);
+            }
+            
             return val;
         }
         
@@ -532,14 +561,21 @@ namespace HovelHouse.CloudKit
         
         public double DoubleForKey(
             string key)
-        {
+        { 
             if(key == null)
                 throw new ArgumentNullException(nameof(key));
-                            
-            ;
+            
             var val = CKRecord_doubleForKey(
-                Handle,
-                key);
+                Handle, 
+                key, 
+                out IntPtr exceptionPtr);
+
+            if(exceptionPtr != IntPtr.Zero)
+            {
+                var nativeException = new NSException(exceptionPtr);
+                throw new CloudKitException(nativeException, nativeException.Reason);
+            }
+            
             return val;
         }
         
@@ -548,31 +584,22 @@ namespace HovelHouse.CloudKit
         
         public CKAsset AssetForKey(
             string key)
-        {
+        { 
             if(key == null)
                 throw new ArgumentNullException(nameof(key));
-                            
-            ;
+            
             var val = CKRecord_assetForKey(
-                Handle,
-                key);
-            return val == IntPtr.Zero ? null : new CKAsset(val);
-        }
-        
+                Handle, 
+                key, 
+                out IntPtr exceptionPtr);
 
-        
-        
-        public CKReference ReferenceForKey(
-            string key)
-        {
-            if(key == null)
-                throw new ArgumentNullException(nameof(key));
-                            
-            ;
-            var val = CKRecord_referenceForKey(
-                Handle,
-                key);
-            return val == IntPtr.Zero ? null : new CKReference(val);
+            if(exceptionPtr != IntPtr.Zero)
+            {
+                var nativeException = new NSException(exceptionPtr);
+                throw new CloudKitException(nativeException, nativeException.Reason);
+            }
+            
+            return val == IntPtr.Zero ? null : new CKAsset(val);
         }
         
 
@@ -581,14 +608,20 @@ namespace HovelHouse.CloudKit
         
         public void EncodeSystemFieldsWithCoder(
             NSCoder coder)
-        {
+        { 
             if(coder == null)
                 throw new ArgumentNullException(nameof(coder));
-                            
-            ;
+            
             CKRecord_encodeSystemFieldsWithCoder(
-                Handle,
-                coder != null ? HandleRef.ToIntPtr(coder.Handle) : IntPtr.Zero);
+                Handle, 
+                coder != null ? HandleRef.ToIntPtr(coder.Handle) : IntPtr.Zero, 
+                out IntPtr exceptionPtr);
+
+            if(exceptionPtr != IntPtr.Zero)
+            {
+                var nativeException = new NSException(exceptionPtr);
+                throw new CloudKitException(nativeException, nativeException.Reason);
+            }
             
         }
         
@@ -597,12 +630,18 @@ namespace HovelHouse.CloudKit
         
         public void SetParentReferenceFromRecord(
             CKRecord parentRecord)
-        {
-                            
-            ;
+        { 
+            
             CKRecord_setParentReferenceFromRecord(
-                Handle,
-                parentRecord != null ? HandleRef.ToIntPtr(parentRecord.Handle) : IntPtr.Zero);
+                Handle, 
+                parentRecord != null ? HandleRef.ToIntPtr(parentRecord.Handle) : IntPtr.Zero, 
+                out IntPtr exceptionPtr);
+
+            if(exceptionPtr != IntPtr.Zero)
+            {
+                var nativeException = new NSException(exceptionPtr);
+                throw new CloudKitException(nativeException, nativeException.Reason);
+            }
             
         }
         
@@ -611,12 +650,18 @@ namespace HovelHouse.CloudKit
         
         public void SetParentReferenceFromRecordID(
             CKRecordID parentRecordID)
-        {
-                            
-            ;
+        { 
+            
             CKRecord_setParentReferenceFromRecordID(
-                Handle,
-                parentRecordID != null ? HandleRef.ToIntPtr(parentRecordID.Handle) : IntPtr.Zero);
+                Handle, 
+                parentRecordID != null ? HandleRef.ToIntPtr(parentRecordID.Handle) : IntPtr.Zero, 
+                out IntPtr exceptionPtr);
+
+            if(exceptionPtr != IntPtr.Zero)
+            {
+                var nativeException = new NSException(exceptionPtr);
+                throw new CloudKitException(nativeException, nativeException.Reason);
+            }
             
         }
         
@@ -639,15 +684,23 @@ namespace HovelHouse.CloudKit
         public void SetReference(
             CKReference reference, 
             string key)
-        {
+        { 
+            
             if(key == null)
                 throw new ArgumentNullException(nameof(key));
-                            
-            ;
+            
             CKRecord_setReference_forKey(
-                Handle,
-                reference != null ? HandleRef.ToIntPtr(reference.Handle) : IntPtr.Zero,
-                key);
+                Handle, 
+                reference != null ? HandleRef.ToIntPtr(reference.Handle) : IntPtr.Zero, 
+                
+                key, 
+                out IntPtr exceptionPtr);
+
+            if(exceptionPtr != IntPtr.Zero)
+            {
+                var nativeException = new NSException(exceptionPtr);
+                throw new CloudKitException(nativeException, nativeException.Reason);
+            }
             
         }
         
@@ -657,15 +710,23 @@ namespace HovelHouse.CloudKit
         public void SetAsset(
             CKAsset obj, 
             string key)
-        {
+        { 
+            
             if(key == null)
                 throw new ArgumentNullException(nameof(key));
-                            
-            ;
+            
             CKRecord_setAsset_forKey(
-                Handle,
-                obj != null ? HandleRef.ToIntPtr(obj.Handle) : IntPtr.Zero,
-                key);
+                Handle, 
+                obj != null ? HandleRef.ToIntPtr(obj.Handle) : IntPtr.Zero, 
+                
+                key, 
+                out IntPtr exceptionPtr);
+
+            if(exceptionPtr != IntPtr.Zero)
+            {
+                var nativeException = new NSException(exceptionPtr);
+                throw new CloudKitException(nativeException, nativeException.Reason);
+            }
             
         }
         
@@ -675,15 +736,23 @@ namespace HovelHouse.CloudKit
         public void SetString(
             string obj, 
             string key)
-        {
+        { 
+            
             if(key == null)
                 throw new ArgumentNullException(nameof(key));
-                            
-            ;
+            
             CKRecord_setString_forKey(
-                Handle,
-                obj,
-                key);
+                Handle, 
+                obj, 
+                
+                key, 
+                out IntPtr exceptionPtr);
+
+            if(exceptionPtr != IntPtr.Zero)
+            {
+                var nativeException = new NSException(exceptionPtr);
+                throw new CloudKitException(nativeException, nativeException.Reason);
+            }
             
         }
         
@@ -693,15 +762,23 @@ namespace HovelHouse.CloudKit
         public void SetInt(
             long obj, 
             string key)
-        {
+        { 
+            
             if(key == null)
                 throw new ArgumentNullException(nameof(key));
-                            
-            ;
+            
             CKRecord_setInt_forKey(
-                Handle,
-                obj,
-                key);
+                Handle, 
+                obj, 
+                
+                key, 
+                out IntPtr exceptionPtr);
+
+            if(exceptionPtr != IntPtr.Zero)
+            {
+                var nativeException = new NSException(exceptionPtr);
+                throw new CloudKitException(nativeException, nativeException.Reason);
+            }
             
         }
         
@@ -711,15 +788,23 @@ namespace HovelHouse.CloudKit
         public void SetDouble(
             double obj, 
             string key)
-        {
+        { 
+            
             if(key == null)
                 throw new ArgumentNullException(nameof(key));
-                            
-            ;
+            
             CKRecord_setDouble_forKey(
-                Handle,
-                obj,
-                key);
+                Handle, 
+                obj, 
+                
+                key, 
+                out IntPtr exceptionPtr);
+
+            if(exceptionPtr != IntPtr.Zero)
+            {
+                var nativeException = new NSException(exceptionPtr);
+                throw new CloudKitException(nativeException, nativeException.Reason);
+            }
             
         }
         
@@ -801,7 +886,7 @@ namespace HovelHouse.CloudKit
             }
             set
             {
-                CKRecord_SetPropParent(Handle, value != null ? HandleRef.ToIntPtr(value.Handle) : IntPtr.Zero);
+                CKRecord_SetPropParent(Handle, value != null ? HandleRef.ToIntPtr(value.Handle) : IntPtr.Zero, out IntPtr exceptionPtr);
             }
         }
         

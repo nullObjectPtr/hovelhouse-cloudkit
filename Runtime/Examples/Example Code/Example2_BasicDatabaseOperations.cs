@@ -20,7 +20,7 @@ public class Example2_BasicDatabaseOperations : MonoBehaviour
     {
         Debug.Log("Example 2 - Basic Database Operations");
 
-        database = CKContainer.defaultContainer().PrivateCloudDatabase;
+        database = CKContainer.DefaultContainer().PrivateCloudDatabase;
 
         record = CKRecord.initWithRecordType("MyType");
         record.SetString("An Example", "MyField");

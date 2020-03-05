@@ -28,7 +28,8 @@ namespace HovelHouse.CloudKit
         #else
         [DllImport("HHCloudKit")]
         #endif
-        private static extern IntPtr CKFetchRecordZonesOperation_fetchAllRecordZonesOperation();
+        private static extern IntPtr CKFetchRecordZonesOperation_fetchAllRecordZonesOperation(
+            out IntPtr exceptionPtr);
         
 
         // Constructors
@@ -38,7 +39,9 @@ namespace HovelHouse.CloudKit
         #else
         [DllImport("HHCloudKit")]
         #endif
-        private static extern IntPtr CKFetchRecordZonesOperation_init();
+        private static extern IntPtr CKFetchRecordZonesOperation_init(
+            out IntPtr exceptionPtr
+            );
         
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
@@ -48,7 +51,9 @@ namespace HovelHouse.CloudKit
         private static extern IntPtr CKFetchRecordZonesOperation_initWithRecordZoneIDs(
             [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.SysInt, SizeParamIndex = 2)]
             IntPtr[] zoneIDs,
-			int zoneIDsCount);
+			int zoneIDsCount, 
+            out IntPtr exceptionPtr
+            );
         
 
         // Instance Methods
@@ -71,7 +76,7 @@ namespace HovelHouse.CloudKit
         [DllImport("HHCloudKit")]
         #endif
         private static extern void CKFetchRecordZonesOperation_SetPropRecordZoneIDs(HandleRef ptr, IntPtr[] recordZoneIDs,
-			int recordZoneIDsCount);
+			int recordZoneIDsCount, out IntPtr exceptionPtr);
         
         #endregion
 
@@ -79,34 +84,61 @@ namespace HovelHouse.CloudKit
         
         #region Class Methods
         
-        public static CKFetchRecordZonesOperation fetchAllRecordZonesOperation()
-        {
+        
+        public static CKFetchRecordZonesOperation FetchAllRecordZonesOperation()
+        { 
+            var val = CKFetchRecordZonesOperation_fetchAllRecordZonesOperation(out IntPtr exceptionPtr);
+
+            if(exceptionPtr != IntPtr.Zero)
+            {
+                var nativeException = new NSException(exceptionPtr);
+                throw new CloudKitException(nativeException, nativeException.Reason);
+            }
             
-            var val = CKFetchRecordZonesOperation_fetchAllRecordZonesOperation();
             return val == IntPtr.Zero ? null : new CKFetchRecordZonesOperation(val);
         }
+        
+
         
         #endregion
 
         #region Constructors
         
         public static CKFetchRecordZonesOperation init(
-        ){
+            )
+        {
             
-            IntPtr ptr = CKFetchRecordZonesOperation_init();
+            IntPtr ptr = CKFetchRecordZonesOperation_init(
+                out IntPtr exceptionPtr);
+
+            if(exceptionPtr != IntPtr.Zero)
+            {
+                var nativeException = new NSException(exceptionPtr);
+                throw new CloudKitException(nativeException, nativeException.Reason);
+            }
+
             return new CKFetchRecordZonesOperation(ptr);
         }
         
         
         public static CKFetchRecordZonesOperation initWithRecordZoneIDs(
             CKRecordZoneID[] zoneIDs
-        ){
+            )
+        {
             if(zoneIDs == null)
                 throw new ArgumentNullException(nameof(zoneIDs));
             
             IntPtr ptr = CKFetchRecordZonesOperation_initWithRecordZoneIDs(
                 zoneIDs == null ? null : zoneIDs.Select(x => HandleRef.ToIntPtr(x.Handle)).ToArray(),
-				zoneIDs == null ? 0 : zoneIDs.Length);
+				zoneIDs == null ? 0 : zoneIDs.Length, 
+                out IntPtr exceptionPtr);
+
+            if(exceptionPtr != IntPtr.Zero)
+            {
+                var nativeException = new NSException(exceptionPtr);
+                throw new CloudKitException(nativeException, nativeException.Reason);
+            }
+
             return new CKFetchRecordZonesOperation(ptr);
         }
         
@@ -145,7 +177,13 @@ namespace HovelHouse.CloudKit
             set
             {
                 CKFetchRecordZonesOperation_SetPropRecordZoneIDs(Handle, value == null ? null : value.Select(x => HandleRef.ToIntPtr(x.Handle)).ToArray(),
-				value == null ? 0 : value.Length);
+				value == null ? 0 : value.Length, out IntPtr exceptionPtr);
+                
+                if(exceptionPtr != IntPtr.Zero)
+                {
+                    var nativeException = new NSException(exceptionPtr);
+                    throw new CloudKitException(nativeException, nativeException.Reason);
+                }
             }
         }
 

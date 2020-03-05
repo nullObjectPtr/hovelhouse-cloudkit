@@ -53,7 +53,7 @@ namespace HovelHouse.CloudKit
         #else
         [DllImport("HHCloudKit")]
         #endif
-        private static extern void CKShareParticipant_SetPropPermission(HandleRef ptr, long permission);
+        private static extern void CKShareParticipant_SetPropPermission(HandleRef ptr, long permission, out IntPtr exceptionPtr);
         
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
@@ -74,7 +74,7 @@ namespace HovelHouse.CloudKit
         #else
         [DllImport("HHCloudKit")]
         #endif
-        private static extern void CKShareParticipant_SetPropRole(HandleRef ptr, long role);
+        private static extern void CKShareParticipant_SetPropRole(HandleRef ptr, long role, out IntPtr exceptionPtr);
         
         #endregion
 
@@ -114,7 +114,7 @@ namespace HovelHouse.CloudKit
             }
             set
             {
-                CKShareParticipant_SetPropPermission(Handle, (long) value);
+                CKShareParticipant_SetPropPermission(Handle, (long) value, out IntPtr exceptionPtr);
             }
         }
         
@@ -136,7 +136,7 @@ namespace HovelHouse.CloudKit
             }
             set
             {
-                CKShareParticipant_SetPropRole(Handle, (long) value);
+                CKShareParticipant_SetPropRole(Handle, (long) value, out IntPtr exceptionPtr);
             }
         }
         

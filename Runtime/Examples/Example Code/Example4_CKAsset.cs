@@ -18,7 +18,7 @@ public class Example4_CKAsset : MonoBehaviour
     void Run()
     {
         Debug.Log("Example 4 - CKAsset");
-        database = CKContainer.defaultContainer().PrivateCloudDatabase;
+        database = CKContainer.DefaultContainer().PrivateCloudDatabase;
 
         var record = CKRecord.initWithRecordType("MyType");
 
@@ -40,7 +40,7 @@ public class Example4_CKAsset : MonoBehaviour
         // in the user's data directory
         // the asset will be stored in cloudkit, with a URL for retrieval
 
-        var fileurl = NSURL.fileURLWithPath(path);
+        var fileurl = NSURL.FileURLWithPath(path);
         record.SetAsset(CKAsset.initWithFileURL(fileurl), "MyAsset");
 
         database.SaveRecord(record, OnRecordSaved);

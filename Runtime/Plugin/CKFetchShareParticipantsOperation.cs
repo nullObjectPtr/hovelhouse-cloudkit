@@ -31,7 +31,9 @@ namespace HovelHouse.CloudKit
         #else
         [DllImport("HHCloudKit")]
         #endif
-        private static extern IntPtr CKFetchShareParticipantsOperation_init();
+        private static extern IntPtr CKFetchShareParticipantsOperation_init(
+            out IntPtr exceptionPtr
+            );
         
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
@@ -41,7 +43,9 @@ namespace HovelHouse.CloudKit
         private static extern IntPtr CKFetchShareParticipantsOperation_initWithUserIdentityLookupInfos(
             [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.SysInt, SizeParamIndex = 2)]
             IntPtr[] userIdentityLookupInfos,
-			int userIdentityLookupInfosCount);
+			int userIdentityLookupInfosCount, 
+            out IntPtr exceptionPtr
+            );
         
 
         // Instance Methods
@@ -64,19 +68,19 @@ namespace HovelHouse.CloudKit
         [DllImport("HHCloudKit")]
         #endif
         private static extern void CKFetchShareParticipantsOperation_SetPropUserIdentityLookupInfos(HandleRef ptr, IntPtr[] userIdentityLookupInfos,
-			int userIdentityLookupInfosCount);
+			int userIdentityLookupInfosCount, out IntPtr exceptionPtr);
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
         #else
         [DllImport("HHCloudKit")]
         #endif
-        private static extern void CKFetchShareParticipantsOperation_SetPropFetchShareParticipantsCompletionHandler(HandleRef ptr, FetchShareParticipantsCompletionDelegate fetchShareParticipantsCompletionHandler);
+        private static extern void CKFetchShareParticipantsOperation_SetPropFetchShareParticipantsCompletionHandler(HandleRef ptr, FetchShareParticipantsCompletionDelegate fetchShareParticipantsCompletionHandler, out IntPtr exceptionPtr);
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
         #else
         [DllImport("HHCloudKit")]
         #endif
-        private static extern void CKFetchShareParticipantsOperation_SetPropShareParticipantFetchedHandler(HandleRef ptr, ShareParticipantFetchedDelegate shareParticipantFetchedHandler);
+        private static extern void CKFetchShareParticipantsOperation_SetPropShareParticipantFetchedHandler(HandleRef ptr, ShareParticipantFetchedDelegate shareParticipantFetchedHandler, out IntPtr exceptionPtr);
         
         #endregion
 
@@ -89,22 +93,40 @@ namespace HovelHouse.CloudKit
         #region Constructors
         
         public static CKFetchShareParticipantsOperation init(
-        ){
+            )
+        {
             
-            IntPtr ptr = CKFetchShareParticipantsOperation_init();
+            IntPtr ptr = CKFetchShareParticipantsOperation_init(
+                out IntPtr exceptionPtr);
+
+            if(exceptionPtr != IntPtr.Zero)
+            {
+                var nativeException = new NSException(exceptionPtr);
+                throw new CloudKitException(nativeException, nativeException.Reason);
+            }
+
             return new CKFetchShareParticipantsOperation(ptr);
         }
         
         
         public static CKFetchShareParticipantsOperation initWithUserIdentityLookupInfos(
             CKUserIdentityLookupInfo[] userIdentityLookupInfos
-        ){
+            )
+        {
             if(userIdentityLookupInfos == null)
                 throw new ArgumentNullException(nameof(userIdentityLookupInfos));
             
             IntPtr ptr = CKFetchShareParticipantsOperation_initWithUserIdentityLookupInfos(
                 userIdentityLookupInfos == null ? null : userIdentityLookupInfos.Select(x => HandleRef.ToIntPtr(x.Handle)).ToArray(),
-				userIdentityLookupInfos == null ? 0 : userIdentityLookupInfos.Length);
+				userIdentityLookupInfos == null ? 0 : userIdentityLookupInfos.Length, 
+                out IntPtr exceptionPtr);
+
+            if(exceptionPtr != IntPtr.Zero)
+            {
+                var nativeException = new NSException(exceptionPtr);
+                throw new CloudKitException(nativeException, nativeException.Reason);
+            }
+
             return new CKFetchShareParticipantsOperation(ptr);
         }
         
@@ -143,7 +165,13 @@ namespace HovelHouse.CloudKit
             set
             {
                 CKFetchShareParticipantsOperation_SetPropUserIdentityLookupInfos(Handle, value == null ? null : value.Select(x => HandleRef.ToIntPtr(x.Handle)).ToArray(),
-				value == null ? 0 : value.Length);
+				value == null ? 0 : value.Length, out IntPtr exceptionPtr);
+                
+                if(exceptionPtr != IntPtr.Zero)
+                {
+                    var nativeException = new NSException(exceptionPtr);
+                    throw new CloudKitException(nativeException, nativeException.Reason);
+                }
             }
         }
 
@@ -167,7 +195,13 @@ namespace HovelHouse.CloudKit
                 {
                     FetchShareParticipantsCompletionHandlerCallbacks[myPtr] = value;
                 }
-                CKFetchShareParticipantsOperation_SetPropFetchShareParticipantsCompletionHandler(Handle, FetchShareParticipantsCompletionHandlerCallback);
+                CKFetchShareParticipantsOperation_SetPropFetchShareParticipantsCompletionHandler(Handle, FetchShareParticipantsCompletionHandlerCallback, out IntPtr exceptionPtr);
+
+                if(exceptionPtr != IntPtr.Zero)
+                {
+                    var nativeException = new NSException(exceptionPtr);
+                    throw new CloudKitException(nativeException, nativeException.Reason);
+                }
             }
         }
 
@@ -204,7 +238,13 @@ namespace HovelHouse.CloudKit
                 {
                     ShareParticipantFetchedHandlerCallbacks[myPtr] = value;
                 }
-                CKFetchShareParticipantsOperation_SetPropShareParticipantFetchedHandler(Handle, ShareParticipantFetchedHandlerCallback);
+                CKFetchShareParticipantsOperation_SetPropShareParticipantFetchedHandler(Handle, ShareParticipantFetchedHandlerCallback, out IntPtr exceptionPtr);
+
+                if(exceptionPtr != IntPtr.Zero)
+                {
+                    var nativeException = new NSException(exceptionPtr);
+                    throw new CloudKitException(nativeException, nativeException.Reason);
+                }
             }
         }
 

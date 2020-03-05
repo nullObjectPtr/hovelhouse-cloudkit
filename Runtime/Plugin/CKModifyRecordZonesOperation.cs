@@ -31,7 +31,9 @@ namespace HovelHouse.CloudKit
         #else
         [DllImport("HHCloudKit")]
         #endif
-        private static extern IntPtr CKModifyRecordZonesOperation_init();
+        private static extern IntPtr CKModifyRecordZonesOperation_init(
+            out IntPtr exceptionPtr
+            );
         
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
@@ -44,7 +46,9 @@ namespace HovelHouse.CloudKit
 			int recordZonesToSaveCount, 
             [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.SysInt, SizeParamIndex = 4)]
             IntPtr[] recordZoneIDsToDelete,
-			int recordZoneIDsToDeleteCount);
+			int recordZoneIDsToDeleteCount, 
+            out IntPtr exceptionPtr
+            );
         
 
         // Instance Methods
@@ -58,7 +62,7 @@ namespace HovelHouse.CloudKit
         #else
         [DllImport("HHCloudKit")]
         #endif
-        private static extern void CKModifyRecordZonesOperation_SetPropModifyRecordZonesCompletionHandler(HandleRef ptr, ModifyRecordZonesCompletionDelegate modifyRecordZonesCompletionHandler);
+        private static extern void CKModifyRecordZonesOperation_SetPropModifyRecordZonesCompletionHandler(HandleRef ptr, ModifyRecordZonesCompletionDelegate modifyRecordZonesCompletionHandler, out IntPtr exceptionPtr);
         
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
@@ -73,7 +77,7 @@ namespace HovelHouse.CloudKit
         [DllImport("HHCloudKit")]
         #endif
         private static extern void CKModifyRecordZonesOperation_SetPropRecordZonesToSave(HandleRef ptr, IntPtr[] recordZonesToSave,
-			int recordZonesToSaveCount);
+			int recordZonesToSaveCount, out IntPtr exceptionPtr);
         
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
@@ -88,7 +92,7 @@ namespace HovelHouse.CloudKit
         [DllImport("HHCloudKit")]
         #endif
         private static extern void CKModifyRecordZonesOperation_SetPropRecordZoneIDsToDelete(HandleRef ptr, IntPtr[] recordZoneIDsToDelete,
-			int recordZoneIDsToDeleteCount);
+			int recordZoneIDsToDeleteCount, out IntPtr exceptionPtr);
         
         #endregion
 
@@ -101,9 +105,18 @@ namespace HovelHouse.CloudKit
         #region Constructors
         
         public static CKModifyRecordZonesOperation init(
-        ){
+            )
+        {
             
-            IntPtr ptr = CKModifyRecordZonesOperation_init();
+            IntPtr ptr = CKModifyRecordZonesOperation_init(
+                out IntPtr exceptionPtr);
+
+            if(exceptionPtr != IntPtr.Zero)
+            {
+                var nativeException = new NSException(exceptionPtr);
+                throw new CloudKitException(nativeException, nativeException.Reason);
+            }
+
             return new CKModifyRecordZonesOperation(ptr);
         }
         
@@ -111,13 +124,22 @@ namespace HovelHouse.CloudKit
         public static CKModifyRecordZonesOperation initWithRecordZonesToSave(
             CKRecordZone[] recordZonesToSave, 
             CKRecordZoneID[] recordZoneIDsToDelete
-        ){
+            )
+        {
             
             IntPtr ptr = CKModifyRecordZonesOperation_initWithRecordZonesToSave_recordZoneIDsToDelete(
                 recordZonesToSave == null ? null : recordZonesToSave.Select(x => HandleRef.ToIntPtr(x.Handle)).ToArray(),
-				recordZonesToSave == null ? 0 : recordZonesToSave.Length,
+				recordZonesToSave == null ? 0 : recordZonesToSave.Length, 
                 recordZoneIDsToDelete == null ? null : recordZoneIDsToDelete.Select(x => HandleRef.ToIntPtr(x.Handle)).ToArray(),
-				recordZoneIDsToDelete == null ? 0 : recordZoneIDsToDelete.Length);
+				recordZoneIDsToDelete == null ? 0 : recordZoneIDsToDelete.Length, 
+                out IntPtr exceptionPtr);
+
+            if(exceptionPtr != IntPtr.Zero)
+            {
+                var nativeException = new NSException(exceptionPtr);
+                throw new CloudKitException(nativeException, nativeException.Reason);
+            }
+
             return new CKModifyRecordZonesOperation(ptr);
         }
         
@@ -151,7 +173,13 @@ namespace HovelHouse.CloudKit
                 {
                     ModifyRecordZonesCompletionHandlerCallbacks[myPtr] = value;
                 }
-                CKModifyRecordZonesOperation_SetPropModifyRecordZonesCompletionHandler(Handle, ModifyRecordZonesCompletionHandlerCallback);
+                CKModifyRecordZonesOperation_SetPropModifyRecordZonesCompletionHandler(Handle, ModifyRecordZonesCompletionHandlerCallback, out IntPtr exceptionPtr);
+
+                if(exceptionPtr != IntPtr.Zero)
+                {
+                    var nativeException = new NSException(exceptionPtr);
+                    throw new CloudKitException(nativeException, nativeException.Reason);
+                }
             }
         }
 
@@ -197,7 +225,13 @@ namespace HovelHouse.CloudKit
             set
             {
                 CKModifyRecordZonesOperation_SetPropRecordZonesToSave(Handle, value == null ? null : value.Select(x => HandleRef.ToIntPtr(x.Handle)).ToArray(),
-				value == null ? 0 : value.Length);
+				value == null ? 0 : value.Length, out IntPtr exceptionPtr);
+                
+                if(exceptionPtr != IntPtr.Zero)
+                {
+                    var nativeException = new NSException(exceptionPtr);
+                    throw new CloudKitException(nativeException, nativeException.Reason);
+                }
             }
         }
 
@@ -226,7 +260,13 @@ namespace HovelHouse.CloudKit
             set
             {
                 CKModifyRecordZonesOperation_SetPropRecordZoneIDsToDelete(Handle, value == null ? null : value.Select(x => HandleRef.ToIntPtr(x.Handle)).ToArray(),
-				value == null ? 0 : value.Length);
+				value == null ? 0 : value.Length, out IntPtr exceptionPtr);
+                
+                if(exceptionPtr != IntPtr.Zero)
+                {
+                    var nativeException = new NSException(exceptionPtr);
+                    throw new CloudKitException(nativeException, nativeException.Reason);
+                }
             }
         }
 

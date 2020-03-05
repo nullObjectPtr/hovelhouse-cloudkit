@@ -19,7 +19,7 @@ public class Example5_Zones : MonoBehaviour
 
         // Apple arcade recommends using zones for different GC users
         customZone = CKRecordZone.initWithZoneName("GameCenterUser1");
-        database = CKContainer.defaultContainer().PrivateCloudDatabase;
+        database = CKContainer.DefaultContainer().PrivateCloudDatabase;
 
         database.SaveRecordZone(customZone, OnRecordZoneCreated);
     }

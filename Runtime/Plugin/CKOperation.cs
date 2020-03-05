@@ -31,7 +31,9 @@ namespace HovelHouse.CloudKit
         #else
         [DllImport("HHCloudKit")]
         #endif
-        private static extern IntPtr CKOperation_init();
+        private static extern IntPtr CKOperation_init(
+            out IntPtr exceptionPtr
+            );
         
 
         // Instance Methods
@@ -53,7 +55,7 @@ namespace HovelHouse.CloudKit
         #else
         [DllImport("HHCloudKit")]
         #endif
-        private static extern void CKOperation_SetPropConfiguration(HandleRef ptr, IntPtr configuration);
+        private static extern void CKOperation_SetPropConfiguration(HandleRef ptr, IntPtr configuration, out IntPtr exceptionPtr);
         
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
@@ -74,7 +76,7 @@ namespace HovelHouse.CloudKit
         #else
         [DllImport("HHCloudKit")]
         #endif
-        private static extern void CKOperation_SetPropGroup(HandleRef ptr, IntPtr group);
+        private static extern void CKOperation_SetPropGroup(HandleRef ptr, IntPtr group, out IntPtr exceptionPtr);
         
         #endregion
 
@@ -87,9 +89,18 @@ namespace HovelHouse.CloudKit
         #region Constructors
         
         public static CKOperation init(
-        ){
+            )
+        {
             
-            IntPtr ptr = CKOperation_init();
+            IntPtr ptr = CKOperation_init(
+                out IntPtr exceptionPtr);
+
+            if(exceptionPtr != IntPtr.Zero)
+            {
+                var nativeException = new NSException(exceptionPtr);
+                throw new CloudKitException(nativeException, nativeException.Reason);
+            }
+
             return new CKOperation(ptr);
         }
         
@@ -113,7 +124,7 @@ namespace HovelHouse.CloudKit
             }
             set
             {
-                CKOperation_SetPropConfiguration(Handle, value != null ? HandleRef.ToIntPtr(value.Handle) : IntPtr.Zero);
+                CKOperation_SetPropConfiguration(Handle, value != null ? HandleRef.ToIntPtr(value.Handle) : IntPtr.Zero, out IntPtr exceptionPtr);
             }
         }
         
@@ -135,7 +146,7 @@ namespace HovelHouse.CloudKit
             }
             set
             {
-                CKOperation_SetPropGroup(Handle, value != null ? HandleRef.ToIntPtr(value.Handle) : IntPtr.Zero);
+                CKOperation_SetPropGroup(Handle, value != null ? HandleRef.ToIntPtr(value.Handle) : IntPtr.Zero, out IntPtr exceptionPtr);
             }
         }
         

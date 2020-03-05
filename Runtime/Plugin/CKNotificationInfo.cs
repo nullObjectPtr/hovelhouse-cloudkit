@@ -46,7 +46,7 @@ namespace HovelHouse.CloudKit
         #else
         [DllImport("HHCloudKit")]
         #endif
-        private static extern void CKNotificationInfo_SetPropCollapseIDKey(HandleRef ptr, string collapseIDKey);
+        private static extern void CKNotificationInfo_SetPropCollapseIDKey(HandleRef ptr, string collapseIDKey, out IntPtr exceptionPtr);
         
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
@@ -60,7 +60,7 @@ namespace HovelHouse.CloudKit
         #else
         [DllImport("HHCloudKit")]
         #endif
-        private static extern void CKNotificationInfo_SetPropShouldBadge(HandleRef ptr, bool shouldBadge);
+        private static extern void CKNotificationInfo_SetPropShouldBadge(HandleRef ptr, bool shouldBadge, out IntPtr exceptionPtr);
         
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
@@ -74,7 +74,7 @@ namespace HovelHouse.CloudKit
         #else
         [DllImport("HHCloudKit")]
         #endif
-        private static extern void CKNotificationInfo_SetPropShouldSendContentAvailable(HandleRef ptr, bool shouldSendContentAvailable);
+        private static extern void CKNotificationInfo_SetPropShouldSendContentAvailable(HandleRef ptr, bool shouldSendContentAvailable, out IntPtr exceptionPtr);
         
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
@@ -88,7 +88,7 @@ namespace HovelHouse.CloudKit
         #else
         [DllImport("HHCloudKit")]
         #endif
-        private static extern void CKNotificationInfo_SetPropShouldSendMutableContent(HandleRef ptr, bool shouldSendMutableContent);
+        private static extern void CKNotificationInfo_SetPropShouldSendMutableContent(HandleRef ptr, bool shouldSendMutableContent, out IntPtr exceptionPtr);
         // TODO: DLLPROPERTYSTRINGARRAY
         
         #endregion
@@ -120,7 +120,7 @@ namespace HovelHouse.CloudKit
             }
             set
             {
-                CKNotificationInfo_SetPropCollapseIDKey(Handle, value);
+                CKNotificationInfo_SetPropCollapseIDKey(Handle, value, out IntPtr exceptionPtr);
             }
         }
         
@@ -133,7 +133,7 @@ namespace HovelHouse.CloudKit
             }
             set
             {
-                CKNotificationInfo_SetPropShouldBadge(Handle, value);
+                CKNotificationInfo_SetPropShouldBadge(Handle, value, out IntPtr exceptionPtr);
             }
         }
         
@@ -146,7 +146,7 @@ namespace HovelHouse.CloudKit
             }
             set
             {
-                CKNotificationInfo_SetPropShouldSendContentAvailable(Handle, value);
+                CKNotificationInfo_SetPropShouldSendContentAvailable(Handle, value, out IntPtr exceptionPtr);
             }
         }
         
@@ -159,7 +159,7 @@ namespace HovelHouse.CloudKit
             }
             set
             {
-                CKNotificationInfo_SetPropShouldSendMutableContent(Handle, value);
+                CKNotificationInfo_SetPropShouldSendMutableContent(Handle, value, out IntPtr exceptionPtr);
             }
         }
         
