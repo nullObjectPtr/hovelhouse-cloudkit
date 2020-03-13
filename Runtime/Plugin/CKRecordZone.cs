@@ -1,7 +1,7 @@
 //
 //  CKRecordZone.cs
 //
-//  Created by Jonathan Culp <jonathanculp@gmail.com> on 03/02/2020
+//  Created by Jonathan Culp <jonathanculp@gmail.com> on 03/13/2020
 //  Copyright © 2020 HovelHouseApps. All rights reserved.
 //  Unauthorized copying of this file, via any medium is strictly prohibited
 //  Proprietary and confidential
@@ -32,7 +32,6 @@ namespace HovelHouse.CloudKit
             out IntPtr exceptionPtr);
         
 
-        // Constructors
         
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
@@ -55,7 +54,6 @@ namespace HovelHouse.CloudKit
             );
         
 
-        // Instance Methods
         
 
         
@@ -76,11 +74,11 @@ namespace HovelHouse.CloudKit
         #endif
         private static extern CKRecordZoneCapabilities CKRecordZone_GetPropCapabilities(HandleRef ptr);
         
+
         #endregion
 
         internal CKRecordZone(IntPtr ptr) : base(ptr) {}
         
-        #region Class Methods
         
         
         public static CKRecordZone DefaultRecordZone()
@@ -98,11 +96,9 @@ namespace HovelHouse.CloudKit
         
 
         
-        #endregion
-
-        #region Constructors
         
-        public static CKRecordZone initWithZoneName(
+        
+        public CKRecordZone(
             string zoneName
             )
         {
@@ -119,11 +115,11 @@ namespace HovelHouse.CloudKit
                 throw new CloudKitException(nativeException, nativeException.Reason);
             }
 
-            return new CKRecordZone(ptr);
+            Handle = new HandleRef(this,ptr);
         }
         
         
-        public static CKRecordZone initWithZoneID(
+        public CKRecordZone(
             CKRecordZoneID zoneID
             )
         {
@@ -140,19 +136,14 @@ namespace HovelHouse.CloudKit
                 throw new CloudKitException(nativeException, nativeException.Reason);
             }
 
-            return new CKRecordZone(ptr);
+            Handle = new HandleRef(this,ptr);
         }
         
         
-        #endregion
 
 
-        #region Methods
         
         
-        #endregion
-
-        #region Properties
         
         public CKRecordZoneID ZoneID 
         {
@@ -172,8 +163,9 @@ namespace HovelHouse.CloudKit
             }
         }
         
-        #endregion
+
         
+
         
         #region IDisposable Support
         #if UNITY_IPHONE || UNITY_TVOS
@@ -185,10 +177,7 @@ namespace HovelHouse.CloudKit
             
         private bool disposedValue = false; // To detect redundant calls
         
-        // No base.Dispose() needed
-        // All we ever do is decrement the reference count in managed code
-        
-        private void Dispose(bool disposing)
+        protected virtual void Dispose(bool disposing)
         {
             if (!disposedValue)
             {

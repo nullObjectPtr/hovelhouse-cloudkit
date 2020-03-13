@@ -1,7 +1,7 @@
 //
 //  CloudKitCallbacks.cs
 //
-//  Created by Jonathan Culp <jonathanculp@gmail.com> on 03/02/2020
+//  Created by Jonathan Culp <jonathanculp@gmail.com> on 03/13/2020
 //  Copyright © 2020 HovelHouseApps. All rights reserved.
 //  Unauthorized copying of this file, via any medium is strictly prohibited
 //  Proprietary and confidential
@@ -139,19 +139,20 @@ namespace HovelHouse.CloudKit
     	IntPtr _record,
     	double _progress);
     
+	public delegate void PerRecordProgressDelegate2(
+        IntPtr _this,
+    	IntPtr _record,
+    	double _progress);
+    
 	public delegate void PerRecordCompletionDelegate(
         IntPtr _this,
     	IntPtr _record,
     	IntPtr _error);
     
-	public delegate void PerRecordIDProgressDelegate(
+	public delegate void PerRecordCompletionDelegate2(
         IntPtr _this,
     	IntPtr _record,
-    	double _progress);
-    
-	public delegate void PerRecordIDCompletionDelegate(
-        IntPtr _this,
-    	IntPtr _record,
+    	IntPtr _recordID,
     	IntPtr _error);
     
 	public delegate void ModifyRecordsCompletionDelegate(
@@ -167,10 +168,6 @@ namespace HovelHouse.CloudKit
 	public delegate void DiscoverAllUserIdentitiesCompletionDelegate(
         IntPtr _this,
     	IntPtr _operationError);
-    
-	public delegate void UserIdentityDiscoveredDelegate(
-        IntPtr _this,
-    	IntPtr _identity);
     
 	public delegate void DiscoverUserIdentitiesCompletionDelegate(
         IntPtr _this,
@@ -219,10 +216,14 @@ namespace HovelHouse.CloudKit
     	bool _moreComing,
     	IntPtr _recordZoneError);
     
-//	public delegate void FetchRecordZonesCompletionDelegate(
-//        IntPtr _this,
-//    	UNSUPPORTED_TYPE _recordZonesByZoneID,
-//    	IntPtr _operationError);
+	public delegate void FetchRecordZonesCompletionDelegate(
+        IntPtr _this,
+    	[MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.SysInt, SizeParamIndex = 3)]
+		IntPtr[] _recordZonesByZoneIDKeys,
+		[MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.SysInt, SizeParamIndex = 3)]
+		IntPtr[] _recordZonesByZoneIDValues,
+		long _recordZonesByZoneIDCount,
+    	IntPtr _operationError);
     
 	public delegate void ModifyRecordZonesCompletionDelegate(
         IntPtr _this,
@@ -244,10 +245,14 @@ namespace HovelHouse.CloudKit
         IntPtr _this,
     	IntPtr _operationError);
     
-//	public delegate void FetchRecordsCompletionDelegate(
-//        IntPtr _this,
-//    	UNSUPPORTED_TYPE _recordsByRecordID,
-//    	IntPtr _operationError);
+	public delegate void FetchRecordsCompletionDelegate(
+        IntPtr _this,
+    	[MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.SysInt, SizeParamIndex = 3)]
+		IntPtr[] _recordsByRecordIDKeys,
+		[MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.SysInt, SizeParamIndex = 3)]
+		IntPtr[] _recordsByRecordIDValues,
+		long _recordsByRecordIDCount,
+    	IntPtr _operationError);
     
 	public delegate void RecordZoneChangeTokensUpdatedDelegate(
         IntPtr _this,
@@ -255,12 +260,12 @@ namespace HovelHouse.CloudKit
     	IntPtr _serverChangeToken,
     	IntPtr _clientChangeTokenData);
     
-	public delegate void UserIdentityDiscoveredDelegate2(
+	public delegate void UserIdentityDiscoveredDelegate(
         IntPtr _this,
     	IntPtr _identity,
     	IntPtr _lookupInfo);
     
-	public delegate void FetchRecordZoneChangesCompletionCallback(
+	public delegate void FetchRecordZoneChangesCompletionDelegate(
         IntPtr _this,
     	IntPtr _operationError);
     
@@ -294,4 +299,9 @@ namespace HovelHouse.CloudKit
         IntPtr _this,
     	IntPtr _record);
     
+
+public delegate void NSUbiquitousKeyValueStoreDidChangeExternallyDelegate(IntPtr observerHandle, long reason, IntPtr changedKeysPtr, long count);
+
+public delegate void NotificationDelegate(IntPtr observerHandle, IntPtr notification);
 }
+

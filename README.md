@@ -62,9 +62,6 @@ No questions yet. Be the first!
 # Road Map
  
 ### P1
-- Fix capitalization mistakes (Breaking Change)
-- Change plugin's static "initWith" functions to proper constructors (Breaking Change)
-- Callback functions for CKFetchRecordsOperation
 - Fix compile warnings
 
 ### P2

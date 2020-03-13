@@ -1,7 +1,7 @@
 //
 //  CKFetchDatabaseChangesOperation.cs
 //
-//  Created by Jonathan Culp <jonathanculp@gmail.com> on 03/02/2020
+//  Created by Jonathan Culp <jonathanculp@gmail.com> on 03/13/2020
 //  Copyright © 2020 HovelHouseApps. All rights reserved.
 //  Unauthorized copying of this file, via any medium is strictly prohibited
 //  Proprietary and confidential
@@ -17,14 +17,13 @@ using UnityEngine;
 
 namespace HovelHouse.CloudKit
 {
-    public class CKFetchDatabaseChangesOperation : CKObject, IDisposable
+    public class CKFetchDatabaseChangesOperation : CKDatabaseOperation, IDisposable
     {
         #region dll
 
         // Class Methods
         
 
-        // Constructors
         
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
@@ -46,7 +45,6 @@ namespace HovelHouse.CloudKit
             );
         
 
-        // Instance Methods
         
 
         
@@ -111,17 +109,29 @@ namespace HovelHouse.CloudKit
         #endif
         private static extern void CKFetchDatabaseChangesOperation_SetPropFetchAllChanges(HandleRef ptr, bool fetchAllChanges, out IntPtr exceptionPtr);
         
+        #if UNITY_IPHONE || UNITY_TVOS
+        [DllImport("__Internal")]
+        #else
+        [DllImport("HHCloudKit")]
+        #endif
+        private static extern ulong CKFetchDatabaseChangesOperation_GetPropResultsLimit(HandleRef ptr);
+        
+        #if UNITY_IPHONE || UNITY_TVOS
+        [DllImport("__Internal")]
+        #else
+        [DllImport("HHCloudKit")]
+        #endif
+        private static extern void CKFetchDatabaseChangesOperation_SetPropResultsLimit(HandleRef ptr, ulong resultsLimit, out IntPtr exceptionPtr);
+        
+
         #endregion
 
         internal CKFetchDatabaseChangesOperation(IntPtr ptr) : base(ptr) {}
         
-        #region Class Methods
         
-        #endregion
-
-        #region Constructors
         
-        public static CKFetchDatabaseChangesOperation init(
+        
+        public CKFetchDatabaseChangesOperation(
             )
         {
             
@@ -134,11 +144,11 @@ namespace HovelHouse.CloudKit
                 throw new CloudKitException(nativeException, nativeException.Reason);
             }
 
-            return new CKFetchDatabaseChangesOperation(ptr);
+            Handle = new HandleRef(this,ptr);
         }
         
         
-        public static CKFetchDatabaseChangesOperation initWithPreviousServerChangeToken(
+        public CKFetchDatabaseChangesOperation(
             CKServerChangeToken previousServerChangeToken
             )
         {
@@ -153,19 +163,14 @@ namespace HovelHouse.CloudKit
                 throw new CloudKitException(nativeException, nativeException.Reason);
             }
 
-            return new CKFetchDatabaseChangesOperation(ptr);
+            Handle = new HandleRef(this,ptr);
         }
         
         
-        #endregion
 
 
-        #region Methods
         
         
-        #endregion
-
-        #region Properties
         
         public Action<CKServerChangeToken> ChangeTokenUpdatedHandler 
         {
@@ -410,8 +415,22 @@ namespace HovelHouse.CloudKit
             }
         }
         
-        #endregion
+        public ulong ResultsLimit 
+        {
+            get 
+            { 
+                ulong resultsLimit = CKFetchDatabaseChangesOperation_GetPropResultsLimit(Handle);
+                return resultsLimit;
+            }
+            set
+            {
+                CKFetchDatabaseChangesOperation_SetPropResultsLimit(Handle, value, out IntPtr exceptionPtr);
+            }
+        }
         
+
+        
+
         
         #region IDisposable Support
         #if UNITY_IPHONE || UNITY_TVOS
@@ -423,10 +442,7 @@ namespace HovelHouse.CloudKit
             
         private bool disposedValue = false; // To detect redundant calls
         
-        // No base.Dispose() needed
-        // All we ever do is decrement the reference count in managed code
-        
-        private void Dispose(bool disposing)
+        protected override void Dispose(bool disposing)
         {
             if (!disposedValue)
             {
@@ -448,7 +464,7 @@ namespace HovelHouse.CloudKit
         }
 
         // This code added to correctly implement the disposable pattern.
-        public void Dispose()
+        public new void Dispose()
         {
             // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
             Dispose(true);
