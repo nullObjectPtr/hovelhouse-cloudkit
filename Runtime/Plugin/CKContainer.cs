@@ -1,7 +1,7 @@
 //
 //  CKContainer.cs
 //
-//  Created by Jonathan Culp <jonathanculp@gmail.com> on 03/02/2020
+//  Created by Jonathan Culp <jonathanculp@gmail.com> on 03/13/2020
 //  Copyright © 2020 HovelHouseApps. All rights reserved.
 //  Unauthorized copying of this file, via any medium is strictly prohibited
 //  Proprietary and confidential
@@ -41,10 +41,8 @@ namespace HovelHouse.CloudKit
             out IntPtr exceptionPtr);
         
 
-        // Constructors
         
 
-        // Instance Methods
         
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
@@ -228,11 +226,26 @@ namespace HovelHouse.CloudKit
         #endif
         private static extern IntPtr CKContainer_GetPropContainerIdentifier(HandleRef ptr);
         
+
+        #if UNITY_IPHONE || UNITY_TVOS
+        [DllImport("__Internal")]
+        #else
+        [DllImport("HHCloudKit")]
+        #endif
+        private static extern IntPtr AddCKAccountChangedNotificationObserver(NotificationDelegate handler, ref IntPtr exceptionPtr);
+
+        #if UNITY_IPHONE || UNITY_TVOS
+        [DllImport("__Internal")]
+        #else
+        [DllImport("HHCloudKit")]
+        #endif
+        private static extern void RemoveCKAccountChangedNotificationObserver(HandleRef observerHandle, ref IntPtr exceptionPtr);
+        
+
         #endregion
 
         internal CKContainer(IntPtr ptr) : base(ptr) {}
         
-        #region Class Methods
         
         
         public static CKContainer DefaultContainer()
@@ -272,14 +285,10 @@ namespace HovelHouse.CloudKit
         
 
         
-        #endregion
-
-        #region Constructors
         
-        #endregion
+        
 
 
-        #region Methods
         
         
         public CKDatabase DatabaseWithDatabaseScope(
@@ -324,7 +333,7 @@ namespace HovelHouse.CloudKit
             
         }
         
-        private static Dictionary<InvocationRecord,Action<string[],NSError>> FetchAllLongLivedOperationIDsWithCompletionHandlerCallbacks = new Dictionary<InvocationRecord,Action<string[],NSError>>();
+        private static readonly Dictionary<InvocationRecord,Action<string[],NSError>> FetchAllLongLivedOperationIDsWithCompletionHandlerCallbacks = new Dictionary<InvocationRecord,Action<string[],NSError>>();
 
         [MonoPInvokeCallback(typeof(CKLongLivedOperationIdsDelegate))]
         private static void FetchAllLongLivedOperationIDsWithCompletionHandlerCallback(IntPtr thisPtr, ulong invocationId, IntPtr[] outstandingOperationIDs,
@@ -364,7 +373,7 @@ namespace HovelHouse.CloudKit
             
         }
         
-        private static Dictionary<InvocationRecord,Action<CKRecordID,NSError>> FetchUserRecordIDWithCompletionHandlerCallbacks = new Dictionary<InvocationRecord,Action<CKRecordID,NSError>>();
+        private static readonly Dictionary<InvocationRecord,Action<CKRecordID,NSError>> FetchUserRecordIDWithCompletionHandlerCallbacks = new Dictionary<InvocationRecord,Action<CKRecordID,NSError>>();
 
         [MonoPInvokeCallback(typeof(CKRecordIDDelegate))]
         private static void FetchUserRecordIDWithCompletionHandlerCallback(IntPtr thisPtr, ulong invocationId, IntPtr _recordID, IntPtr _error)
@@ -409,7 +418,7 @@ namespace HovelHouse.CloudKit
             
         }
         
-        private static Dictionary<InvocationRecord,Action<CKUserIdentity,NSError>> DiscoverUserIdentityWithEmailAddressCallbacks = new Dictionary<InvocationRecord,Action<CKUserIdentity,NSError>>();
+        private static readonly Dictionary<InvocationRecord,Action<CKUserIdentity,NSError>> DiscoverUserIdentityWithEmailAddressCallbacks = new Dictionary<InvocationRecord,Action<CKUserIdentity,NSError>>();
 
         [MonoPInvokeCallback(typeof(UserIdentityDelegate))]
         private static void DiscoverUserIdentityWithEmailAddressCallback(IntPtr thisPtr, ulong invocationId, IntPtr userIdentity, IntPtr error)
@@ -454,7 +463,7 @@ namespace HovelHouse.CloudKit
             
         }
         
-        private static Dictionary<InvocationRecord,Action<CKShareParticipant,NSError>> FetchShareParticipantWithEmailAddressCallbacks = new Dictionary<InvocationRecord,Action<CKShareParticipant,NSError>>();
+        private static readonly Dictionary<InvocationRecord,Action<CKShareParticipant,NSError>> FetchShareParticipantWithEmailAddressCallbacks = new Dictionary<InvocationRecord,Action<CKShareParticipant,NSError>>();
 
         [MonoPInvokeCallback(typeof(CKShareParticipantDelegate))]
         private static void FetchShareParticipantWithEmailAddressCallback(IntPtr thisPtr, ulong invocationId, IntPtr shareParticipant, IntPtr error)
@@ -499,7 +508,7 @@ namespace HovelHouse.CloudKit
             
         }
         
-        private static Dictionary<InvocationRecord,Action<CKShareParticipant,NSError>> FetchShareParticipantWithPhoneNumberCallbacks = new Dictionary<InvocationRecord,Action<CKShareParticipant,NSError>>();
+        private static readonly Dictionary<InvocationRecord,Action<CKShareParticipant,NSError>> FetchShareParticipantWithPhoneNumberCallbacks = new Dictionary<InvocationRecord,Action<CKShareParticipant,NSError>>();
 
         [MonoPInvokeCallback(typeof(CKShareParticipantDelegate))]
         private static void FetchShareParticipantWithPhoneNumberCallback(IntPtr thisPtr, ulong invocationId, IntPtr shareParticipant, IntPtr error)
@@ -544,7 +553,7 @@ namespace HovelHouse.CloudKit
             
         }
         
-        private static Dictionary<InvocationRecord,Action<CKShareParticipant,NSError>> FetchShareParticipantWithUserRecordIDCallbacks = new Dictionary<InvocationRecord,Action<CKShareParticipant,NSError>>();
+        private static readonly Dictionary<InvocationRecord,Action<CKShareParticipant,NSError>> FetchShareParticipantWithUserRecordIDCallbacks = new Dictionary<InvocationRecord,Action<CKShareParticipant,NSError>>();
 
         [MonoPInvokeCallback(typeof(CKShareParticipantDelegate))]
         private static void FetchShareParticipantWithUserRecordIDCallback(IntPtr thisPtr, ulong invocationId, IntPtr shareParticipant, IntPtr error)
@@ -589,7 +598,7 @@ namespace HovelHouse.CloudKit
             
         }
         
-        private static Dictionary<InvocationRecord,Action<CKOperation,NSError>> FetchLongLivedOperationWithIDCallbacks = new Dictionary<InvocationRecord,Action<CKOperation,NSError>>();
+        private static readonly Dictionary<InvocationRecord,Action<CKOperation,NSError>> FetchLongLivedOperationWithIDCallbacks = new Dictionary<InvocationRecord,Action<CKOperation,NSError>>();
 
         [MonoPInvokeCallback(typeof(CKLongLivedOperationDelegate))]
         private static void FetchLongLivedOperationWithIDCallback(IntPtr thisPtr, ulong invocationId, IntPtr operationID, IntPtr error)
@@ -634,7 +643,7 @@ namespace HovelHouse.CloudKit
             
         }
         
-        private static Dictionary<InvocationRecord,Action<CKShare,NSError>> AcceptShareMetadataCallbacks = new Dictionary<InvocationRecord,Action<CKShare,NSError>>();
+        private static readonly Dictionary<InvocationRecord,Action<CKShare,NSError>> AcceptShareMetadataCallbacks = new Dictionary<InvocationRecord,Action<CKShare,NSError>>();
 
         [MonoPInvokeCallback(typeof(CKShareDelegate))]
         private static void AcceptShareMetadataCallback(IntPtr thisPtr, ulong invocationId, IntPtr acceptedShare, IntPtr error)
@@ -677,7 +686,7 @@ namespace HovelHouse.CloudKit
             
         }
         
-        private static Dictionary<InvocationRecord,Action<CKApplicationPermissionStatus,NSError>> RequestApplicationPermissionCallbacks = new Dictionary<InvocationRecord,Action<CKApplicationPermissionStatus,NSError>>();
+        private static readonly Dictionary<InvocationRecord,Action<CKApplicationPermissionStatus,NSError>> RequestApplicationPermissionCallbacks = new Dictionary<InvocationRecord,Action<CKApplicationPermissionStatus,NSError>>();
 
         [MonoPInvokeCallback(typeof(CKApplicationPermissionsDelegate))]
         private static void RequestApplicationPermissionCallback(IntPtr thisPtr, ulong invocationId, CKApplicationPermissionStatus applicationPermissionsStatus, IntPtr error)
@@ -716,7 +725,7 @@ namespace HovelHouse.CloudKit
             
         }
         
-        private static Dictionary<InvocationRecord,Action<CKAccountStatus,NSError>> AccountStatusWithCompletionHandlerCallbacks = new Dictionary<InvocationRecord,Action<CKAccountStatus,NSError>>();
+        private static readonly Dictionary<InvocationRecord,Action<CKAccountStatus,NSError>> AccountStatusWithCompletionHandlerCallbacks = new Dictionary<InvocationRecord,Action<CKAccountStatus,NSError>>();
 
         [MonoPInvokeCallback(typeof(CKAccountStatusDelegate))]
         private static void AccountStatusWithCompletionHandlerCallback(IntPtr thisPtr, ulong invocationId, CKAccountStatus accountStatus, IntPtr error)
@@ -759,7 +768,7 @@ namespace HovelHouse.CloudKit
             
         }
         
-        private static Dictionary<InvocationRecord,Action<CKApplicationPermissionStatus,NSError>> StatusForApplicationPermissionCallbacks = new Dictionary<InvocationRecord,Action<CKApplicationPermissionStatus,NSError>>();
+        private static readonly Dictionary<InvocationRecord,Action<CKApplicationPermissionStatus,NSError>> StatusForApplicationPermissionCallbacks = new Dictionary<InvocationRecord,Action<CKApplicationPermissionStatus,NSError>>();
 
         [MonoPInvokeCallback(typeof(CKApplicationPermissionsDelegate))]
         private static void StatusForApplicationPermissionCallback(IntPtr thisPtr, ulong invocationId, CKApplicationPermissionStatus applicationPermissionsStatus, IntPtr error)
@@ -826,7 +835,7 @@ namespace HovelHouse.CloudKit
             
         }
         
-        private static Dictionary<InvocationRecord,Action<CKShareMetadata,NSError>> FetchShareMetadataWithURLCallbacks = new Dictionary<InvocationRecord,Action<CKShareMetadata,NSError>>();
+        private static readonly Dictionary<InvocationRecord,Action<CKShareMetadata,NSError>> FetchShareMetadataWithURLCallbacks = new Dictionary<InvocationRecord,Action<CKShareMetadata,NSError>>();
 
         [MonoPInvokeCallback(typeof(CKShareMetadataDelegate))]
         private static void FetchShareMetadataWithURLCallback(IntPtr thisPtr, ulong invocationId, IntPtr metadata, IntPtr error)
@@ -844,9 +853,6 @@ namespace HovelHouse.CloudKit
         
 
         
-        #endregion
-
-        #region Properties
         
         public CKDatabase PrivateCloudDatabase 
         {
@@ -884,8 +890,54 @@ namespace HovelHouse.CloudKit
             }
         }
         
-        #endregion
+
         
+        private static readonly Dictionary<IntPtr,Action<NSNotification>> AccountChangedNotificationHandlers = new Dictionary<IntPtr,Action<NSNotification>>();
+
+        [MonoPInvokeCallback(typeof(NotificationDelegate))]
+        private static void CKAccountChangedNotificationStaticHandler(IntPtr ptr, IntPtr notification)
+        {
+            Action<NSNotification> handler = null;
+            if(AccountChangedNotificationHandlers.TryGetValue(ptr, out handler))
+            {
+                Dispatcher.Instance.EnqueueOnMainThread(() => {
+                    handler.Invoke(ptr == IntPtr.Zero ? null : new NSNotification(notification));
+                });
+            }
+        }
+
+        public static Unsubscriber AddAccountChangedNotificationObserver(Action<NSNotification> observer)
+        {
+            IntPtr exceptionPtr = IntPtr.Zero;
+
+            IntPtr observerHandle = AddCKAccountChangedNotificationObserver(CKAccountChangedNotificationStaticHandler, ref exceptionPtr);
+            
+            if(exceptionPtr != IntPtr.Zero)
+            {
+                var nativeException = new NSException(exceptionPtr);
+                throw new CloudKitException(nativeException, nativeException.Reason);
+            }
+
+            AccountChangedNotificationHandlers[observerHandle] = observer;
+
+            return observerHandle == IntPtr.Zero ? null : new Unsubscriber(observerHandle);
+        }
+        
+        public static void RemoveAccountChangedNotificationObserver(Unsubscriber unsubscriber)
+        {
+            IntPtr exceptionPtr = IntPtr.Zero;
+            RemoveCKAccountChangedNotificationObserver(unsubscriber.Handle, ref exceptionPtr);
+
+            if(exceptionPtr != IntPtr.Zero)
+            {
+                var nativeException = new NSException(exceptionPtr);
+                throw new CloudKitException(nativeException, nativeException.Reason);
+            }
+
+            AccountChangedNotificationHandlers.Remove(HandleRef.ToIntPtr(unsubscriber.Handle));
+        }
+        
+
         
         #region IDisposable Support
         #if UNITY_IPHONE || UNITY_TVOS
@@ -897,10 +949,7 @@ namespace HovelHouse.CloudKit
             
         private bool disposedValue = false; // To detect redundant calls
         
-        // No base.Dispose() needed
-        // All we ever do is decrement the reference count in managed code
-        
-        private void Dispose(bool disposing)
+        protected virtual void Dispose(bool disposing)
         {
             if (!disposedValue)
             {

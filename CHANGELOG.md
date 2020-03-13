@@ -6,6 +6,17 @@ All notable changes to this project will be documented in this file.
 - Change plugin's static "initWith" functions to proper constructors (Breaking Change)
 - Callback functions for CKFetchRecordsOperation
 
+## [0.2.0] - 2020-03-13
+### Added
+- Added support and examples for ubiquitous key value stores (see NSFileManager and NSUbiquitousKeyValueStore)
+- Added account status change notifications and examples
+- Implemented more event handlers for less commonly used CKOperations
+
+### Changed
+- Fixed bugs where some database and container operations did not subclass from CKOperation or CKDatabaseOperation
+- Converted static initWith methods to Constructors (breaking change)
+- Fixed an issue where concrete classes with concrete parent classes were not property disposed (CKShare)
+
 ## [0.1.2] - 2020-03-05
 ### Added
 - Post process build step to automatically add the appropriate CloudKit entilements and capabilities the xcode project

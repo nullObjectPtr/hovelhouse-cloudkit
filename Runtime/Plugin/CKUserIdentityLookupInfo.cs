@@ -1,7 +1,7 @@
 //
 //  CKUserIdentityLookupInfo.cs
 //
-//  Created by Jonathan Culp <jonathanculp@gmail.com> on 03/02/2020
+//  Created by Jonathan Culp <jonathanculp@gmail.com> on 03/13/2020
 //  Copyright © 2020 HovelHouseApps. All rights reserved.
 //  Unauthorized copying of this file, via any medium is strictly prohibited
 //  Proprietary and confidential
@@ -24,7 +24,6 @@ namespace HovelHouse.CloudKit
         // Class Methods
         
 
-        // Constructors
         
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
@@ -41,23 +40,12 @@ namespace HovelHouse.CloudKit
         #else
         [DllImport("HHCloudKit")]
         #endif
-        private static extern IntPtr CKUserIdentityLookupInfo_initWithPhoneNumber(
-            string phoneNumber, 
-            out IntPtr exceptionPtr
-            );
-        
-        #if UNITY_IPHONE || UNITY_TVOS
-        [DllImport("__Internal")]
-        #else
-        [DllImport("HHCloudKit")]
-        #endif
         private static extern IntPtr CKUserIdentityLookupInfo_initWithUserRecordID(
             IntPtr userRecordID, 
             out IntPtr exceptionPtr
             );
         
 
-        // Instance Methods
         
 
         
@@ -85,17 +73,15 @@ namespace HovelHouse.CloudKit
         #endif
         private static extern IntPtr CKUserIdentityLookupInfo_GetPropUserRecordID(HandleRef ptr);
         
+
         #endregion
 
         internal CKUserIdentityLookupInfo(IntPtr ptr) : base(ptr) {}
         
-        #region Class Methods
         
-        #endregion
-
-        #region Constructors
         
-        public static CKUserIdentityLookupInfo initWithEmailAddress(
+        
+        public CKUserIdentityLookupInfo(
             string emailAddress
             )
         {
@@ -112,32 +98,11 @@ namespace HovelHouse.CloudKit
                 throw new CloudKitException(nativeException, nativeException.Reason);
             }
 
-            return new CKUserIdentityLookupInfo(ptr);
+            Handle = new HandleRef(this,ptr);
         }
         
         
-        public static CKUserIdentityLookupInfo initWithPhoneNumber(
-            string phoneNumber
-            )
-        {
-            if(phoneNumber == null)
-                throw new ArgumentNullException(nameof(phoneNumber));
-            
-            IntPtr ptr = CKUserIdentityLookupInfo_initWithPhoneNumber(
-                phoneNumber, 
-                out IntPtr exceptionPtr);
-
-            if(exceptionPtr != IntPtr.Zero)
-            {
-                var nativeException = new NSException(exceptionPtr);
-                throw new CloudKitException(nativeException, nativeException.Reason);
-            }
-
-            return new CKUserIdentityLookupInfo(ptr);
-        }
-        
-        
-        public static CKUserIdentityLookupInfo initWithUserRecordID(
+        public CKUserIdentityLookupInfo(
             CKRecordID userRecordID
             )
         {
@@ -154,19 +119,14 @@ namespace HovelHouse.CloudKit
                 throw new CloudKitException(nativeException, nativeException.Reason);
             }
 
-            return new CKUserIdentityLookupInfo(ptr);
+            Handle = new HandleRef(this,ptr);
         }
         
         
-        #endregion
 
 
-        #region Methods
         
         
-        #endregion
-
-        #region Properties
         
         public string EmailAddress 
         {
@@ -195,8 +155,9 @@ namespace HovelHouse.CloudKit
             }
         }
         
-        #endregion
+
         
+
         
         #region IDisposable Support
         #if UNITY_IPHONE || UNITY_TVOS
@@ -208,10 +169,7 @@ namespace HovelHouse.CloudKit
             
         private bool disposedValue = false; // To detect redundant calls
         
-        // No base.Dispose() needed
-        // All we ever do is decrement the reference count in managed code
-        
-        private void Dispose(bool disposing)
+        protected virtual void Dispose(bool disposing)
         {
             if (!disposedValue)
             {

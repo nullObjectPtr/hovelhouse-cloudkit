@@ -1,7 +1,7 @@
 //
 //  CKOperation.cs
 //
-//  Created by Jonathan Culp <jonathanculp@gmail.com> on 03/02/2020
+//  Created by Jonathan Culp <jonathanculp@gmail.com> on 03/13/2020
 //  Copyright © 2020 HovelHouseApps. All rights reserved.
 //  Unauthorized copying of this file, via any medium is strictly prohibited
 //  Proprietary and confidential
@@ -17,26 +17,15 @@ using UnityEngine;
 
 namespace HovelHouse.CloudKit
 {
-    public class CKOperation : CKObject
+    public class CKOperation : CKObject, IDisposable
     {
         #region dll
 
         // Class Methods
         
 
-        // Constructors
-        
-        #if UNITY_IPHONE || UNITY_TVOS
-        [DllImport("__Internal")]
-        #else
-        [DllImport("HHCloudKit")]
-        #endif
-        private static extern IntPtr CKOperation_init(
-            out IntPtr exceptionPtr
-            );
         
 
-        // Instance Methods
         
 
         
@@ -78,42 +67,19 @@ namespace HovelHouse.CloudKit
         #endif
         private static extern void CKOperation_SetPropGroup(HandleRef ptr, IntPtr group, out IntPtr exceptionPtr);
         
+
         #endregion
 
         internal CKOperation(IntPtr ptr) : base(ptr) {}
-        
-        #region Class Methods
-        
-        #endregion
-
-        #region Constructors
-        
-        public static CKOperation init(
-            )
-        {
-            
-            IntPtr ptr = CKOperation_init(
-                out IntPtr exceptionPtr);
-
-            if(exceptionPtr != IntPtr.Zero)
-            {
-                var nativeException = new NSException(exceptionPtr);
-                throw new CloudKitException(nativeException, nativeException.Reason);
-            }
-
-            return new CKOperation(ptr);
-        }
+        internal CKOperation(){}
         
         
-        #endregion
+        
+        
 
 
-        #region Methods
         
         
-        #endregion
-
-        #region Properties
         
         public CKOperationConfiguration Configuration 
         {
@@ -150,8 +116,49 @@ namespace HovelHouse.CloudKit
             }
         }
         
-        #endregion
+
         
+
+        
+        #region IDisposable Support
+        #if UNITY_IPHONE || UNITY_TVOS
+        [DllImport("__Internal")]
+        #else
+        [DllImport("HHCloudKit")]
+        #endif
+        private static extern void CKOperation_Dispose(HandleRef handle);
+            
+        private bool disposedValue = false; // To detect redundant calls
+        
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    // TODO: dispose managed state (managed objects).
+                }
+                
+                //Debug.Log("CKOperation Dispose");
+                CKOperation_Dispose(Handle);
+                disposedValue = true;
+            }
+        }
+
+        ~CKOperation()
+        {
+            // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+            Dispose(false);
+        }
+
+        // This code added to correctly implement the disposable pattern.
+        public void Dispose()
+        {
+            // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+        #endregion
         
     }
 }
