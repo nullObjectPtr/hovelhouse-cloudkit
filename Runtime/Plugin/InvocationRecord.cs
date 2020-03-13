@@ -1,25 +1,28 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-/// <summary>
-/// A dictionary key used to lookup callback instances
-/// </summary>
-public struct InvocationRecord
+namespace HovelHouse.CloudKit
 {
-    public readonly IntPtr ptr;
-    public readonly ulong id;
-
-    static ulong next = 0;
-
-    public InvocationRecord(HandleRef handle)
+    /// <summary>
+    /// A dictionary key used to lookup callback instances
+    /// </summary>
+    public struct InvocationRecord
     {
-        this.ptr = HandleRef.ToIntPtr(handle);
-        id = next++;
-    }
+        public readonly IntPtr ptr;
+        public readonly ulong id;
 
-    public InvocationRecord(IntPtr ptr, ulong id)
-    {
-        this.ptr = ptr;
-        this.id = id;
+        static ulong next = 0;
+
+        public InvocationRecord(HandleRef handle)
+        {
+            this.ptr = HandleRef.ToIntPtr(handle);
+            id = next++;
+        }
+
+        public InvocationRecord(IntPtr ptr, ulong id)
+        {
+            this.ptr = ptr;
+            this.id = id;
+        }
     }
 }

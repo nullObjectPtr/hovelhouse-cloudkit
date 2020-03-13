@@ -1,7 +1,7 @@
 //
 //  CKDatabase.cs
 //
-//  Created by Jonathan Culp <jonathanculp@gmail.com> on 03/02/2020
+//  Created by Jonathan Culp <jonathanculp@gmail.com> on 03/13/2020
 //  Copyright © 2020 HovelHouseApps. All rights reserved.
 //  Unauthorized copying of this file, via any medium is strictly prohibited
 //  Proprietary and confidential
@@ -24,10 +24,8 @@ namespace HovelHouse.CloudKit
         // Class Methods
         
 
-        // Constructors
         
 
-        // Instance Methods
         
 
         
@@ -182,20 +180,16 @@ namespace HovelHouse.CloudKit
         #endif
         private static extern CKDatabaseScope CKDatabase_GetPropDatabaseScope(HandleRef ptr);
         
+
         #endregion
 
         internal CKDatabase(IntPtr ptr) : base(ptr) {}
         
-        #region Class Methods
         
-        #endregion
-
-        #region Constructors
         
-        #endregion
+        
 
 
-        #region Methods
         
         
         
@@ -247,7 +241,7 @@ namespace HovelHouse.CloudKit
             
         }
         
-        private static Dictionary<InvocationRecord,Action<CKRecord,NSError>> FetchRecordWithIDCallbacks = new Dictionary<InvocationRecord,Action<CKRecord,NSError>>();
+        private static readonly Dictionary<InvocationRecord,Action<CKRecord,NSError>> FetchRecordWithIDCallbacks = new Dictionary<InvocationRecord,Action<CKRecord,NSError>>();
 
         [MonoPInvokeCallback(typeof(CKRecordDelegate))]
         private static void FetchRecordWithIDCallback(IntPtr thisPtr, ulong invocationId, IntPtr _record, IntPtr _error)
@@ -292,7 +286,7 @@ namespace HovelHouse.CloudKit
             
         }
         
-        private static Dictionary<InvocationRecord,Action<CKRecord,NSError>> SaveRecordCallbacks = new Dictionary<InvocationRecord,Action<CKRecord,NSError>>();
+        private static readonly Dictionary<InvocationRecord,Action<CKRecord,NSError>> SaveRecordCallbacks = new Dictionary<InvocationRecord,Action<CKRecord,NSError>>();
 
         [MonoPInvokeCallback(typeof(CKRecordDelegate))]
         private static void SaveRecordCallback(IntPtr thisPtr, ulong invocationId, IntPtr _record, IntPtr _error)
@@ -337,7 +331,7 @@ namespace HovelHouse.CloudKit
             
         }
         
-        private static Dictionary<InvocationRecord,Action<CKRecordID,NSError>> DeleteRecordWithIDCallbacks = new Dictionary<InvocationRecord,Action<CKRecordID,NSError>>();
+        private static readonly Dictionary<InvocationRecord,Action<CKRecordID,NSError>> DeleteRecordWithIDCallbacks = new Dictionary<InvocationRecord,Action<CKRecordID,NSError>>();
 
         [MonoPInvokeCallback(typeof(CKRecordIDDelegate))]
         private static void DeleteRecordWithIDCallback(IntPtr thisPtr, ulong invocationId, IntPtr _recordID, IntPtr _error)
@@ -382,7 +376,7 @@ namespace HovelHouse.CloudKit
             
         }
         
-        private static Dictionary<InvocationRecord,Action<CKRecordZone,NSError>> FetchRecordZoneWithIDCallbacks = new Dictionary<InvocationRecord,Action<CKRecordZone,NSError>>();
+        private static readonly Dictionary<InvocationRecord,Action<CKRecordZone,NSError>> FetchRecordZoneWithIDCallbacks = new Dictionary<InvocationRecord,Action<CKRecordZone,NSError>>();
 
         [MonoPInvokeCallback(typeof(CKRecordZoneDelegate))]
         private static void FetchRecordZoneWithIDCallback(IntPtr thisPtr, ulong invocationId, IntPtr recordZone, IntPtr error)
@@ -427,7 +421,7 @@ namespace HovelHouse.CloudKit
             
         }
         
-        private static Dictionary<InvocationRecord,Action<CKRecordZone,NSError>> SaveRecordZoneCallbacks = new Dictionary<InvocationRecord,Action<CKRecordZone,NSError>>();
+        private static readonly Dictionary<InvocationRecord,Action<CKRecordZone,NSError>> SaveRecordZoneCallbacks = new Dictionary<InvocationRecord,Action<CKRecordZone,NSError>>();
 
         [MonoPInvokeCallback(typeof(CKRecordZoneDelegate))]
         private static void SaveRecordZoneCallback(IntPtr thisPtr, ulong invocationId, IntPtr recordZone, IntPtr error)
@@ -472,7 +466,7 @@ namespace HovelHouse.CloudKit
             
         }
         
-        private static Dictionary<InvocationRecord,Action<CKRecordZoneID,NSError>> DeleteRecordZoneWithIDCallbacks = new Dictionary<InvocationRecord,Action<CKRecordZoneID,NSError>>();
+        private static readonly Dictionary<InvocationRecord,Action<CKRecordZoneID,NSError>> DeleteRecordZoneWithIDCallbacks = new Dictionary<InvocationRecord,Action<CKRecordZoneID,NSError>>();
 
         [MonoPInvokeCallback(typeof(CKRecordZoneIDDelegate))]
         private static void DeleteRecordZoneWithIDCallback(IntPtr thisPtr, ulong invocationId, IntPtr recordZoneID, IntPtr error)
@@ -517,7 +511,7 @@ namespace HovelHouse.CloudKit
             
         }
         
-        private static Dictionary<InvocationRecord,Action<CKSubscription,NSError>> FetchSubscriptionWithIDCallbacks = new Dictionary<InvocationRecord,Action<CKSubscription,NSError>>();
+        private static readonly Dictionary<InvocationRecord,Action<CKSubscription,NSError>> FetchSubscriptionWithIDCallbacks = new Dictionary<InvocationRecord,Action<CKSubscription,NSError>>();
 
         [MonoPInvokeCallback(typeof(CKSubscriptionDelegate))]
         private static void FetchSubscriptionWithIDCallback(IntPtr thisPtr, ulong invocationId, IntPtr _subscription, IntPtr _error)
@@ -562,7 +556,7 @@ namespace HovelHouse.CloudKit
             
         }
         
-        private static Dictionary<InvocationRecord,Action<CKSubscription,NSError>> SaveSubscriptionCallbacks = new Dictionary<InvocationRecord,Action<CKSubscription,NSError>>();
+        private static readonly Dictionary<InvocationRecord,Action<CKSubscription,NSError>> SaveSubscriptionCallbacks = new Dictionary<InvocationRecord,Action<CKSubscription,NSError>>();
 
         [MonoPInvokeCallback(typeof(CKSubscriptionDelegate))]
         private static void SaveSubscriptionCallback(IntPtr thisPtr, ulong invocationId, IntPtr _subscription, IntPtr _error)
@@ -607,7 +601,7 @@ namespace HovelHouse.CloudKit
             
         }
         
-        private static Dictionary<InvocationRecord,Action<string,NSError>> DeleteSubscriptionWithIDCallbacks = new Dictionary<InvocationRecord,Action<string,NSError>>();
+        private static readonly Dictionary<InvocationRecord,Action<string,NSError>> DeleteSubscriptionWithIDCallbacks = new Dictionary<InvocationRecord,Action<string,NSError>>();
 
         [MonoPInvokeCallback(typeof(NSStringDelegate))]
         private static void DeleteSubscriptionWithIDCallback(IntPtr thisPtr, ulong invocationId, IntPtr str, IntPtr error)
@@ -646,7 +640,7 @@ namespace HovelHouse.CloudKit
             
         }
         
-        private static Dictionary<InvocationRecord,Action<CKSubscription[],NSError>> FetchAllSubscriptionsWithCompletionHandlerCallbacks = new Dictionary<InvocationRecord,Action<CKSubscription[],NSError>>();
+        private static readonly Dictionary<InvocationRecord,Action<CKSubscription[],NSError>> FetchAllSubscriptionsWithCompletionHandlerCallbacks = new Dictionary<InvocationRecord,Action<CKSubscription[],NSError>>();
 
         [MonoPInvokeCallback(typeof(CKSubscriptionArrayDelegate))]
         private static void FetchAllSubscriptionsWithCompletionHandlerCallback(IntPtr thisPtr, ulong invocationId, IntPtr[] _subscriptionArr,
@@ -686,7 +680,7 @@ namespace HovelHouse.CloudKit
             
         }
         
-        private static Dictionary<InvocationRecord,Action<CKRecordZone[],NSError>> FetchAllRecordZonesWithCompletionHandlerCallbacks = new Dictionary<InvocationRecord,Action<CKRecordZone[],NSError>>();
+        private static readonly Dictionary<InvocationRecord,Action<CKRecordZone[],NSError>> FetchAllRecordZonesWithCompletionHandlerCallbacks = new Dictionary<InvocationRecord,Action<CKRecordZone[],NSError>>();
 
         [MonoPInvokeCallback(typeof(CKRecordZoneListDelegate))]
         private static void FetchAllRecordZonesWithCompletionHandlerCallback(IntPtr thisPtr, ulong invocationId, IntPtr[] _recordZones,
@@ -736,7 +730,7 @@ namespace HovelHouse.CloudKit
             
         }
         
-        private static Dictionary<InvocationRecord,Action<CKRecord[],NSError>> PerformQueryCallbacks = new Dictionary<InvocationRecord,Action<CKRecord[],NSError>>();
+        private static readonly Dictionary<InvocationRecord,Action<CKRecord[],NSError>> PerformQueryCallbacks = new Dictionary<InvocationRecord,Action<CKRecord[],NSError>>();
 
         [MonoPInvokeCallback(typeof(CKRecordListDelegate))]
         private static void PerformQueryCallback(IntPtr thisPtr, ulong invocationId, IntPtr[] _recordID,
@@ -755,9 +749,6 @@ namespace HovelHouse.CloudKit
         
 
         
-        #endregion
-
-        #region Properties
         
         public CKDatabaseScope DatabaseScope 
         {
@@ -768,8 +759,9 @@ namespace HovelHouse.CloudKit
             }
         }
         
-        #endregion
+
         
+
         
         #region IDisposable Support
         #if UNITY_IPHONE || UNITY_TVOS
@@ -781,10 +773,7 @@ namespace HovelHouse.CloudKit
             
         private bool disposedValue = false; // To detect redundant calls
         
-        // No base.Dispose() needed
-        // All we ever do is decrement the reference count in managed code
-        
-        private void Dispose(bool disposing)
+        protected virtual void Dispose(bool disposing)
         {
             if (!disposedValue)
             {

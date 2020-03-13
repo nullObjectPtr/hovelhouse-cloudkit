@@ -1,7 +1,7 @@
 //
 //  CKFetchShareMetadataOperation.cs
 //
-//  Created by Jonathan Culp <jonathanculp@gmail.com> on 03/02/2020
+//  Created by Jonathan Culp <jonathanculp@gmail.com> on 03/13/2020
 //  Copyright © 2020 HovelHouseApps. All rights reserved.
 //  Unauthorized copying of this file, via any medium is strictly prohibited
 //  Proprietary and confidential
@@ -17,14 +17,13 @@ using UnityEngine;
 
 namespace HovelHouse.CloudKit
 {
-    public class CKFetchShareMetadataOperation : CKObject, IDisposable
+    public class CKFetchShareMetadataOperation : CKOperation, IDisposable
     {
         #region dll
 
         // Class Methods
         
 
-        // Constructors
         
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
@@ -48,7 +47,6 @@ namespace HovelHouse.CloudKit
             );
         
 
-        // Instance Methods
         
 
         
@@ -97,17 +95,15 @@ namespace HovelHouse.CloudKit
         #endif
         private static extern void CKFetchShareMetadataOperation_SetPropPerShareMetadataHandler(HandleRef ptr, PerShareMetadataDelegate perShareMetadataHandler, out IntPtr exceptionPtr);
         
+
         #endregion
 
         internal CKFetchShareMetadataOperation(IntPtr ptr) : base(ptr) {}
         
-        #region Class Methods
         
-        #endregion
-
-        #region Constructors
         
-        public static CKFetchShareMetadataOperation init(
+        
+        public CKFetchShareMetadataOperation(
             )
         {
             
@@ -120,11 +116,11 @@ namespace HovelHouse.CloudKit
                 throw new CloudKitException(nativeException, nativeException.Reason);
             }
 
-            return new CKFetchShareMetadataOperation(ptr);
+            Handle = new HandleRef(this,ptr);
         }
         
         
-        public static CKFetchShareMetadataOperation initWithShareURLs(
+        public CKFetchShareMetadataOperation(
             NSURL[] shareURLs
             )
         {
@@ -142,19 +138,14 @@ namespace HovelHouse.CloudKit
                 throw new CloudKitException(nativeException, nativeException.Reason);
             }
 
-            return new CKFetchShareMetadataOperation(ptr);
+            Handle = new HandleRef(this,ptr);
         }
         
         
-        #endregion
 
 
-        #region Methods
         
         
-        #endregion
-
-        #region Properties
         
         public bool ShouldFetchRootRecord 
         {
@@ -184,7 +175,7 @@ namespace HovelHouse.CloudKit
 
                 for (int i = 0; i < bufferLen; i++)
                 {
-                    IntPtr ptr2 = Marshal.ReadIntPtr(bufferPtr + (i * 8));
+                    IntPtr ptr2 = Marshal.ReadIntPtr(bufferPtr + (i * IntPtr.Size));
                     shareURLs[i] = ptr2 == IntPtr.Zero ? null : new NSURL(ptr2);
                 }
 
@@ -294,8 +285,9 @@ namespace HovelHouse.CloudKit
         }
 
         
-        #endregion
+
         
+
         
         #region IDisposable Support
         #if UNITY_IPHONE || UNITY_TVOS
@@ -307,10 +299,7 @@ namespace HovelHouse.CloudKit
             
         private bool disposedValue = false; // To detect redundant calls
         
-        // No base.Dispose() needed
-        // All we ever do is decrement the reference count in managed code
-        
-        private void Dispose(bool disposing)
+        protected override void Dispose(bool disposing)
         {
             if (!disposedValue)
             {
@@ -332,7 +321,7 @@ namespace HovelHouse.CloudKit
         }
 
         // This code added to correctly implement the disposable pattern.
-        public void Dispose()
+        public new void Dispose()
         {
             // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
             Dispose(true);

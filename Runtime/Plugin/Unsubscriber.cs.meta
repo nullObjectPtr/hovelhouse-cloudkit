@@ -1,0 +1,8 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class Unsubscriber : CKObject
+{
+    public Unsubscriber(IntPtr ptr) : base(ptr)
+}

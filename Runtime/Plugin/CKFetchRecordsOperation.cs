@@ -1,7 +1,7 @@
 //
 //  CKFetchRecordsOperation.cs
 //
-//  Created by Jonathan Culp <jonathanculp@gmail.com> on 03/02/2020
+//  Created by Jonathan Culp <jonathanculp@gmail.com> on 03/13/2020
 //  Copyright © 2020 HovelHouseApps. All rights reserved.
 //  Unauthorized copying of this file, via any medium is strictly prohibited
 //  Proprietary and confidential
@@ -32,7 +32,6 @@ namespace HovelHouse.CloudKit
             out IntPtr exceptionPtr);
         
 
-        // Constructors
         
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
@@ -56,7 +55,6 @@ namespace HovelHouse.CloudKit
             );
         
 
-        // Instance Methods
         
 
         
@@ -78,12 +76,30 @@ namespace HovelHouse.CloudKit
         private static extern void CKFetchRecordsOperation_SetPropRecordIDs(HandleRef ptr, IntPtr[] recordIDs,
 			int recordIDsCount, out IntPtr exceptionPtr);
         // TODO: DLLPROPERTYSTRINGARRAY
+        #if UNITY_IPHONE || UNITY_TVOS
+        [DllImport("__Internal")]
+        #else
+        [DllImport("HHCloudKit")]
+        #endif
+        private static extern void CKFetchRecordsOperation_SetPropFetchRecordsCompletionHandler(HandleRef ptr, FetchRecordsCompletionDelegate fetchRecordsCompletionHandler, out IntPtr exceptionPtr);
+        #if UNITY_IPHONE || UNITY_TVOS
+        [DllImport("__Internal")]
+        #else
+        [DllImport("HHCloudKit")]
+        #endif
+        private static extern void CKFetchRecordsOperation_SetPropPerRecordCompletionHandler(HandleRef ptr, PerRecordCompletionDelegate2 perRecordCompletionHandler, out IntPtr exceptionPtr);
+        #if UNITY_IPHONE || UNITY_TVOS
+        [DllImport("__Internal")]
+        #else
+        [DllImport("HHCloudKit")]
+        #endif
+        private static extern void CKFetchRecordsOperation_SetPropProgressHandler(HandleRef ptr, PerRecordProgressDelegate2 progressHandler, out IntPtr exceptionPtr);
         
+
         #endregion
 
         internal CKFetchRecordsOperation(IntPtr ptr) : base(ptr) {}
         
-        #region Class Methods
         
         
         public static CKFetchRecordsOperation FetchCurrentUserRecordOperation()
@@ -101,11 +117,9 @@ namespace HovelHouse.CloudKit
         
 
         
-        #endregion
-
-        #region Constructors
         
-        public static CKFetchRecordsOperation init(
+        
+        public CKFetchRecordsOperation(
             )
         {
             
@@ -118,11 +132,11 @@ namespace HovelHouse.CloudKit
                 throw new CloudKitException(nativeException, nativeException.Reason);
             }
 
-            return new CKFetchRecordsOperation(ptr);
+            Handle = new HandleRef(this,ptr);
         }
         
         
-        public static CKFetchRecordsOperation initWithRecordIDs(
+        public CKFetchRecordsOperation(
             CKRecordID[] recordIDs
             )
         {
@@ -140,19 +154,14 @@ namespace HovelHouse.CloudKit
                 throw new CloudKitException(nativeException, nativeException.Reason);
             }
 
-            return new CKFetchRecordsOperation(ptr);
+            Handle = new HandleRef(this,ptr);
         }
         
         
-        #endregion
 
 
-        #region Methods
         
         
-        #endregion
-
-        #region Properties
         
         public CKRecordID[] RecordIDs 
         {
@@ -167,7 +176,7 @@ namespace HovelHouse.CloudKit
 
                 for (int i = 0; i < bufferLen; i++)
                 {
-                    IntPtr ptr2 = Marshal.ReadIntPtr(bufferPtr + (i * 8));
+                    IntPtr ptr2 = Marshal.ReadIntPtr(bufferPtr + (i * IntPtr.Size));
                     recordIDs[i] = ptr2 == IntPtr.Zero ? null : new CKRecordID(ptr2);
                 }
 
@@ -191,8 +200,146 @@ namespace HovelHouse.CloudKit
         
         // TODO: PROPERTYSTRINGARRAY
         
-        #endregion
+        public Action<Dictionary<CKRecordID,CKRecord>,NSError> FetchRecordsCompletionHandler 
+        {
+            get 
+            {
+                Action<Dictionary<CKRecordID,CKRecord>,NSError> value;
+                FetchRecordsCompletionHandlerCallbacks.TryGetValue(HandleRef.ToIntPtr(Handle), out value);
+                return value;
+            }    
+            set 
+            {
+                IntPtr myPtr = HandleRef.ToIntPtr(Handle);
+                if(value == null)
+                {
+                    FetchRecordsCompletionHandlerCallbacks.Remove(myPtr);
+                }
+                else
+                {
+                    FetchRecordsCompletionHandlerCallbacks[myPtr] = value;
+                }
+                CKFetchRecordsOperation_SetPropFetchRecordsCompletionHandler(Handle, FetchRecordsCompletionHandlerCallback, out IntPtr exceptionPtr);
+
+                if(exceptionPtr != IntPtr.Zero)
+                {
+                    var nativeException = new NSException(exceptionPtr);
+                    throw new CloudKitException(nativeException, nativeException.Reason);
+                }
+            }
+        }
+
+        private static readonly Dictionary<IntPtr,Action<Dictionary<CKRecordID,CKRecord>,NSError>> FetchRecordsCompletionHandlerCallbacks = new Dictionary<IntPtr,Action<Dictionary<CKRecordID,CKRecord>,NSError>>();
+
+        [MonoPInvokeCallback(typeof(FetchRecordsCompletionDelegate))]
+        private static void FetchRecordsCompletionHandlerCallback(IntPtr thisPtr, [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.SysInt, SizeParamIndex = 3)]
+		IntPtr[] _recordsByRecordIDKeys,
+		[MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.SysInt, SizeParamIndex = 3)]
+		IntPtr[] _recordsByRecordIDValues,
+		long _recordsByRecordIDCount, IntPtr _operationError)
+        {
+            if(FetchRecordsCompletionHandlerCallbacks.TryGetValue(thisPtr, out Action<Dictionary<CKRecordID,CKRecord>,NSError> callback))
+            {
+                Dispatcher.Instance.EnqueueOnMainThread(() => 
+                    callback(
+                        _recordsByRecordIDKeys.Zip(_recordsByRecordIDValues, (k, v) => ( k == IntPtr.Zero ? null : new CKRecordID(k), v == IntPtr.Zero ? null : new CKRecord(v) )).ToDictionary(item => item.Item1, item => item.Item2),
+                        _operationError == IntPtr.Zero ? null : new NSError(_operationError)));
+            }
+        }
+
         
+        public Action<CKRecord,CKRecordID,NSError> PerRecordCompletionHandler 
+        {
+            get 
+            {
+                Action<CKRecord,CKRecordID,NSError> value;
+                PerRecordCompletionHandlerCallbacks.TryGetValue(HandleRef.ToIntPtr(Handle), out value);
+                return value;
+            }    
+            set 
+            {
+                IntPtr myPtr = HandleRef.ToIntPtr(Handle);
+                if(value == null)
+                {
+                    PerRecordCompletionHandlerCallbacks.Remove(myPtr);
+                }
+                else
+                {
+                    PerRecordCompletionHandlerCallbacks[myPtr] = value;
+                }
+                CKFetchRecordsOperation_SetPropPerRecordCompletionHandler(Handle, PerRecordCompletionHandlerCallback, out IntPtr exceptionPtr);
+
+                if(exceptionPtr != IntPtr.Zero)
+                {
+                    var nativeException = new NSException(exceptionPtr);
+                    throw new CloudKitException(nativeException, nativeException.Reason);
+                }
+            }
+        }
+
+        private static readonly Dictionary<IntPtr,Action<CKRecord,CKRecordID,NSError>> PerRecordCompletionHandlerCallbacks = new Dictionary<IntPtr,Action<CKRecord,CKRecordID,NSError>>();
+
+        [MonoPInvokeCallback(typeof(PerRecordCompletionDelegate2))]
+        private static void PerRecordCompletionHandlerCallback(IntPtr thisPtr, IntPtr _record, IntPtr _recordID, IntPtr _error)
+        {
+            if(PerRecordCompletionHandlerCallbacks.TryGetValue(thisPtr, out Action<CKRecord,CKRecordID,NSError> callback))
+            {
+                Dispatcher.Instance.EnqueueOnMainThread(() => 
+                    callback(
+                        _record == IntPtr.Zero ? null : new CKRecord(_record),
+                        _recordID == IntPtr.Zero ? null : new CKRecordID(_recordID),
+                        _error == IntPtr.Zero ? null : new NSError(_error)));
+            }
+        }
+
+        
+        public Action<CKRecordID,double> ProgressHandler 
+        {
+            get 
+            {
+                Action<CKRecordID,double> value;
+                ProgressHandlerCallbacks.TryGetValue(HandleRef.ToIntPtr(Handle), out value);
+                return value;
+            }    
+            set 
+            {
+                IntPtr myPtr = HandleRef.ToIntPtr(Handle);
+                if(value == null)
+                {
+                    ProgressHandlerCallbacks.Remove(myPtr);
+                }
+                else
+                {
+                    ProgressHandlerCallbacks[myPtr] = value;
+                }
+                CKFetchRecordsOperation_SetPropProgressHandler(Handle, ProgressHandlerCallback, out IntPtr exceptionPtr);
+
+                if(exceptionPtr != IntPtr.Zero)
+                {
+                    var nativeException = new NSException(exceptionPtr);
+                    throw new CloudKitException(nativeException, nativeException.Reason);
+                }
+            }
+        }
+
+        private static readonly Dictionary<IntPtr,Action<CKRecordID,double>> ProgressHandlerCallbacks = new Dictionary<IntPtr,Action<CKRecordID,double>>();
+
+        [MonoPInvokeCallback(typeof(PerRecordProgressDelegate2))]
+        private static void ProgressHandlerCallback(IntPtr thisPtr, IntPtr _record, double _progress)
+        {
+            if(ProgressHandlerCallbacks.TryGetValue(thisPtr, out Action<CKRecordID,double> callback))
+            {
+                Dispatcher.Instance.EnqueueOnMainThread(() => 
+                    callback(
+                        _record == IntPtr.Zero ? null : new CKRecordID(_record),
+                        _progress));
+            }
+        }
+
+        
+
+        
+
         
         #region IDisposable Support
         #if UNITY_IPHONE || UNITY_TVOS
@@ -204,10 +351,7 @@ namespace HovelHouse.CloudKit
             
         private bool disposedValue = false; // To detect redundant calls
         
-        // No base.Dispose() needed
-        // All we ever do is decrement the reference count in managed code
-        
-        private void Dispose(bool disposing)
+        protected override void Dispose(bool disposing)
         {
             if (!disposedValue)
             {
@@ -229,7 +373,7 @@ namespace HovelHouse.CloudKit
         }
 
         // This code added to correctly implement the disposable pattern.
-        public void Dispose()
+        public new void Dispose()
         {
             // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
             Dispose(true);

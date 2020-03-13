@@ -1,7 +1,7 @@
 //
 //  CKDiscoverUserIdentitiesOperation.cs
 //
-//  Created by Jonathan Culp <jonathanculp@gmail.com> on 03/02/2020
+//  Created by Jonathan Culp <jonathanculp@gmail.com> on 03/13/2020
 //  Copyright © 2020 HovelHouseApps. All rights reserved.
 //  Unauthorized copying of this file, via any medium is strictly prohibited
 //  Proprietary and confidential
@@ -17,14 +17,13 @@ using UnityEngine;
 
 namespace HovelHouse.CloudKit
 {
-    public class CKDiscoverUserIdentitiesOperation : CKObject, IDisposable
+    public class CKDiscoverUserIdentitiesOperation : CKOperation, IDisposable
     {
         #region dll
 
         // Class Methods
         
 
-        // Constructors
         
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
@@ -48,7 +47,6 @@ namespace HovelHouse.CloudKit
             );
         
 
-        // Instance Methods
         
 
         
@@ -74,19 +72,23 @@ namespace HovelHouse.CloudKit
         #else
         [DllImport("HHCloudKit")]
         #endif
+        private static extern void CKDiscoverUserIdentitiesOperation_SetPropUserIdentityDiscoveredHandler(HandleRef ptr, UserIdentityDiscoveredDelegate userIdentityDiscoveredHandler, out IntPtr exceptionPtr);
+        #if UNITY_IPHONE || UNITY_TVOS
+        [DllImport("__Internal")]
+        #else
+        [DllImport("HHCloudKit")]
+        #endif
         private static extern void CKDiscoverUserIdentitiesOperation_SetPropDiscoverUserIdentitiesCompletionHandler(HandleRef ptr, DiscoverUserIdentitiesCompletionDelegate discoverUserIdentitiesCompletionHandler, out IntPtr exceptionPtr);
         
+
         #endregion
 
         internal CKDiscoverUserIdentitiesOperation(IntPtr ptr) : base(ptr) {}
         
-        #region Class Methods
         
-        #endregion
-
-        #region Constructors
         
-        public static CKDiscoverUserIdentitiesOperation init(
+        
+        public CKDiscoverUserIdentitiesOperation(
             )
         {
             
@@ -99,11 +101,11 @@ namespace HovelHouse.CloudKit
                 throw new CloudKitException(nativeException, nativeException.Reason);
             }
 
-            return new CKDiscoverUserIdentitiesOperation(ptr);
+            Handle = new HandleRef(this,ptr);
         }
         
         
-        public static CKDiscoverUserIdentitiesOperation initWithUserIdentityLookupInfos(
+        public CKDiscoverUserIdentitiesOperation(
             CKUserIdentityLookupInfo[] userIdentityLookupInfos
             )
         {
@@ -121,19 +123,14 @@ namespace HovelHouse.CloudKit
                 throw new CloudKitException(nativeException, nativeException.Reason);
             }
 
-            return new CKDiscoverUserIdentitiesOperation(ptr);
+            Handle = new HandleRef(this,ptr);
         }
         
         
-        #endregion
 
 
-        #region Methods
         
         
-        #endregion
-
-        #region Properties
         
         public CKUserIdentityLookupInfo[] UserIdentityLookupInfos 
         {
@@ -148,7 +145,7 @@ namespace HovelHouse.CloudKit
 
                 for (int i = 0; i < bufferLen; i++)
                 {
-                    IntPtr ptr2 = Marshal.ReadIntPtr(bufferPtr + (i * 8));
+                    IntPtr ptr2 = Marshal.ReadIntPtr(bufferPtr + (i * IntPtr.Size));
                     userIdentityLookupInfos[i] = ptr2 == IntPtr.Zero ? null : new CKUserIdentityLookupInfo(ptr2);
                 }
 
@@ -166,6 +163,50 @@ namespace HovelHouse.CloudKit
                     var nativeException = new NSException(exceptionPtr);
                     throw new CloudKitException(nativeException, nativeException.Reason);
                 }
+            }
+        }
+
+        
+        public Action<CKUserIdentity,CKUserIdentityLookupInfo> UserIdentityDiscoveredHandler 
+        {
+            get 
+            {
+                Action<CKUserIdentity,CKUserIdentityLookupInfo> value;
+                UserIdentityDiscoveredHandlerCallbacks.TryGetValue(HandleRef.ToIntPtr(Handle), out value);
+                return value;
+            }    
+            set 
+            {
+                IntPtr myPtr = HandleRef.ToIntPtr(Handle);
+                if(value == null)
+                {
+                    UserIdentityDiscoveredHandlerCallbacks.Remove(myPtr);
+                }
+                else
+                {
+                    UserIdentityDiscoveredHandlerCallbacks[myPtr] = value;
+                }
+                CKDiscoverUserIdentitiesOperation_SetPropUserIdentityDiscoveredHandler(Handle, UserIdentityDiscoveredHandlerCallback, out IntPtr exceptionPtr);
+
+                if(exceptionPtr != IntPtr.Zero)
+                {
+                    var nativeException = new NSException(exceptionPtr);
+                    throw new CloudKitException(nativeException, nativeException.Reason);
+                }
+            }
+        }
+
+        private static readonly Dictionary<IntPtr,Action<CKUserIdentity,CKUserIdentityLookupInfo>> UserIdentityDiscoveredHandlerCallbacks = new Dictionary<IntPtr,Action<CKUserIdentity,CKUserIdentityLookupInfo>>();
+
+        [MonoPInvokeCallback(typeof(UserIdentityDiscoveredDelegate))]
+        private static void UserIdentityDiscoveredHandlerCallback(IntPtr thisPtr, IntPtr _identity, IntPtr _lookupInfo)
+        {
+            if(UserIdentityDiscoveredHandlerCallbacks.TryGetValue(thisPtr, out Action<CKUserIdentity,CKUserIdentityLookupInfo> callback))
+            {
+                Dispatcher.Instance.EnqueueOnMainThread(() => 
+                    callback(
+                        _identity == IntPtr.Zero ? null : new CKUserIdentity(_identity),
+                        _lookupInfo == IntPtr.Zero ? null : new CKUserIdentityLookupInfo(_lookupInfo)));
             }
         }
 
@@ -213,8 +254,9 @@ namespace HovelHouse.CloudKit
         }
 
         
-        #endregion
+
         
+
         
         #region IDisposable Support
         #if UNITY_IPHONE || UNITY_TVOS
@@ -226,10 +268,7 @@ namespace HovelHouse.CloudKit
             
         private bool disposedValue = false; // To detect redundant calls
         
-        // No base.Dispose() needed
-        // All we ever do is decrement the reference count in managed code
-        
-        private void Dispose(bool disposing)
+        protected override void Dispose(bool disposing)
         {
             if (!disposedValue)
             {
@@ -251,7 +290,7 @@ namespace HovelHouse.CloudKit
         }
 
         // This code added to correctly implement the disposable pattern.
-        public void Dispose()
+        public new void Dispose()
         {
             // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
             Dispose(true);

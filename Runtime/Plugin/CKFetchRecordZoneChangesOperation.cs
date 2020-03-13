@@ -1,7 +1,7 @@
 //
 //  CKFetchRecordZoneChangesOperation.cs
 //
-//  Created by Jonathan Culp <jonathanculp@gmail.com> on 03/02/2020
+//  Created by Jonathan Culp <jonathanculp@gmail.com> on 03/13/2020
 //  Copyright © 2020 HovelHouseApps. All rights reserved.
 //  Unauthorized copying of this file, via any medium is strictly prohibited
 //  Proprietary and confidential
@@ -17,14 +17,13 @@ using UnityEngine;
 
 namespace HovelHouse.CloudKit
 {
-    public class CKFetchRecordZoneChangesOperation : CKObject, IDisposable
+    public class CKFetchRecordZoneChangesOperation : CKDatabaseOperation, IDisposable
     {
         #region dll
 
         // Class Methods
         
 
-        // Constructors
         
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
@@ -36,12 +35,23 @@ namespace HovelHouse.CloudKit
             );
         
 
-        // Instance Methods
         
 
         
 
         // Properties
+        #if UNITY_IPHONE || UNITY_TVOS
+        [DllImport("__Internal")]
+        #else
+        [DllImport("HHCloudKit")]
+        #endif
+        private static extern void CKFetchRecordZoneChangesOperation_SetPropRecordChangedHandler(HandleRef ptr, RecordChangedDelegate recordChangedHandler, out IntPtr exceptionPtr);
+        #if UNITY_IPHONE || UNITY_TVOS
+        [DllImport("__Internal")]
+        #else
+        [DllImport("HHCloudKit")]
+        #endif
+        private static extern void CKFetchRecordZoneChangesOperation_SetPropFetchRecordZoneChangesCompletionHandler(HandleRef ptr, FetchRecordZoneChangesCompletionDelegate fetchRecordZoneChangesCompletionHandler, out IntPtr exceptionPtr);
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
         #else
@@ -78,17 +88,15 @@ namespace HovelHouse.CloudKit
         private static extern void CKFetchRecordZoneChangesOperation_SetPropRecordZoneIDs(HandleRef ptr, IntPtr[] recordZoneIDs,
 			int recordZoneIDsCount, out IntPtr exceptionPtr);
         
+
         #endregion
 
         internal CKFetchRecordZoneChangesOperation(IntPtr ptr) : base(ptr) {}
         
-        #region Class Methods
         
-        #endregion
-
-        #region Constructors
         
-        public static CKFetchRecordZoneChangesOperation init(
+        
+        public CKFetchRecordZoneChangesOperation(
             )
         {
             
@@ -101,19 +109,100 @@ namespace HovelHouse.CloudKit
                 throw new CloudKitException(nativeException, nativeException.Reason);
             }
 
-            return new CKFetchRecordZoneChangesOperation(ptr);
+            Handle = new HandleRef(this,ptr);
         }
         
         
-        #endregion
 
 
-        #region Methods
         
         
-        #endregion
+        
+        public Action<CKRecord> RecordChangedHandler 
+        {
+            get 
+            {
+                Action<CKRecord> value;
+                RecordChangedHandlerCallbacks.TryGetValue(HandleRef.ToIntPtr(Handle), out value);
+                return value;
+            }    
+            set 
+            {
+                IntPtr myPtr = HandleRef.ToIntPtr(Handle);
+                if(value == null)
+                {
+                    RecordChangedHandlerCallbacks.Remove(myPtr);
+                }
+                else
+                {
+                    RecordChangedHandlerCallbacks[myPtr] = value;
+                }
+                CKFetchRecordZoneChangesOperation_SetPropRecordChangedHandler(Handle, RecordChangedHandlerCallback, out IntPtr exceptionPtr);
 
-        #region Properties
+                if(exceptionPtr != IntPtr.Zero)
+                {
+                    var nativeException = new NSException(exceptionPtr);
+                    throw new CloudKitException(nativeException, nativeException.Reason);
+                }
+            }
+        }
+
+        private static readonly Dictionary<IntPtr,Action<CKRecord>> RecordChangedHandlerCallbacks = new Dictionary<IntPtr,Action<CKRecord>>();
+
+        [MonoPInvokeCallback(typeof(RecordChangedDelegate))]
+        private static void RecordChangedHandlerCallback(IntPtr thisPtr, IntPtr _record)
+        {
+            if(RecordChangedHandlerCallbacks.TryGetValue(thisPtr, out Action<CKRecord> callback))
+            {
+                Dispatcher.Instance.EnqueueOnMainThread(() => 
+                    callback(
+                        _record == IntPtr.Zero ? null : new CKRecord(_record)));
+            }
+        }
+
+        
+        public Action<NSError> FetchRecordZoneChangesCompletionHandler 
+        {
+            get 
+            {
+                Action<NSError> value;
+                FetchRecordZoneChangesCompletionHandlerCallbacks.TryGetValue(HandleRef.ToIntPtr(Handle), out value);
+                return value;
+            }    
+            set 
+            {
+                IntPtr myPtr = HandleRef.ToIntPtr(Handle);
+                if(value == null)
+                {
+                    FetchRecordZoneChangesCompletionHandlerCallbacks.Remove(myPtr);
+                }
+                else
+                {
+                    FetchRecordZoneChangesCompletionHandlerCallbacks[myPtr] = value;
+                }
+                CKFetchRecordZoneChangesOperation_SetPropFetchRecordZoneChangesCompletionHandler(Handle, FetchRecordZoneChangesCompletionHandlerCallback, out IntPtr exceptionPtr);
+
+                if(exceptionPtr != IntPtr.Zero)
+                {
+                    var nativeException = new NSException(exceptionPtr);
+                    throw new CloudKitException(nativeException, nativeException.Reason);
+                }
+            }
+        }
+
+        private static readonly Dictionary<IntPtr,Action<NSError>> FetchRecordZoneChangesCompletionHandlerCallbacks = new Dictionary<IntPtr,Action<NSError>>();
+
+        [MonoPInvokeCallback(typeof(FetchRecordZoneChangesCompletionDelegate))]
+        private static void FetchRecordZoneChangesCompletionHandlerCallback(IntPtr thisPtr, IntPtr _operationError)
+        {
+            if(FetchRecordZoneChangesCompletionHandlerCallbacks.TryGetValue(thisPtr, out Action<NSError> callback))
+            {
+                Dispatcher.Instance.EnqueueOnMainThread(() => 
+                    callback(
+                        _operationError == IntPtr.Zero ? null : new NSError(_operationError)));
+            }
+        }
+
         
         public Action<CKRecordID,string> RecordWithIDWasDeletedHandler 
         {
@@ -185,7 +274,7 @@ namespace HovelHouse.CloudKit
 
                 for (int i = 0; i < bufferLen; i++)
                 {
-                    IntPtr ptr2 = Marshal.ReadIntPtr(bufferPtr + (i * 8));
+                    IntPtr ptr2 = Marshal.ReadIntPtr(bufferPtr + (i * IntPtr.Size));
                     recordZoneIDs[i] = ptr2 == IntPtr.Zero ? null : new CKRecordZoneID(ptr2);
                 }
 
@@ -207,8 +296,9 @@ namespace HovelHouse.CloudKit
         }
 
         
-        #endregion
+
         
+
         
         #region IDisposable Support
         #if UNITY_IPHONE || UNITY_TVOS
@@ -220,10 +310,7 @@ namespace HovelHouse.CloudKit
             
         private bool disposedValue = false; // To detect redundant calls
         
-        // No base.Dispose() needed
-        // All we ever do is decrement the reference count in managed code
-        
-        private void Dispose(bool disposing)
+        protected override void Dispose(bool disposing)
         {
             if (!disposedValue)
             {
@@ -245,7 +332,7 @@ namespace HovelHouse.CloudKit
         }
 
         // This code added to correctly implement the disposable pattern.
-        public void Dispose()
+        public new void Dispose()
         {
             // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
             Dispose(true);
