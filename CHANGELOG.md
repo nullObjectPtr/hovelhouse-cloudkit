@@ -2,9 +2,13 @@
 All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
-- Fix capitalization mistakes (Breaking Change)
-- Change plugin's static "initWith" functions to proper constructors (Breaking Change)
-- Callback functions for CKFetchRecordsOperation
+
+## [0.2.1] - 2020-03-30
+### Added
+- Added some basic documentation to C# API
+- Updated readme with links to support, formus and web documentaiton.
+### Changed
+- Fixed issue where libraries prevented an app from being archived if BitCode was enabled in build settings
 
 ## [0.2.0] - 2020-03-13
 ### Added

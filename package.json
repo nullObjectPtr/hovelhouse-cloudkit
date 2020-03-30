@@ -1,6 +1,6 @@
 {
 	"name":"com.hovelhouse.cloudkit",
-	"version":"0.2.0",
+	"version":"0.2.1",
 	"displayName":"Cloud Kit Plugin",
 	"description":"An Apple Arcade ready CloudKit plugin for iOS, macOS and TVOS",
 	"unity":"2018.4",
@@ -20,7 +20,7 @@
 	"author":
 	{
 		"name":"Jonathan Culp",
-		"email":"jonathanculp@gmail.com",
+		"email":"support@hovelhouse.com",
 		"url":"http://www.hovelhouse.com/"
 	},
     "samples":

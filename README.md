@@ -6,6 +6,13 @@ The plugin was written specifically with Apple Arcade in mind. It is a thin wrap
 If you got your cloud saves working with either of those plugins and didn't need access to things like CKRecord's ChangeToken then good on you! But if you were aggravated that you didn't have access to more advanced functions than this plugin is for you. It's aim is to be as close as possible to writing the equivalent in objective-c and makes very few assumptions and how you intend to use it. It simply marshals your data to the appropriate API calls.
  
 The CloudKit plugin is a work in progress. While the majority of the API is covered. Some of it is not yet (some things are more difficult to marshal than others). These will become available shortly. I welcome your feedback on what to prioritize.
+
+# Support
+## Forums
+Support is handled mainly via the forums: http://www.hovelhouse.com/forums but you are welcome to send an e-mail directly to us at support@hovelhouse.com
+
+## Documentation
+Some rudimentary web documentation is available here: http://www.hovelhouse.com/docs. It's thin on explanations, but it does provide an outline of which API methods are currently covered. For the moment, if you need explanations of what the various API methods do please refer to the apple documentation: https://developer.apple.com/documentation/cloudkit?language=objc By and large, the method names and parameters will be the same. 
  
 # Setup
  
@@ -62,23 +69,21 @@ No questions yet. Be the first!
 # Road Map
  
 ### P1
-- Fix compile warnings
+* Get continuous integration up and running with UnityCloudBuild
+* Unit tests for everything
+* Better documentation
+* Tutorials
+* A script or instructions for making a MacOS build
 
 ### P2
-* Get continuous integration up and running with UnityCloudBuild
 * Use weak references for storing property callbacks
 * Reuse existing C# instances instead of creating new when possible
 * Support field arrays in CKRecord
 * Remove the type-specific Set(Type)ForKey and replace them with overloaded versions of SetObjectForKey (Breaking Change)
 * Array support for CKRecord's setObject forKey methods
-* Figure out where example scenes are supposed to live, if you're not supposed to have scenes in packages.
  
 ### P3
-* Support website
-* Unit tests for everything
 * Better code examples
-* Tutorials
-* Automated documentation
  
 ### P4
 * Add classes / methods not supported on TVOS, and conditionally compile them out of TVOS
