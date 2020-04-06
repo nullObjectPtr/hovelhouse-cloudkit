@@ -1,7 +1,7 @@
 //
 //  CKFetchRecordZonesOperation.cs
 //
-//  Created by Jonathan Culp <jonathanculp@gmail.com> on 03/13/2020
+//  Created by Jonathan Culp <jonathanculp@gmail.com> on 03/26/2020
 //  Copyright © 2020 HovelHouseApps. All rights reserved.
 //  Unauthorized copying of this file, via any medium is strictly prohibited
 //  Proprietary and confidential
@@ -17,6 +17,9 @@ using UnityEngine;
 
 namespace HovelHouse.CloudKit
 {
+    /// <summary>
+    /// A database operation that fetches the available zones on the database
+    /// </summary>
     public class CKFetchRecordZonesOperation : CKDatabaseOperation, IDisposable
     {
         #region dll
@@ -88,7 +91,10 @@ namespace HovelHouse.CloudKit
         internal CKFetchRecordZonesOperation(IntPtr ptr) : base(ptr) {}
         
         
-        
+        /// <summary>
+        /// </summary>
+        /// 
+        /// <returns>val</returns>
         public static CKFetchRecordZonesOperation FetchAllRecordZonesOperation()
         { 
             var val = CKFetchRecordZonesOperation_fetchAllRecordZonesOperation(out IntPtr exceptionPtr);
@@ -150,7 +156,8 @@ namespace HovelHouse.CloudKit
         
         
         
-        public CKRecordZoneID[] RecordZoneIDs 
+        /// <value>RecordZoneIDs</value>
+        public CKRecordZoneID[] RecordZoneIDs
         {
             get 
             { 
@@ -185,7 +192,8 @@ namespace HovelHouse.CloudKit
         }
 
         
-        public Action<Dictionary<CKRecordZoneID,CKRecordZone>,NSError> FetchRecordZonesCompletionHandler 
+        /// <value>FetchRecordZonesCompletionHandler</value>
+        public Action<Dictionary<CKRecordZoneID,CKRecordZone>,NSError> FetchRecordZonesCompletionHandler
         {
             get 
             {

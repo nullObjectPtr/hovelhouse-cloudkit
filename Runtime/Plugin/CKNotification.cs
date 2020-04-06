@@ -1,7 +1,7 @@
 //
 //  CKNotification.cs
 //
-//  Created by Jonathan Culp <jonathanculp@gmail.com> on 03/13/2020
+//  Created by Jonathan Culp <jonathanculp@gmail.com> on 03/26/2020
 //  Copyright © 2020 HovelHouseApps. All rights reserved.
 //  Unauthorized copying of this file, via any medium is strictly prohibited
 //  Proprietary and confidential
@@ -17,6 +17,9 @@ using UnityEngine;
 
 namespace HovelHouse.CloudKit
 {
+    /// <summary>
+    /// A push notification sent to the app
+    /// </summary>
     public class CKNotification : CKObject, IDisposable
     {
         #region dll
@@ -80,7 +83,8 @@ namespace HovelHouse.CloudKit
         
         
         
-        public CKNotificationID NotificationID 
+        /// <value>NotificationID</value>
+        public CKNotificationID NotificationID
         {
             get 
             { 
@@ -88,8 +92,10 @@ namespace HovelHouse.CloudKit
                 return notificationID == IntPtr.Zero ? null : new CKNotificationID(notificationID);
             }
         }
+
         
-        public CKNotificationType NotificationType 
+        /// <value>NotificationType</value>
+        public CKNotificationType NotificationType
         {
             get 
             { 
@@ -97,8 +103,10 @@ namespace HovelHouse.CloudKit
                 return notificationType;
             }
         }
+
         
-        public string ContainerIdentifier 
+        /// <value>ContainerIdentifier</value>
+        public string ContainerIdentifier
         {
             get 
             { 
@@ -106,8 +114,10 @@ namespace HovelHouse.CloudKit
                 return Marshal.PtrToStringAuto(containerIdentifier);
             }
         }
+
         
-        public bool IsPruned 
+        /// <value>IsPruned</value>
+        public bool IsPruned
         {
             get 
             { 
@@ -115,8 +125,10 @@ namespace HovelHouse.CloudKit
                 return isPruned;
             }
         }
+
         
-        public string SubscriptionID 
+        /// <value>SubscriptionID</value>
+        public string SubscriptionID
         {
             get 
             { 
@@ -124,6 +136,7 @@ namespace HovelHouse.CloudKit
                 return Marshal.PtrToStringAuto(subscriptionID);
             }
         }
+
         
 
         

@@ -1,7 +1,7 @@
 //
 //  CKModifyRecordZonesOperation.cs
 //
-//  Created by Jonathan Culp <jonathanculp@gmail.com> on 03/13/2020
+//  Created by Jonathan Culp <jonathanculp@gmail.com> on 03/26/2020
 //  Copyright © 2020 HovelHouseApps. All rights reserved.
 //  Unauthorized copying of this file, via any medium is strictly prohibited
 //  Proprietary and confidential
@@ -17,6 +17,9 @@ using UnityEngine;
 
 namespace HovelHouse.CloudKit
 {
+    /// <summary>
+    /// A database operation that can simultaneously save and delete record zones
+    /// </summary>
     public class CKModifyRecordZonesOperation : CKDatabaseOperation, IDisposable
     {
         #region dll
@@ -145,7 +148,8 @@ namespace HovelHouse.CloudKit
         
         
         
-        public Action<CKRecordZone[],CKRecordZoneID[],NSError> ModifyRecordZonesCompletionHandler 
+        /// <value>ModifyRecordZonesCompletionHandler</value>
+        public Action<CKRecordZone[],CKRecordZoneID[],NSError> ModifyRecordZonesCompletionHandler
         {
             get 
             {
@@ -192,7 +196,8 @@ namespace HovelHouse.CloudKit
         }
 
         
-        public CKRecordZone[] RecordZonesToSave 
+        /// <value>RecordZonesToSave</value>
+        public CKRecordZone[] RecordZonesToSave
         {
             get 
             { 
@@ -227,7 +232,8 @@ namespace HovelHouse.CloudKit
         }
 
         
-        public CKRecordZoneID[] RecordZoneIDsToDelete 
+        /// <value>RecordZoneIDsToDelete</value>
+        public CKRecordZoneID[] RecordZoneIDsToDelete
         {
             get 
             { 

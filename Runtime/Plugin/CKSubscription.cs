@@ -1,7 +1,7 @@
 //
 //  CKSubscription.cs
 //
-//  Created by Jonathan Culp <jonathanculp@gmail.com> on 03/13/2020
+//  Created by Jonathan Culp <jonathanculp@gmail.com> on 03/26/2020
 //  Copyright © 2020 HovelHouseApps. All rights reserved.
 //  Unauthorized copying of this file, via any medium is strictly prohibited
 //  Proprietary and confidential
@@ -17,6 +17,9 @@ using UnityEngine;
 
 namespace HovelHouse.CloudKit
 {
+    /// <summary>
+    /// Represents a subscription to a push notification
+    /// </summary>
     public class CKSubscription : CKObject, IDisposable
     {
         #region dll
@@ -74,7 +77,8 @@ namespace HovelHouse.CloudKit
         
         
         
-        public CKNotificationInfo NotificationInfo 
+        /// <value>NotificationInfo</value>
+        public CKNotificationInfo NotificationInfo
         {
             get 
             { 
@@ -86,8 +90,10 @@ namespace HovelHouse.CloudKit
                 CKSubscription_SetPropNotificationInfo(Handle, value != null ? HandleRef.ToIntPtr(value.Handle) : IntPtr.Zero, out IntPtr exceptionPtr);
             }
         }
+
         
-        public CKSubscriptionType SubscriptionType 
+        /// <value>SubscriptionType</value>
+        public CKSubscriptionType SubscriptionType
         {
             get 
             { 
@@ -95,8 +101,10 @@ namespace HovelHouse.CloudKit
                 return subscriptionType;
             }
         }
+
         
-        public string SubscriptionID 
+        /// <value>SubscriptionID</value>
+        public string SubscriptionID
         {
             get 
             { 
@@ -104,6 +112,7 @@ namespace HovelHouse.CloudKit
                 return Marshal.PtrToStringAuto(subscriptionID);
             }
         }
+
         
 
         

@@ -1,7 +1,7 @@
 //
 //  CKReference.cs
 //
-//  Created by Jonathan Culp <jonathanculp@gmail.com> on 03/13/2020
+//  Created by Jonathan Culp <jonathanculp@gmail.com> on 03/26/2020
 //  Copyright © 2020 HovelHouseApps. All rights reserved.
 //  Unauthorized copying of this file, via any medium is strictly prohibited
 //  Proprietary and confidential
@@ -17,6 +17,12 @@ using UnityEngine;
 
 namespace HovelHouse.CloudKit
 {
+    /// <summary>
+    /// A record field type that can be used to create relationships between records in a database
+    /// </summary>
+    /// <remarks>
+    /// You can create relationships between two records in the database using CKReferences. There are useful in modeling parent-&gt;child relationships between records and you can even configure theres references to auto-delete children if their parents are deleted.
+    /// </remarks>
     public class CKReference : CKObject, IDisposable
     {
         #region dll
@@ -127,7 +133,8 @@ namespace HovelHouse.CloudKit
         
         
         
-        public CKReferenceAction ReferenceAction 
+        /// <value>ReferenceAction</value>
+        public CKReferenceAction ReferenceAction
         {
             get 
             { 
@@ -135,8 +142,10 @@ namespace HovelHouse.CloudKit
                 return referenceAction;
             }
         }
+
         
-        public CKRecordID RecordID 
+        /// <value>RecordID</value>
+        public CKRecordID RecordID
         {
             get 
             { 
@@ -144,6 +153,7 @@ namespace HovelHouse.CloudKit
                 return recordID == IntPtr.Zero ? null : new CKRecordID(recordID);
             }
         }
+
         
 
         

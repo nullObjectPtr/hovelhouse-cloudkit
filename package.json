@@ -1,6 +1,6 @@
 {
 	"name":"com.hovelhouse.cloudkit",
-	"version":"0.2.1",
+	"version":"0.2.2",
 	"displayName":"Cloud Kit Plugin",
 	"description":"An Apple Arcade ready CloudKit plugin for iOS, macOS and TVOS",
 	"unity":"2018.4",

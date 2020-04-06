@@ -1,7 +1,7 @@
 //
 //  CKShareParticipant.cs
 //
-//  Created by Jonathan Culp <jonathanculp@gmail.com> on 03/13/2020
+//  Created by Jonathan Culp <jonathanculp@gmail.com> on 03/26/2020
 //  Copyright © 2020 HovelHouseApps. All rights reserved.
 //  Unauthorized copying of this file, via any medium is strictly prohibited
 //  Proprietary and confidential
@@ -17,6 +17,9 @@ using UnityEngine;
 
 namespace HovelHouse.CloudKit
 {
+    /// <summary>
+    /// A user that is participating in a shared record
+    /// </summary>
     public class CKShareParticipant : CKObject, IDisposable
     {
         #region dll
@@ -87,7 +90,8 @@ namespace HovelHouse.CloudKit
         
         
         
-        public CKShareParticipantAcceptanceStatus AcceptanceStatus 
+        /// <value>AcceptanceStatus</value>
+        public CKShareParticipantAcceptanceStatus AcceptanceStatus
         {
             get 
             { 
@@ -95,8 +99,10 @@ namespace HovelHouse.CloudKit
                 return acceptanceStatus;
             }
         }
+
         
-        public CKShareParticipantPermission Permission 
+        /// <value>Permission</value>
+        public CKShareParticipantPermission Permission
         {
             get 
             { 
@@ -108,8 +114,10 @@ namespace HovelHouse.CloudKit
                 CKShareParticipant_SetPropPermission(Handle, (long) value, out IntPtr exceptionPtr);
             }
         }
+
         
-        public CKUserIdentity UserIdentity 
+        /// <value>UserIdentity</value>
+        public CKUserIdentity UserIdentity
         {
             get 
             { 
@@ -117,8 +125,10 @@ namespace HovelHouse.CloudKit
                 return userIdentity == IntPtr.Zero ? null : new CKUserIdentity(userIdentity);
             }
         }
+
         
-        public CKShareParticipantRole Role 
+        /// <value>Role</value>
+        public CKShareParticipantRole Role
         {
             get 
             { 
@@ -130,6 +140,7 @@ namespace HovelHouse.CloudKit
                 CKShareParticipant_SetPropRole(Handle, (long) value, out IntPtr exceptionPtr);
             }
         }
+
         
 
         

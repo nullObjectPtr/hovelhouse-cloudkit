@@ -2,6 +2,11 @@
 All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
+- Unit tests
+
+## [0.2.2] - 2020-04-04
+### Added
+- A post process build script that handles MacOS signing
 
 ## [0.2.1] - 2020-03-30
 ### Added

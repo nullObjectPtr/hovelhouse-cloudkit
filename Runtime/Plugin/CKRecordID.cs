@@ -1,7 +1,7 @@
 //
 //  CKRecordID.cs
 //
-//  Created by Jonathan Culp <jonathanculp@gmail.com> on 03/13/2020
+//  Created by Jonathan Culp <jonathanculp@gmail.com> on 03/26/2020
 //  Copyright © 2020 HovelHouseApps. All rights reserved.
 //  Unauthorized copying of this file, via any medium is strictly prohibited
 //  Proprietary and confidential
@@ -17,6 +17,9 @@ using UnityEngine;
 
 namespace HovelHouse.CloudKit
 {
+    /// <summary>
+    /// Uniquely identifies a record in a CloudKit database
+    /// </summary>
     public class CKRecordID : CKObject, IDisposable
     {
         #region dll
@@ -126,7 +129,8 @@ namespace HovelHouse.CloudKit
         
         
         
-        public string RecordName 
+        /// <value>RecordName</value>
+        public string RecordName
         {
             get 
             { 
@@ -134,8 +138,10 @@ namespace HovelHouse.CloudKit
                 return Marshal.PtrToStringAuto(recordName);
             }
         }
+
         
-        public CKRecordZoneID ZoneID 
+        /// <value>ZoneID</value>
+        public CKRecordZoneID ZoneID
         {
             get 
             { 
@@ -143,6 +149,7 @@ namespace HovelHouse.CloudKit
                 return zoneID == IntPtr.Zero ? null : new CKRecordZoneID(zoneID);
             }
         }
+
         
 
         

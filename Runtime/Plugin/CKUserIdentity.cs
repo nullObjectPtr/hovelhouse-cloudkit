@@ -1,7 +1,7 @@
 //
 //  CKUserIdentity.cs
 //
-//  Created by Jonathan Culp <jonathanculp@gmail.com> on 03/13/2020
+//  Created by Jonathan Culp <jonathanculp@gmail.com> on 03/26/2020
 //  Copyright © 2020 HovelHouseApps. All rights reserved.
 //  Unauthorized copying of this file, via any medium is strictly prohibited
 //  Proprietary and confidential
@@ -17,6 +17,9 @@ using UnityEngine;
 
 namespace HovelHouse.CloudKit
 {
+    /// <summary>
+    /// A CloudKit User basically
+    /// </summary>
     public class CKUserIdentity : CKObject, IDisposable
     {
         #region dll
@@ -74,7 +77,8 @@ namespace HovelHouse.CloudKit
         
         
         
-        public bool HasiCloudAccount 
+        /// <value>HasiCloudAccount</value>
+        public bool HasiCloudAccount
         {
             get 
             { 
@@ -82,8 +86,10 @@ namespace HovelHouse.CloudKit
                 return hasiCloudAccount;
             }
         }
+
         
-        public CKUserIdentityLookupInfo LookupInfo 
+        /// <value>LookupInfo</value>
+        public CKUserIdentityLookupInfo LookupInfo
         {
             get 
             { 
@@ -91,8 +97,10 @@ namespace HovelHouse.CloudKit
                 return lookupInfo == IntPtr.Zero ? null : new CKUserIdentityLookupInfo(lookupInfo);
             }
         }
+
         
-        public NSPersonNameComponents NameComponents 
+        /// <value>NameComponents</value>
+        public NSPersonNameComponents NameComponents
         {
             get 
             { 
@@ -100,8 +108,10 @@ namespace HovelHouse.CloudKit
                 return nameComponents == IntPtr.Zero ? null : new NSPersonNameComponents(nameComponents);
             }
         }
+
         
-        public CKRecordID UserRecordID 
+        /// <value>UserRecordID</value>
+        public CKRecordID UserRecordID
         {
             get 
             { 
@@ -109,6 +119,7 @@ namespace HovelHouse.CloudKit
                 return userRecordID == IntPtr.Zero ? null : new CKRecordID(userRecordID);
             }
         }
+
         
         // TODO: PROPERTYSTRINGARRAY
         

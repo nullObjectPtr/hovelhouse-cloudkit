@@ -1,7 +1,7 @@
 //
 //  CKShareMetadata.cs
 //
-//  Created by Jonathan Culp <jonathanculp@gmail.com> on 03/13/2020
+//  Created by Jonathan Culp <jonathanculp@gmail.com> on 03/26/2020
 //  Copyright © 2020 HovelHouseApps. All rights reserved.
 //  Unauthorized copying of this file, via any medium is strictly prohibited
 //  Proprietary and confidential
@@ -17,6 +17,9 @@ using UnityEngine;
 
 namespace HovelHouse.CloudKit
 {
+    /// <summary>
+    /// Metadata for a shared record
+    /// </summary>
     public class CKShareMetadata : CKObject, IDisposable
     {
         #region dll
@@ -101,7 +104,8 @@ namespace HovelHouse.CloudKit
         
         
         
-        public string ContainerIdentifier 
+        /// <value>ContainerIdentifier</value>
+        public string ContainerIdentifier
         {
             get 
             { 
@@ -109,8 +113,10 @@ namespace HovelHouse.CloudKit
                 return Marshal.PtrToStringAuto(containerIdentifier);
             }
         }
+
         
-        public CKUserIdentity OwnerIdentity 
+        /// <value>OwnerIdentity</value>
+        public CKUserIdentity OwnerIdentity
         {
             get 
             { 
@@ -118,8 +124,10 @@ namespace HovelHouse.CloudKit
                 return ownerIdentity == IntPtr.Zero ? null : new CKUserIdentity(ownerIdentity);
             }
         }
+
         
-        public CKShareParticipantPermission ParticipantPermission 
+        /// <value>ParticipantPermission</value>
+        public CKShareParticipantPermission ParticipantPermission
         {
             get 
             { 
@@ -127,8 +135,10 @@ namespace HovelHouse.CloudKit
                 return participantPermission;
             }
         }
+
         
-        public CKShareParticipantAcceptanceStatus ParticipantStatus 
+        /// <value>ParticipantStatus</value>
+        public CKShareParticipantAcceptanceStatus ParticipantStatus
         {
             get 
             { 
@@ -136,8 +146,10 @@ namespace HovelHouse.CloudKit
                 return participantStatus;
             }
         }
+
         
-        public CKRecord RootRecord 
+        /// <value>RootRecord</value>
+        public CKRecord RootRecord
         {
             get 
             { 
@@ -145,8 +157,10 @@ namespace HovelHouse.CloudKit
                 return rootRecord == IntPtr.Zero ? null : new CKRecord(rootRecord);
             }
         }
+
         
-        public CKRecordID RootRecordID 
+        /// <value>RootRecordID</value>
+        public CKRecordID RootRecordID
         {
             get 
             { 
@@ -154,8 +168,10 @@ namespace HovelHouse.CloudKit
                 return rootRecordID == IntPtr.Zero ? null : new CKRecordID(rootRecordID);
             }
         }
+
         
-        public CKShare Share 
+        /// <value>Share</value>
+        public CKShare Share
         {
             get 
             { 
@@ -163,8 +179,10 @@ namespace HovelHouse.CloudKit
                 return share == IntPtr.Zero ? null : new CKShare(share);
             }
         }
+
         
-        public CKShareParticipantRole ParticipantRole 
+        /// <value>ParticipantRole</value>
+        public CKShareParticipantRole ParticipantRole
         {
             get 
             { 
@@ -172,6 +190,7 @@ namespace HovelHouse.CloudKit
                 return participantRole;
             }
         }
+
         
 
         

@@ -1,7 +1,7 @@
 //
 //  CKFetchRecordsOperation.cs
 //
-//  Created by Jonathan Culp <jonathanculp@gmail.com> on 03/13/2020
+//  Created by Jonathan Culp <jonathanculp@gmail.com> on 03/26/2020
 //  Copyright © 2020 HovelHouseApps. All rights reserved.
 //  Unauthorized copying of this file, via any medium is strictly prohibited
 //  Proprietary and confidential
@@ -17,6 +17,12 @@ using UnityEngine;
 
 namespace HovelHouse.CloudKit
 {
+    /// <summary>
+    /// An operation that fetches records from the database using the record id's you provide
+    /// </summary>
+    /// <remarks>
+    /// Use this to retrieve records by their record id&apos;s. You can also opt to recieve only a subset of the record data by specifying the record key&apos;s youd by filling in the &apos;DesiredKeys&apos; property with the key values you wish to retrieve. Assign a delegate to the FetchRecordsCompletionHandler property to be invoked when this operation completes.
+    /// </remarks>
     public class CKFetchRecordsOperation : CKDatabaseOperation, IDisposable
     {
         #region dll
@@ -101,7 +107,10 @@ namespace HovelHouse.CloudKit
         internal CKFetchRecordsOperation(IntPtr ptr) : base(ptr) {}
         
         
-        
+        /// <summary>
+        /// </summary>
+        /// 
+        /// <returns>val</returns>
         public static CKFetchRecordsOperation FetchCurrentUserRecordOperation()
         { 
             var val = CKFetchRecordsOperation_fetchCurrentUserRecordOperation(out IntPtr exceptionPtr);
@@ -163,7 +172,8 @@ namespace HovelHouse.CloudKit
         
         
         
-        public CKRecordID[] RecordIDs 
+        /// <value>RecordIDs</value>
+        public CKRecordID[] RecordIDs
         {
             get 
             { 
@@ -200,7 +210,8 @@ namespace HovelHouse.CloudKit
         
         // TODO: PROPERTYSTRINGARRAY
         
-        public Action<Dictionary<CKRecordID,CKRecord>,NSError> FetchRecordsCompletionHandler 
+        /// <value>FetchRecordsCompletionHandler</value>
+        public Action<Dictionary<CKRecordID,CKRecord>,NSError> FetchRecordsCompletionHandler
         {
             get 
             {
@@ -248,7 +259,8 @@ namespace HovelHouse.CloudKit
         }
 
         
-        public Action<CKRecord,CKRecordID,NSError> PerRecordCompletionHandler 
+        /// <value>PerRecordCompletionHandler</value>
+        public Action<CKRecord,CKRecordID,NSError> PerRecordCompletionHandler
         {
             get 
             {
@@ -293,7 +305,8 @@ namespace HovelHouse.CloudKit
         }
 
         
-        public Action<CKRecordID,double> ProgressHandler 
+        /// <value>ProgressHandler</value>
+        public Action<CKRecordID,double> ProgressHandler
         {
             get 
             {

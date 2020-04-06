@@ -1,7 +1,7 @@
 //
 //  CKQueryCursor.cs
 //
-//  Created by Jonathan Culp <jonathanculp@gmail.com> on 03/13/2020
+//  Created by Jonathan Culp <jonathanculp@gmail.com> on 03/26/2020
 //  Copyright © 2020 HovelHouseApps. All rights reserved.
 //  Unauthorized copying of this file, via any medium is strictly prohibited
 //  Proprietary and confidential
@@ -17,6 +17,9 @@ using UnityEngine;
 
 namespace HovelHouse.CloudKit
 {
+    /// <summary>
+    /// Opaquely represents your position in a query with many many records. Use this to paginate results
+    /// </summary>
     public class CKQueryCursor : CKObject, IDisposable
     {
         #region dll

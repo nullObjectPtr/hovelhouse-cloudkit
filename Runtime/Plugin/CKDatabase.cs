@@ -1,7 +1,7 @@
 //
 //  CKDatabase.cs
 //
-//  Created by Jonathan Culp <jonathanculp@gmail.com> on 03/13/2020
+//  Created by Jonathan Culp <jonathanculp@gmail.com> on 03/26/2020
 //  Copyright © 2020 HovelHouseApps. All rights reserved.
 //  Unauthorized copying of this file, via any medium is strictly prohibited
 //  Proprietary and confidential
@@ -17,6 +17,12 @@ using UnityEngine;
 
 namespace HovelHouse.CloudKit
 {
+    /// <summary>
+    /// An instance of (one of) your apps databases
+    /// </summary>
+    /// <remarks>
+    /// Each app has access to two databases. One public and one private. A public database stores information that can be made publically writable or readable by you (the app developer) or users in large. Data stored in the public database counts toward to your app-quota, and you (the developer) may be charged for it&apos;s usage. The private database counts toward the current iCloud users quota and you will not be charged for it. The private database may not be a reliable way to store information if the user has no iCloud storage space left. If you are coming from other databases such as Mongo or MySQL, You do not &apos;connect&apos; to these databases. CloudKit is a transport technology, and it handles communication with the Cloud for you
+    /// </remarks>
     public class CKDatabase : CKObject, IDisposable
     {
         #region dll
@@ -192,7 +198,10 @@ namespace HovelHouse.CloudKit
 
         
         
-        
+        /// <summary>
+        /// </summary>
+        /// <param name="operation"></param>
+        /// <returns>void</returns>
         public void AddOperation(
             CKDatabaseOperation operation)
         { 
@@ -214,7 +223,10 @@ namespace HovelHouse.CloudKit
         
 
         
-        
+        /// <summary>
+        /// </summary>
+        /// <param name="recordID"></param><param name="completionHandler"></param>
+        /// <returns>void</returns>
         public void FetchRecordWithID(
             CKRecordID recordID, 
             Action<CKRecord,NSError> completionHandler)
@@ -259,7 +271,10 @@ namespace HovelHouse.CloudKit
         
 
         
-        
+        /// <summary>
+        /// </summary>
+        /// <param name="record"></param><param name="completionHandler"></param>
+        /// <returns>void</returns>
         public void SaveRecord(
             CKRecord record, 
             Action<CKRecord,NSError> completionHandler)
@@ -304,7 +319,10 @@ namespace HovelHouse.CloudKit
         
 
         
-        
+        /// <summary>
+        /// </summary>
+        /// <param name="recordID"></param><param name="completionHandler"></param>
+        /// <returns>void</returns>
         public void DeleteRecordWithID(
             CKRecordID recordID, 
             Action<CKRecordID,NSError> completionHandler)
@@ -349,7 +367,10 @@ namespace HovelHouse.CloudKit
         
 
         
-        
+        /// <summary>
+        /// </summary>
+        /// <param name="zoneID"></param><param name="completionHandler"></param>
+        /// <returns>void</returns>
         public void FetchRecordZoneWithID(
             CKRecordZoneID zoneID, 
             Action<CKRecordZone,NSError> completionHandler)
@@ -394,7 +415,10 @@ namespace HovelHouse.CloudKit
         
 
         
-        
+        /// <summary>
+        /// </summary>
+        /// <param name="zone"></param><param name="completionHandler"></param>
+        /// <returns>void</returns>
         public void SaveRecordZone(
             CKRecordZone zone, 
             Action<CKRecordZone,NSError> completionHandler)
@@ -439,7 +463,10 @@ namespace HovelHouse.CloudKit
         
 
         
-        
+        /// <summary>
+        /// </summary>
+        /// <param name="zoneID"></param><param name="completionHandler"></param>
+        /// <returns>void</returns>
         public void DeleteRecordZoneWithID(
             CKRecordZoneID zoneID, 
             Action<CKRecordZoneID,NSError> completionHandler)
@@ -484,7 +511,10 @@ namespace HovelHouse.CloudKit
         
 
         
-        
+        /// <summary>
+        /// </summary>
+        /// <param name="subscriptionID"></param><param name="completionHandler"></param>
+        /// <returns>void</returns>
         public void FetchSubscriptionWithID(
             string subscriptionID, 
             Action<CKSubscription,NSError> completionHandler)
@@ -529,7 +559,10 @@ namespace HovelHouse.CloudKit
         
 
         
-        
+        /// <summary>
+        /// </summary>
+        /// <param name="subscription"></param><param name="completionHandler"></param>
+        /// <returns>void</returns>
         public void SaveSubscription(
             CKSubscription subscription, 
             Action<CKSubscription,NSError> completionHandler)
@@ -574,7 +607,10 @@ namespace HovelHouse.CloudKit
         
 
         
-        
+        /// <summary>
+        /// </summary>
+        /// <param name="subscriptionID"></param><param name="completionHandler"></param>
+        /// <returns>void</returns>
         public void DeleteSubscriptionWithID(
             string subscriptionID, 
             Action<string,NSError> completionHandler)
@@ -619,7 +655,10 @@ namespace HovelHouse.CloudKit
         
 
         
-        
+        /// <summary>
+        /// </summary>
+        /// <param name="completionHandler"></param>
+        /// <returns>void</returns>
         public void FetchAllSubscriptionsWithCompletionHandler(
             Action<CKSubscription[],NSError> completionHandler)
         { 
@@ -659,7 +698,10 @@ namespace HovelHouse.CloudKit
         
 
         
-        
+        /// <summary>
+        /// </summary>
+        /// <param name="completionHandler"></param>
+        /// <returns>void</returns>
         public void FetchAllRecordZonesWithCompletionHandler(
             Action<CKRecordZone[],NSError> completionHandler)
         { 
@@ -699,7 +741,10 @@ namespace HovelHouse.CloudKit
         
 
         
-        
+        /// <summary>
+        /// </summary>
+        /// <param name="query"></param><param name="zoneID"></param><param name="completionHandler"></param>
+        /// <returns>void</returns>
         public void PerformQuery(
             CKQuery query, 
             CKRecordZoneID zoneID, 
@@ -750,7 +795,8 @@ namespace HovelHouse.CloudKit
 
         
         
-        public CKDatabaseScope DatabaseScope 
+        /// <value>DatabaseScope</value>
+        public CKDatabaseScope DatabaseScope
         {
             get 
             { 
@@ -758,6 +804,7 @@ namespace HovelHouse.CloudKit
                 return databaseScope;
             }
         }
+
         
 
         
