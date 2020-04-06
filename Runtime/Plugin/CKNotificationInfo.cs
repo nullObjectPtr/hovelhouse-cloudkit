@@ -1,7 +1,7 @@
 //
 //  CKNotificationInfo.cs
 //
-//  Created by Jonathan Culp <jonathanculp@gmail.com> on 03/13/2020
+//  Created by Jonathan Culp <jonathanculp@gmail.com> on 03/26/2020
 //  Copyright © 2020 HovelHouseApps. All rights reserved.
 //  Unauthorized copying of this file, via any medium is strictly prohibited
 //  Proprietary and confidential
@@ -17,6 +17,9 @@ using UnityEngine;
 
 namespace HovelHouse.CloudKit
 {
+    /// <summary>
+    /// Specifies the type of notifications to generate when a condition is met
+    /// </summary>
     public class CKNotificationInfo : CKObject, IDisposable
     {
         #region dll
@@ -102,7 +105,8 @@ namespace HovelHouse.CloudKit
         
         
         
-        public string CollapseIDKey 
+        /// <value>CollapseIDKey</value>
+        public string CollapseIDKey
         {
             get 
             { 
@@ -114,8 +118,10 @@ namespace HovelHouse.CloudKit
                 CKNotificationInfo_SetPropCollapseIDKey(Handle, value, out IntPtr exceptionPtr);
             }
         }
+
         
-        public bool ShouldBadge 
+        /// <value>ShouldBadge</value>
+        public bool ShouldBadge
         {
             get 
             { 
@@ -127,8 +133,10 @@ namespace HovelHouse.CloudKit
                 CKNotificationInfo_SetPropShouldBadge(Handle, value, out IntPtr exceptionPtr);
             }
         }
+
         
-        public bool ShouldSendContentAvailable 
+        /// <value>ShouldSendContentAvailable</value>
+        public bool ShouldSendContentAvailable
         {
             get 
             { 
@@ -140,8 +148,10 @@ namespace HovelHouse.CloudKit
                 CKNotificationInfo_SetPropShouldSendContentAvailable(Handle, value, out IntPtr exceptionPtr);
             }
         }
+
         
-        public bool ShouldSendMutableContent 
+        /// <value>ShouldSendMutableContent</value>
+        public bool ShouldSendMutableContent
         {
             get 
             { 
@@ -153,6 +163,7 @@ namespace HovelHouse.CloudKit
                 CKNotificationInfo_SetPropShouldSendMutableContent(Handle, value, out IntPtr exceptionPtr);
             }
         }
+
         
         // TODO: PROPERTYSTRINGARRAY
         

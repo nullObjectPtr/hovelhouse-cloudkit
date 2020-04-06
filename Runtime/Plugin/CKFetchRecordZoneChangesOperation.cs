@@ -1,7 +1,7 @@
 //
 //  CKFetchRecordZoneChangesOperation.cs
 //
-//  Created by Jonathan Culp <jonathanculp@gmail.com> on 03/13/2020
+//  Created by Jonathan Culp <jonathanculp@gmail.com> on 03/26/2020
 //  Copyright © 2020 HovelHouseApps. All rights reserved.
 //  Unauthorized copying of this file, via any medium is strictly prohibited
 //  Proprietary and confidential
@@ -17,6 +17,9 @@ using UnityEngine;
 
 namespace HovelHouse.CloudKit
 {
+    /// <summary>
+    /// A database operation that fetches changes to one or more record zones
+    /// </summary>
     public class CKFetchRecordZoneChangesOperation : CKDatabaseOperation, IDisposable
     {
         #region dll
@@ -118,7 +121,8 @@ namespace HovelHouse.CloudKit
         
         
         
-        public Action<CKRecord> RecordChangedHandler 
+        /// <value>RecordChangedHandler</value>
+        public Action<CKRecord> RecordChangedHandler
         {
             get 
             {
@@ -161,7 +165,8 @@ namespace HovelHouse.CloudKit
         }
 
         
-        public Action<NSError> FetchRecordZoneChangesCompletionHandler 
+        /// <value>FetchRecordZoneChangesCompletionHandler</value>
+        public Action<NSError> FetchRecordZoneChangesCompletionHandler
         {
             get 
             {
@@ -204,7 +209,8 @@ namespace HovelHouse.CloudKit
         }
 
         
-        public Action<CKRecordID,string> RecordWithIDWasDeletedHandler 
+        /// <value>RecordWithIDWasDeletedHandler</value>
+        public Action<CKRecordID,string> RecordWithIDWasDeletedHandler
         {
             get 
             {
@@ -248,7 +254,8 @@ namespace HovelHouse.CloudKit
         }
 
         
-        public bool FetchAllChanges 
+        /// <value>FetchAllChanges</value>
+        public bool FetchAllChanges
         {
             get 
             { 
@@ -260,8 +267,10 @@ namespace HovelHouse.CloudKit
                 CKFetchRecordZoneChangesOperation_SetPropFetchAllChanges(Handle, value, out IntPtr exceptionPtr);
             }
         }
+
         
-        public CKRecordZoneID[] RecordZoneIDs 
+        /// <value>RecordZoneIDs</value>
+        public CKRecordZoneID[] RecordZoneIDs
         {
             get 
             { 

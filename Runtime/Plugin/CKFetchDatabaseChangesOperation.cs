@@ -1,7 +1,7 @@
 //
 //  CKFetchDatabaseChangesOperation.cs
 //
-//  Created by Jonathan Culp <jonathanculp@gmail.com> on 03/13/2020
+//  Created by Jonathan Culp <jonathanculp@gmail.com> on 03/26/2020
 //  Copyright © 2020 HovelHouseApps. All rights reserved.
 //  Unauthorized copying of this file, via any medium is strictly prohibited
 //  Proprietary and confidential
@@ -17,6 +17,9 @@ using UnityEngine;
 
 namespace HovelHouse.CloudKit
 {
+    /// <summary>
+    /// An operation that fetches changes to the database
+    /// </summary>
     public class CKFetchDatabaseChangesOperation : CKDatabaseOperation, IDisposable
     {
         #region dll
@@ -172,7 +175,8 @@ namespace HovelHouse.CloudKit
         
         
         
-        public Action<CKServerChangeToken> ChangeTokenUpdatedHandler 
+        /// <value>ChangeTokenUpdatedHandler</value>
+        public Action<CKServerChangeToken> ChangeTokenUpdatedHandler
         {
             get 
             {
@@ -215,7 +219,8 @@ namespace HovelHouse.CloudKit
         }
 
         
-        public Action<CKServerChangeToken,bool,NSError> FetchDatabaseChangesCompletionHandler 
+        /// <value>FetchDatabaseChangesCompletionHandler</value>
+        public Action<CKServerChangeToken,bool,NSError> FetchDatabaseChangesCompletionHandler
         {
             get 
             {
@@ -260,7 +265,8 @@ namespace HovelHouse.CloudKit
         }
 
         
-        public Action<CKRecordZoneID> RecordZoneWithIDChangedHandler 
+        /// <value>RecordZoneWithIDChangedHandler</value>
+        public Action<CKRecordZoneID> RecordZoneWithIDChangedHandler
         {
             get 
             {
@@ -303,7 +309,8 @@ namespace HovelHouse.CloudKit
         }
 
         
-        public Action<CKRecordZoneID> RecordZoneWithIDWasDeletedHandler 
+        /// <value>RecordZoneWithIDWasDeletedHandler</value>
+        public Action<CKRecordZoneID> RecordZoneWithIDWasDeletedHandler
         {
             get 
             {
@@ -346,7 +353,8 @@ namespace HovelHouse.CloudKit
         }
 
         
-        public Action<CKRecordZoneID> RecordZoneWithIDWasPurgedHandler 
+        /// <value>RecordZoneWithIDWasPurgedHandler</value>
+        public Action<CKRecordZoneID> RecordZoneWithIDWasPurgedHandler
         {
             get 
             {
@@ -389,7 +397,8 @@ namespace HovelHouse.CloudKit
         }
 
         
-        public CKServerChangeToken PreviousServerChangeToken 
+        /// <value>PreviousServerChangeToken</value>
+        public CKServerChangeToken PreviousServerChangeToken
         {
             get 
             { 
@@ -401,8 +410,10 @@ namespace HovelHouse.CloudKit
                 CKFetchDatabaseChangesOperation_SetPropPreviousServerChangeToken(Handle, value != null ? HandleRef.ToIntPtr(value.Handle) : IntPtr.Zero, out IntPtr exceptionPtr);
             }
         }
+
         
-        public bool FetchAllChanges 
+        /// <value>FetchAllChanges</value>
+        public bool FetchAllChanges
         {
             get 
             { 
@@ -414,8 +425,10 @@ namespace HovelHouse.CloudKit
                 CKFetchDatabaseChangesOperation_SetPropFetchAllChanges(Handle, value, out IntPtr exceptionPtr);
             }
         }
+
         
-        public ulong ResultsLimit 
+        /// <value>ResultsLimit</value>
+        public ulong ResultsLimit
         {
             get 
             { 
@@ -427,6 +440,7 @@ namespace HovelHouse.CloudKit
                 CKFetchDatabaseChangesOperation_SetPropResultsLimit(Handle, value, out IntPtr exceptionPtr);
             }
         }
+
         
 
         

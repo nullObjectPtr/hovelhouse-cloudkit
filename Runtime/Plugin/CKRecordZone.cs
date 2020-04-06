@@ -1,7 +1,7 @@
 //
 //  CKRecordZone.cs
 //
-//  Created by Jonathan Culp <jonathanculp@gmail.com> on 03/13/2020
+//  Created by Jonathan Culp <jonathanculp@gmail.com> on 03/26/2020
 //  Copyright © 2020 HovelHouseApps. All rights reserved.
 //  Unauthorized copying of this file, via any medium is strictly prohibited
 //  Proprietary and confidential
@@ -17,6 +17,12 @@ using UnityEngine;
 
 namespace HovelHouse.CloudKit
 {
+    /// <summary>
+    /// A container of orgonizing data in a CloudKit database
+    /// </summary>
+    /// <remarks>
+    /// Record zones can be used to create container or sandboxes of related information. Zones only work in the private database
+    /// </remarks>
     public class CKRecordZone : CKObject, IDisposable
     {
         #region dll
@@ -80,7 +86,10 @@ namespace HovelHouse.CloudKit
         internal CKRecordZone(IntPtr ptr) : base(ptr) {}
         
         
-        
+        /// <summary>
+        /// </summary>
+        /// 
+        /// <returns>val</returns>
         public static CKRecordZone DefaultRecordZone()
         { 
             var val = CKRecordZone_defaultRecordZone(out IntPtr exceptionPtr);
@@ -145,7 +154,8 @@ namespace HovelHouse.CloudKit
         
         
         
-        public CKRecordZoneID ZoneID 
+        /// <value>ZoneID</value>
+        public CKRecordZoneID ZoneID
         {
             get 
             { 
@@ -153,8 +163,10 @@ namespace HovelHouse.CloudKit
                 return zoneID == IntPtr.Zero ? null : new CKRecordZoneID(zoneID);
             }
         }
+
         
-        public CKRecordZoneCapabilities Capabilities 
+        /// <value>Capabilities</value>
+        public CKRecordZoneCapabilities Capabilities
         {
             get 
             { 
@@ -162,6 +174,7 @@ namespace HovelHouse.CloudKit
                 return capabilities;
             }
         }
+
         
 
         

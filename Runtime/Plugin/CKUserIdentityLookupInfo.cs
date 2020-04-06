@@ -1,7 +1,7 @@
 //
 //  CKUserIdentityLookupInfo.cs
 //
-//  Created by Jonathan Culp <jonathanculp@gmail.com> on 03/13/2020
+//  Created by Jonathan Culp <jonathanculp@gmail.com> on 03/26/2020
 //  Copyright © 2020 HovelHouseApps. All rights reserved.
 //  Unauthorized copying of this file, via any medium is strictly prohibited
 //  Proprietary and confidential
@@ -17,6 +17,9 @@ using UnityEngine;
 
 namespace HovelHouse.CloudKit
 {
+    /// <summary>
+    /// Structured information used to lookup a User based on contact info
+    /// </summary>
     public class CKUserIdentityLookupInfo : CKObject, IDisposable
     {
         #region dll
@@ -128,7 +131,8 @@ namespace HovelHouse.CloudKit
         
         
         
-        public string EmailAddress 
+        /// <value>EmailAddress</value>
+        public string EmailAddress
         {
             get 
             { 
@@ -136,8 +140,10 @@ namespace HovelHouse.CloudKit
                 return Marshal.PtrToStringAuto(emailAddress);
             }
         }
+
         
-        public string PhoneNumber 
+        /// <value>PhoneNumber</value>
+        public string PhoneNumber
         {
             get 
             { 
@@ -145,8 +151,10 @@ namespace HovelHouse.CloudKit
                 return Marshal.PtrToStringAuto(phoneNumber);
             }
         }
+
         
-        public CKRecordID UserRecordID 
+        /// <value>UserRecordID</value>
+        public CKRecordID UserRecordID
         {
             get 
             { 
@@ -154,6 +162,7 @@ namespace HovelHouse.CloudKit
                 return userRecordID == IntPtr.Zero ? null : new CKRecordID(userRecordID);
             }
         }
+
         
 
         

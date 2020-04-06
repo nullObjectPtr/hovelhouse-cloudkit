@@ -1,7 +1,7 @@
 //
 //  CKServerChangeToken.cs
 //
-//  Created by Jonathan Culp <jonathanculp@gmail.com> on 03/13/2020
+//  Created by Jonathan Culp <jonathanculp@gmail.com> on 03/26/2020
 //  Copyright © 2020 HovelHouseApps. All rights reserved.
 //  Unauthorized copying of this file, via any medium is strictly prohibited
 //  Proprietary and confidential
@@ -17,6 +17,12 @@ using UnityEngine;
 
 namespace HovelHouse.CloudKit
 {
+    /// <summary>
+    /// A piece of record meta data that changes each time the record is updated. Can be used to tell if a record is out of sync with the database.
+    /// </summary>
+    /// <remarks>
+    /// Compare your current records server change token against the database to see if your local copy of the data is out of sync with the cloud. If the changes you made to your record are made on the most up-to-date version of the information, then your records server change token will match whats on the cloud.
+    /// </remarks>
     public class CKServerChangeToken : CKObject, IDisposable
     {
         #region dll

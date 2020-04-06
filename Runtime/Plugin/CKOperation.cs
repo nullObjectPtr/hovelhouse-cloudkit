@@ -1,7 +1,7 @@
 //
 //  CKOperation.cs
 //
-//  Created by Jonathan Culp <jonathanculp@gmail.com> on 03/13/2020
+//  Created by Jonathan Culp <jonathanculp@gmail.com> on 03/26/2020
 //  Copyright © 2020 HovelHouseApps. All rights reserved.
 //  Unauthorized copying of this file, via any medium is strictly prohibited
 //  Proprietary and confidential
@@ -17,6 +17,9 @@ using UnityEngine;
 
 namespace HovelHouse.CloudKit
 {
+    /// <summary>
+    /// The base class for all container and database operations. You do not instantiate this class directly. Use one of the concrete classes instead.
+    /// </summary>
     public class CKOperation : CKObject, IDisposable
     {
         #region dll
@@ -81,7 +84,8 @@ namespace HovelHouse.CloudKit
         
         
         
-        public CKOperationConfiguration Configuration 
+        /// <value>Configuration</value>
+        public CKOperationConfiguration Configuration
         {
             get 
             { 
@@ -93,8 +97,10 @@ namespace HovelHouse.CloudKit
                 CKOperation_SetPropConfiguration(Handle, value != null ? HandleRef.ToIntPtr(value.Handle) : IntPtr.Zero, out IntPtr exceptionPtr);
             }
         }
+
         
-        public string OperationID 
+        /// <value>OperationID</value>
+        public string OperationID
         {
             get 
             { 
@@ -102,8 +108,10 @@ namespace HovelHouse.CloudKit
                 return Marshal.PtrToStringAuto(operationID);
             }
         }
+
         
-        public CKOperationGroup Group 
+        /// <value>Group</value>
+        public CKOperationGroup Group
         {
             get 
             { 
@@ -115,6 +123,7 @@ namespace HovelHouse.CloudKit
                 CKOperation_SetPropGroup(Handle, value != null ? HandleRef.ToIntPtr(value.Handle) : IntPtr.Zero, out IntPtr exceptionPtr);
             }
         }
+
         
 
         

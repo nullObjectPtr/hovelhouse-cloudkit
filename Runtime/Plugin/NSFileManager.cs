@@ -1,7 +1,7 @@
 //
 //  NSFileManager.cs
 //
-//  Created by Jonathan Culp <jonathanculp@gmail.com> on 03/13/2020
+//  Created by Jonathan Culp <jonathanculp@gmail.com> on 03/26/2020
 //  Copyright © 2020 HovelHouseApps. All rights reserved.
 //  Unauthorized copying of this file, via any medium is strictly prohibited
 //  Proprietary and confidential
@@ -17,6 +17,12 @@ using UnityEngine;
 
 namespace HovelHouse.CloudKit
 {
+    /// <summary>
+    /// A limited implementation of NSFileManager. Use this to write to iCloud Documents or get the current Ubiquity information.
+    /// </summary>
+    /// <remarks>
+    /// This class is only partially implemented and contains only the methods which may be of use to CloudKit. The un-implemented methods are not likely needed since NSFileManager largely duplicates the functionality already provided by C#&apos;s File and Directory classes.
+    /// </remarks>
     public class NSFileManager : CKObject, IDisposable
     {
         #region dll
@@ -108,7 +114,10 @@ namespace HovelHouse.CloudKit
         internal NSFileManager(IntPtr ptr) : base(ptr) {}
         
         
-        
+        /// <summary>
+        /// </summary>
+        /// 
+        /// <returns>val</returns>
         public static NSFileManager DefaultManager()
         { 
             var val = NSFileManager_defaultManager(out IntPtr exceptionPtr);
@@ -129,7 +138,10 @@ namespace HovelHouse.CloudKit
 
 
         
-        
+        /// <summary>
+        /// </summary>
+        /// <param name="containerIdentifier"></param>
+        /// <returns>val</returns>
         public NSURL URLForUbiquityContainerIdentifier(
             string containerIdentifier)
         { 
@@ -150,7 +162,10 @@ namespace HovelHouse.CloudKit
         
 
         
-        
+        /// <summary>
+        /// </summary>
+        /// <param name="url"></param>
+        /// <returns>val</returns>
         public bool IsUbiquitousItemAtURL(
             NSURL url)
         { 
@@ -171,7 +186,10 @@ namespace HovelHouse.CloudKit
         
 
         
-        
+        /// <summary>
+        /// </summary>
+        /// <param name="url"></param><param name="error"></param>
+        /// <returns>val</returns>
         public bool StartDownloadingUbiquitousItemAtURL(
             NSURL url, 
             NSError error)
@@ -196,7 +214,10 @@ namespace HovelHouse.CloudKit
         
 
         
-        
+        /// <summary>
+        /// </summary>
+        /// <param name="url"></param><param name="error"></param>
+        /// <returns>val</returns>
         public bool EvictUbiquitousItemAtURL(
             NSURL url, 
             NSError error)
@@ -221,7 +242,11 @@ namespace HovelHouse.CloudKit
         
 
         
-                public bool SetUbiquitousItemAtURL(
+        /// <summary>
+        /// </summary>
+        /// <param name="flag"></param><param name="url"></param><param name="destinationURL"></param><param name="error"></param>
+        /// <returns>val</returns>
+        public bool SetUbiquitousItemAtURL(
             bool flag, 
             NSURL url, 
             NSURL destinationURL, 
@@ -252,7 +277,8 @@ namespace HovelHouse.CloudKit
         
         
         
-        public UbiquityIdentityToken UbiquityIdentityToken 
+        /// <value>UbiquityIdentityToken</value>
+        public UbiquityIdentityToken UbiquityIdentityToken
         {
             get 
             { 
@@ -260,6 +286,7 @@ namespace HovelHouse.CloudKit
                 return new UbiquityIdentityToken(ubiquityIdentityToken);
             }
         }
+
         
 
         

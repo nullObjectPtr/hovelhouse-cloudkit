@@ -1,7 +1,7 @@
 //
 //  CKOperationGroup.cs
 //
-//  Created by Jonathan Culp <jonathanculp@gmail.com> on 03/13/2020
+//  Created by Jonathan Culp <jonathanculp@gmail.com> on 03/26/2020
 //  Copyright © 2020 HovelHouseApps. All rights reserved.
 //  Unauthorized copying of this file, via any medium is strictly prohibited
 //  Proprietary and confidential
@@ -17,6 +17,9 @@ using UnityEngine;
 
 namespace HovelHouse.CloudKit
 {
+    /// <summary>
+    /// Use this to batch multiple operations in a single request
+    /// </summary>
     public class CKOperationGroup : CKObject, IDisposable
     {
         #region dll
@@ -179,7 +182,8 @@ namespace HovelHouse.CloudKit
         
         
         
-        public CKOperationConfiguration DefaultConfiguration 
+        /// <value>DefaultConfiguration</value>
+        public CKOperationConfiguration DefaultConfiguration
         {
             get 
             { 
@@ -191,8 +195,10 @@ namespace HovelHouse.CloudKit
                 CKOperationGroup_SetPropDefaultConfiguration(Handle, value != null ? HandleRef.ToIntPtr(value.Handle) : IntPtr.Zero, out IntPtr exceptionPtr);
             }
         }
+
         
-        public CKOperationGroupTransferSize ExpectedReceiveSize 
+        /// <value>ExpectedReceiveSize</value>
+        public CKOperationGroupTransferSize ExpectedReceiveSize
         {
             get 
             { 
@@ -204,8 +210,10 @@ namespace HovelHouse.CloudKit
                 CKOperationGroup_SetPropExpectedReceiveSize(Handle, (long) value, out IntPtr exceptionPtr);
             }
         }
+
         
-        public CKOperationGroupTransferSize ExpectedSendSize 
+        /// <value>ExpectedSendSize</value>
+        public CKOperationGroupTransferSize ExpectedSendSize
         {
             get 
             { 
@@ -217,8 +225,10 @@ namespace HovelHouse.CloudKit
                 CKOperationGroup_SetPropExpectedSendSize(Handle, (long) value, out IntPtr exceptionPtr);
             }
         }
+
         
-        public string Name 
+        /// <value>Name</value>
+        public string Name
         {
             get 
             { 
@@ -230,8 +240,10 @@ namespace HovelHouse.CloudKit
                 CKOperationGroup_SetPropName(Handle, value, out IntPtr exceptionPtr);
             }
         }
+
         
-        public string OperationGroupID 
+        /// <value>OperationGroupID</value>
+        public string OperationGroupID
         {
             get 
             { 
@@ -239,8 +251,10 @@ namespace HovelHouse.CloudKit
                 return Marshal.PtrToStringAuto(operationGroupID);
             }
         }
+
         
-        public ulong Quantity 
+        /// <value>Quantity</value>
+        public ulong Quantity
         {
             get 
             { 
@@ -252,6 +266,7 @@ namespace HovelHouse.CloudKit
                 CKOperationGroup_SetPropQuantity(Handle, value, out IntPtr exceptionPtr);
             }
         }
+
         
 
         

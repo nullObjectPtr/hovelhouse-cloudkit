@@ -1,7 +1,7 @@
 //
 //  CKAcceptSharesOperation.cs
 //
-//  Created by Jonathan Culp <jonathanculp@gmail.com> on 03/13/2020
+//  Created by Jonathan Culp <jonathanculp@gmail.com> on 03/26/2020
 //  Copyright © 2020 HovelHouseApps. All rights reserved.
 //  Unauthorized copying of this file, via any medium is strictly prohibited
 //  Proprietary and confidential
@@ -17,6 +17,9 @@ using UnityEngine;
 
 namespace HovelHouse.CloudKit
 {
+    /// <summary>
+    /// An operation that accepts shared records
+    /// </summary>
     public class CKAcceptSharesOperation : CKObject, IDisposable
     {
         #region dll
@@ -132,7 +135,8 @@ namespace HovelHouse.CloudKit
         
         
         
-        public CKShareMetadata[] ShareMetadatas 
+        /// <value>ShareMetadatas</value>
+        public CKShareMetadata[] ShareMetadatas
         {
             get 
             { 
@@ -167,7 +171,8 @@ namespace HovelHouse.CloudKit
         }
 
         
-        public Action<NSError> AcceptSharesHandler 
+        /// <value>AcceptSharesHandler</value>
+        public Action<NSError> AcceptSharesHandler
         {
             get 
             {
@@ -210,7 +215,8 @@ namespace HovelHouse.CloudKit
         }
 
         
-        public Action<CKShareMetadata,CKShare,NSError> PerShareCompletionHandler 
+        /// <value>PerShareCompletionHandler</value>
+        public Action<CKShareMetadata,CKShare,NSError> PerShareCompletionHandler
         {
             get 
             {

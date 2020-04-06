@@ -1,7 +1,7 @@
 //
 //  CKDatabaseOperation.cs
 //
-//  Created by Jonathan Culp <jonathanculp@gmail.com> on 03/13/2020
+//  Created by Jonathan Culp <jonathanculp@gmail.com> on 03/26/2020
 //  Copyright © 2020 HovelHouseApps. All rights reserved.
 //  Unauthorized copying of this file, via any medium is strictly prohibited
 //  Proprietary and confidential
@@ -17,6 +17,12 @@ using UnityEngine;
 
 namespace HovelHouse.CloudKit
 {
+    /// <summary>
+    /// The parent class for all opretations that can be run on a database
+    /// </summary>
+    /// <remarks>
+    /// Only operations that inherit from CKDatabaseOperation may be run on a database instance. The database property of the operation is set when the operation is added to the database using it&apos;s AddOperation method. One gotcha here is that the default QualityOfService for database operations is probably too slow for you. Set it to UserInitiated to ensure that the operation completes in a timely manner.
+    /// </remarks>
     public class CKDatabaseOperation : CKOperation, IDisposable
     {
         #region dll
@@ -60,7 +66,8 @@ namespace HovelHouse.CloudKit
         
         
         
-        public CKDatabase Database 
+        /// <value>Database</value>
+        public CKDatabase Database
         {
             get 
             { 
@@ -72,6 +79,7 @@ namespace HovelHouse.CloudKit
                 CKDatabaseOperation_SetPropDatabase(Handle, value != null ? HandleRef.ToIntPtr(value.Handle) : IntPtr.Zero, out IntPtr exceptionPtr);
             }
         }
+
         
 
         

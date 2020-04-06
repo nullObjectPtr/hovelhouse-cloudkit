@@ -1,7 +1,7 @@
 //
 //  NSPersonNameComponents.cs
 //
-//  Created by Jonathan Culp <jonathanculp@gmail.com> on 03/13/2020
+//  Created by Jonathan Culp <jonathanculp@gmail.com> on 03/26/2020
 //  Copyright © 2020 HovelHouseApps. All rights reserved.
 //  Unauthorized copying of this file, via any medium is strictly prohibited
 //  Proprietary and confidential
@@ -17,6 +17,9 @@ using UnityEngine;
 
 namespace HovelHouse.CloudKit
 {
+    /// <summary>
+    /// Structured information about a person's name
+    /// </summary>
     public class NSPersonNameComponents : CKObject, IDisposable
     {
         #region dll
@@ -143,7 +146,8 @@ namespace HovelHouse.CloudKit
         
         
         
-        public string NamePrefix 
+        /// <value>NamePrefix</value>
+        public string NamePrefix
         {
             get 
             { 
@@ -155,8 +159,10 @@ namespace HovelHouse.CloudKit
                 NSPersonNameComponents_SetPropNamePrefix(Handle, value, out IntPtr exceptionPtr);
             }
         }
+
         
-        public string GivenName 
+        /// <value>GivenName</value>
+        public string GivenName
         {
             get 
             { 
@@ -168,8 +174,10 @@ namespace HovelHouse.CloudKit
                 NSPersonNameComponents_SetPropGivenName(Handle, value, out IntPtr exceptionPtr);
             }
         }
+
         
-        public string MiddleName 
+        /// <value>MiddleName</value>
+        public string MiddleName
         {
             get 
             { 
@@ -181,8 +189,10 @@ namespace HovelHouse.CloudKit
                 NSPersonNameComponents_SetPropMiddleName(Handle, value, out IntPtr exceptionPtr);
             }
         }
+
         
-        public string FamilyName 
+        /// <value>FamilyName</value>
+        public string FamilyName
         {
             get 
             { 
@@ -194,8 +204,10 @@ namespace HovelHouse.CloudKit
                 NSPersonNameComponents_SetPropFamilyName(Handle, value, out IntPtr exceptionPtr);
             }
         }
+
         
-        public string NameSuffix 
+        /// <value>NameSuffix</value>
+        public string NameSuffix
         {
             get 
             { 
@@ -207,8 +219,10 @@ namespace HovelHouse.CloudKit
                 NSPersonNameComponents_SetPropNameSuffix(Handle, value, out IntPtr exceptionPtr);
             }
         }
+
         
-        public string Nickname 
+        /// <value>Nickname</value>
+        public string Nickname
         {
             get 
             { 
@@ -220,8 +234,10 @@ namespace HovelHouse.CloudKit
                 NSPersonNameComponents_SetPropNickname(Handle, value, out IntPtr exceptionPtr);
             }
         }
+
         
-        public NSPersonNameComponents PhoneticRepresentation 
+        /// <value>PhoneticRepresentation</value>
+        public NSPersonNameComponents PhoneticRepresentation
         {
             get 
             { 
@@ -233,6 +249,7 @@ namespace HovelHouse.CloudKit
                 NSPersonNameComponents_SetPropPhoneticRepresentation(Handle, value != null ? HandleRef.ToIntPtr(value.Handle) : IntPtr.Zero, out IntPtr exceptionPtr);
             }
         }
+
         
 
         

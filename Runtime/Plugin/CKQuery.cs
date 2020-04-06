@@ -1,7 +1,7 @@
 //
 //  CKQuery.cs
 //
-//  Created by Jonathan Culp <jonathanculp@gmail.com> on 03/13/2020
+//  Created by Jonathan Culp <jonathanculp@gmail.com> on 03/26/2020
 //  Copyright © 2020 HovelHouseApps. All rights reserved.
 //  Unauthorized copying of this file, via any medium is strictly prohibited
 //  Proprietary and confidential
@@ -17,6 +17,12 @@ using UnityEngine;
 
 namespace HovelHouse.CloudKit
 {
+    /// <summary>
+    /// A query to run against the database
+    /// </summary>
+    /// <remarks>
+    /// A query is a tuple of a RecordType and a predicate. A predicate is a query that is written in an apple speficic syntax similar in purpose to SQL
+    /// </remarks>
     public class CKQuery : CKObject, IDisposable
     {
         #region dll
@@ -141,7 +147,8 @@ namespace HovelHouse.CloudKit
         
         
         
-        public NSSortDescriptor[] SortDescriptors 
+        /// <value>SortDescriptors</value>
+        public NSSortDescriptor[] SortDescriptors
         {
             get 
             { 
@@ -176,7 +183,8 @@ namespace HovelHouse.CloudKit
         }
 
         
-        public string RecordType 
+        /// <value>RecordType</value>
+        public string RecordType
         {
             get 
             { 
@@ -184,8 +192,10 @@ namespace HovelHouse.CloudKit
                 return Marshal.PtrToStringAuto(recordType);
             }
         }
+
         
-        public NSPredicate Predicate 
+        /// <value>Predicate</value>
+        public NSPredicate Predicate
         {
             get 
             { 
@@ -193,6 +203,7 @@ namespace HovelHouse.CloudKit
                 return predicate == IntPtr.Zero ? null : new NSPredicate(predicate);
             }
         }
+
         
 
         
