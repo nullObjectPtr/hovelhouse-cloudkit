@@ -1,7 +1,7 @@
 //
 //  NSUbiquitousKeyValueStore.cs
 //
-//  Created by Jonathan Culp <jonathanculp@gmail.com> on 03/13/2020
+//  Created by Jonathan Culp <jonathanculp@gmail.com> on 03/26/2020
 //  Copyright © 2020 HovelHouseApps. All rights reserved.
 //  Unauthorized copying of this file, via any medium is strictly prohibited
 //  Proprietary and confidential
@@ -17,6 +17,9 @@ using UnityEngine;
 
 namespace HovelHouse.CloudKit
 {
+    /// <summary>
+    /// Simple key-value storage that is synced automatically to iCloud
+    /// </summary>
     public class NSUbiquitousKeyValueStore : CKObject, IDisposable
     {
         #region dll
@@ -179,7 +182,10 @@ namespace HovelHouse.CloudKit
 
 
         
-        
+        /// <summary>
+        /// </summary>
+        /// <param name="aKey"></param>
+        /// <returns>val</returns>
         public bool BoolForKey(
             string aKey)
         { 
@@ -200,7 +206,10 @@ namespace HovelHouse.CloudKit
         
 
         
-        
+        /// <summary>
+        /// </summary>
+        /// <param name="aKey"></param>
+        /// <returns>val</returns>
         public long LongLongForKey(
             string aKey)
         { 
@@ -221,7 +230,10 @@ namespace HovelHouse.CloudKit
         
 
         
-        
+        /// <summary>
+        /// </summary>
+        /// <param name="aKey"></param>
+        /// <returns>val</returns>
         public double DoubleForKey(
             string aKey)
         { 
@@ -242,7 +254,10 @@ namespace HovelHouse.CloudKit
         
 
         
-        
+        /// <summary>
+        /// </summary>
+        /// <param name="aKey"></param>
+        /// <returns>val</returns>
         public string StringForKey(
             string aKey)
         { 
@@ -263,7 +278,10 @@ namespace HovelHouse.CloudKit
         
 
         
-        
+        /// <summary>
+        /// </summary>
+        /// <param name="value"></param><param name="aKey"></param>
+        /// <returns>void</returns>
         public void SetBool(
             bool value, 
             string aKey)
@@ -287,7 +305,10 @@ namespace HovelHouse.CloudKit
         
 
         
-        
+        /// <summary>
+        /// </summary>
+        /// <param name="value"></param><param name="aKey"></param>
+        /// <returns>void</returns>
         public void SetDouble(
             double value, 
             string aKey)
@@ -311,7 +332,10 @@ namespace HovelHouse.CloudKit
         
 
         
-        
+        /// <summary>
+        /// </summary>
+        /// <param name="value"></param><param name="aKey"></param>
+        /// <returns>void</returns>
         public void SetLongLong(
             long value, 
             string aKey)
@@ -335,7 +359,10 @@ namespace HovelHouse.CloudKit
         
 
         
-        
+        /// <summary>
+        /// </summary>
+        /// <param name="aString"></param><param name="aKey"></param>
+        /// <returns>void</returns>
         public void SetString(
             string aString, 
             string aKey)
@@ -359,7 +386,10 @@ namespace HovelHouse.CloudKit
         
 
         
-        
+        /// <summary>
+        /// </summary>
+        /// <param name="aKey"></param>
+        /// <returns>void</returns>
         public void RemoveObjectForKey(
             string aKey)
         { 
@@ -379,7 +409,10 @@ namespace HovelHouse.CloudKit
         
 
         
-        
+        /// <summary>
+        /// </summary>
+        /// 
+        /// <returns>val</returns>
         public bool Synchronize()
         { 
             var val = NSUbiquitousKeyValueStore_synchronize(
@@ -396,7 +429,11 @@ namespace HovelHouse.CloudKit
         
 
         
-        public byte[] BufferForKey(
+        /// <summary>
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns>val</returns>
+public byte[] BufferForKey(
             string key)
         {
             IntPtr source = IntPtr.Zero;
@@ -423,7 +460,11 @@ namespace HovelHouse.CloudKit
         
 
         
-                private static readonly Dictionary<IntPtr,Action<long,string[]>> NSUbiquitousKeyValueStoreDidChangeExternallyNotificationHandlers = new Dictionary<IntPtr,Action<long,string[]>>();
+        /// <summary>
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns>val</returns>
+        private static readonly Dictionary<IntPtr,Action<long,string[]>> NSUbiquitousKeyValueStoreDidChangeExternallyNotificationHandlers = new Dictionary<IntPtr,Action<long,string[]>>();
 
         [MonoPInvokeCallback(typeof(NSUbiquitousKeyValueStoreDidChangeExternallyDelegate))]
         private static void NSUbiquitousKeyValueStoreDidChangeExternallyNotificationStaticHandler(IntPtr ptr, long reason, IntPtr stringArrPtr, long stringsCount)
@@ -462,7 +503,11 @@ namespace HovelHouse.CloudKit
         
 
         
-        public void RemoveDidChangeExternallyNotificationObserver(Unsubscriber unsubscriber)
+        /// <summary>
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns>val</returns>
+public void RemoveDidChangeExternallyNotificationObserver(Unsubscriber unsubscriber)
         {
             IntPtr exceptionPtr = IntPtr.Zero;
             RemoveNSUbiquitousKeyValueStoreDidChangeExternallyNotificationObserver(unsubscriber.Handle, ref exceptionPtr);
@@ -480,7 +525,8 @@ namespace HovelHouse.CloudKit
         
         
         
-        public static NSUbiquitousKeyValueStore DefaultStore 
+        /// <value>DefaultStore</value>
+        public static NSUbiquitousKeyValueStore DefaultStore
         {
             get 
             { 
@@ -488,6 +534,7 @@ namespace HovelHouse.CloudKit
                 return defaultStore == IntPtr.Zero ? null : new NSUbiquitousKeyValueStore(defaultStore);
             }
         }
+
         
 
         

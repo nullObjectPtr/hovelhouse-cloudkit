@@ -1,7 +1,7 @@
 //
 //  CKModifyRecordsOperation.cs
 //
-//  Created by Jonathan Culp <jonathanculp@gmail.com> on 03/13/2020
+//  Created by Jonathan Culp <jonathanculp@gmail.com> on 03/26/2020
 //  Copyright © 2020 HovelHouseApps. All rights reserved.
 //  Unauthorized copying of this file, via any medium is strictly prohibited
 //  Proprietary and confidential
@@ -17,6 +17,12 @@ using UnityEngine;
 
 namespace HovelHouse.CloudKit
 {
+    /// <summary>
+    /// A database operation that can simultaneously update and delete records
+    /// </summary>
+    /// <remarks>
+    /// Somewhat counterintuitively, you can use this single operation to both update, save and delete records from the database. I don&apos;t know why why apple didn&apos;t decide to split this up into two distinct operations. To save or update records pass an array of records as the first parameter. To delete records, pass an array of RecordId&apos;s to delete. The completion handler will be invoked with records you saved as the first paramater, and the record id&apos;s of the records you deleted as the second.
+    /// </remarks>
     public class CKModifyRecordsOperation : CKDatabaseOperation, IDisposable
     {
         #region dll
@@ -185,7 +191,8 @@ namespace HovelHouse.CloudKit
         
         
         
-        public CKRecord[] RecordsToSave 
+        /// <value>RecordsToSave</value>
+        public CKRecord[] RecordsToSave
         {
             get 
             { 
@@ -220,7 +227,8 @@ namespace HovelHouse.CloudKit
         }
 
         
-        public CKRecordID[] RecordIDsToDelete 
+        /// <value>RecordIDsToDelete</value>
+        public CKRecordID[] RecordIDsToDelete
         {
             get 
             { 
@@ -255,7 +263,8 @@ namespace HovelHouse.CloudKit
         }
 
         
-        public CKRecordSavePolicy SavePolicy 
+        /// <value>SavePolicy</value>
+        public CKRecordSavePolicy SavePolicy
         {
             get 
             { 
@@ -267,8 +276,10 @@ namespace HovelHouse.CloudKit
                 CKModifyRecordsOperation_SetPropSavePolicy(Handle, (long) value, out IntPtr exceptionPtr);
             }
         }
+
         
-        public bool Atomic 
+        /// <value>Atomic</value>
+        public bool Atomic
         {
             get 
             { 
@@ -280,8 +291,10 @@ namespace HovelHouse.CloudKit
                 CKModifyRecordsOperation_SetPropAtomic(Handle, value, out IntPtr exceptionPtr);
             }
         }
+
         
-        public Action<CKRecord[],CKRecordID[],NSError> ModifyRecordsCompletionBlock 
+        /// <value>ModifyRecordsCompletionBlock</value>
+        public Action<CKRecord[],CKRecordID[],NSError> ModifyRecordsCompletionBlock
         {
             get 
             {
@@ -328,7 +341,8 @@ namespace HovelHouse.CloudKit
         }
 
         
-        public Action<CKRecord,NSError> PerRecordCompletionBlock 
+        /// <value>PerRecordCompletionBlock</value>
+        public Action<CKRecord,NSError> PerRecordCompletionBlock
         {
             get 
             {
@@ -372,7 +386,8 @@ namespace HovelHouse.CloudKit
         }
 
         
-        public Action<CKRecord,double> PerRecordProgressBlock 
+        /// <value>PerRecordProgressBlock</value>
+        public Action<CKRecord,double> PerRecordProgressBlock
         {
             get 
             {

@@ -1,7 +1,7 @@
 //
 //  CKFetchShareMetadataOperation.cs
 //
-//  Created by Jonathan Culp <jonathanculp@gmail.com> on 03/13/2020
+//  Created by Jonathan Culp <jonathanculp@gmail.com> on 03/26/2020
 //  Copyright © 2020 HovelHouseApps. All rights reserved.
 //  Unauthorized copying of this file, via any medium is strictly prohibited
 //  Proprietary and confidential
@@ -17,6 +17,9 @@ using UnityEngine;
 
 namespace HovelHouse.CloudKit
 {
+    /// <summary>
+    /// A container operation that fetches metadata for the provided share URLs
+    /// </summary>
     public class CKFetchShareMetadataOperation : CKOperation, IDisposable
     {
         #region dll
@@ -147,7 +150,8 @@ namespace HovelHouse.CloudKit
         
         
         
-        public bool ShouldFetchRootRecord 
+        /// <value>ShouldFetchRootRecord</value>
+        public bool ShouldFetchRootRecord
         {
             get 
             { 
@@ -159,10 +163,12 @@ namespace HovelHouse.CloudKit
                 CKFetchShareMetadataOperation_SetPropShouldFetchRootRecord(Handle, value, out IntPtr exceptionPtr);
             }
         }
+
         
         // TODO: PROPERTYSTRINGARRAY
         
-        public NSURL[] ShareURLs 
+        /// <value>ShareURLs</value>
+        public NSURL[] ShareURLs
         {
             get 
             { 
@@ -197,7 +203,8 @@ namespace HovelHouse.CloudKit
         }
 
         
-        public Action<NSError> FetchShareMetadataCompletionHandler 
+        /// <value>FetchShareMetadataCompletionHandler</value>
+        public Action<NSError> FetchShareMetadataCompletionHandler
         {
             get 
             {
@@ -240,7 +247,8 @@ namespace HovelHouse.CloudKit
         }
 
         
-        public Action<NSURL,CKShareMetadata,NSError> PerShareMetadataHandler 
+        /// <value>PerShareMetadataHandler</value>
+        public Action<NSURL,CKShareMetadata,NSError> PerShareMetadataHandler
         {
             get 
             {

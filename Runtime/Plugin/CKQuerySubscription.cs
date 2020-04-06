@@ -1,7 +1,7 @@
 //
 //  CKQuerySubscription.cs
 //
-//  Created by Jonathan Culp <jonathanculp@gmail.com> on 03/13/2020
+//  Created by Jonathan Culp <jonathanculp@gmail.com> on 03/26/2020
 //  Copyright © 2020 HovelHouseApps. All rights reserved.
 //  Unauthorized copying of this file, via any medium is strictly prohibited
 //  Proprietary and confidential
@@ -17,6 +17,9 @@ using UnityEngine;
 
 namespace HovelHouse.CloudKit
 {
+    /// <summary>
+    /// Use this to create push notifications based on a query
+    /// </summary>
     public class CKQuerySubscription : CKSubscription, IDisposable
     {
         #region dll
@@ -163,7 +166,8 @@ namespace HovelHouse.CloudKit
         
         
         
-        public NSPredicate Predicate 
+        /// <value>Predicate</value>
+        public NSPredicate Predicate
         {
             get 
             { 
@@ -171,8 +175,10 @@ namespace HovelHouse.CloudKit
                 return predicate == IntPtr.Zero ? null : new NSPredicate(predicate);
             }
         }
+
         
-        public CKQuerySubscriptionOptions QuerySubscriptionOptions 
+        /// <value>QuerySubscriptionOptions</value>
+        public CKQuerySubscriptionOptions QuerySubscriptionOptions
         {
             get 
             { 
@@ -180,8 +186,10 @@ namespace HovelHouse.CloudKit
                 return querySubscriptionOptions;
             }
         }
+
         
-        public string RecordType 
+        /// <value>RecordType</value>
+        public string RecordType
         {
             get 
             { 
@@ -189,8 +197,10 @@ namespace HovelHouse.CloudKit
                 return Marshal.PtrToStringAuto(recordType);
             }
         }
+
         
-        public CKRecordZoneID ZoneID 
+        /// <value>ZoneID</value>
+        public CKRecordZoneID ZoneID
         {
             get 
             { 
@@ -202,6 +212,7 @@ namespace HovelHouse.CloudKit
                 CKQuerySubscription_SetPropZoneID(Handle, value != null ? HandleRef.ToIntPtr(value.Handle) : IntPtr.Zero, out IntPtr exceptionPtr);
             }
         }
+
         
 
         

@@ -1,7 +1,7 @@
 //
 //  CKOperationConfiguration.cs
 //
-//  Created by Jonathan Culp <jonathanculp@gmail.com> on 03/13/2020
+//  Created by Jonathan Culp <jonathanculp@gmail.com> on 03/26/2020
 //  Copyright © 2020 HovelHouseApps. All rights reserved.
 //  Unauthorized copying of this file, via any medium is strictly prohibited
 //  Proprietary and confidential
@@ -17,6 +17,12 @@ using UnityEngine;
 
 namespace HovelHouse.CloudKit
 {
+    /// <summary>
+    /// Specifies options for container and database operations, such as quality of service and timeout intervals
+    /// </summary>
+    /// <remarks>
+    /// Database operations do not have sensible defaults of their QualityOfService. Be sure to set the QualityOfService to UserInitiated to ensure that your operations are executed in a timely manner.
+    /// </remarks>
     public class CKOperationConfiguration : CKObject, IDisposable
     {
         #region dll
@@ -87,7 +93,8 @@ namespace HovelHouse.CloudKit
         
         
         
-        public bool AllowsCellularAccess 
+        /// <value>AllowsCellularAccess</value>
+        public bool AllowsCellularAccess
         {
             get 
             { 
@@ -99,8 +106,10 @@ namespace HovelHouse.CloudKit
                 CKOperationConfiguration_SetPropAllowsCellularAccess(Handle, value, out IntPtr exceptionPtr);
             }
         }
+
         
-        public CKContainer Container 
+        /// <value>Container</value>
+        public CKContainer Container
         {
             get 
             { 
@@ -112,8 +121,10 @@ namespace HovelHouse.CloudKit
                 CKOperationConfiguration_SetPropContainer(Handle, value != null ? HandleRef.ToIntPtr(value.Handle) : IntPtr.Zero, out IntPtr exceptionPtr);
             }
         }
+
         
-        public NSQualityOfService QualityOfService 
+        /// <value>QualityOfService</value>
+        public NSQualityOfService QualityOfService
         {
             get 
             { 
@@ -125,6 +136,7 @@ namespace HovelHouse.CloudKit
                 CKOperationConfiguration_SetPropQualityOfService(Handle, (long) value, out IntPtr exceptionPtr);
             }
         }
+
         
 
         

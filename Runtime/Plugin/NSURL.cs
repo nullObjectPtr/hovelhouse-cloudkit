@@ -1,7 +1,7 @@
 //
 //  NSURL.cs
 //
-//  Created by Jonathan Culp <jonathanculp@gmail.com> on 03/13/2020
+//  Created by Jonathan Culp <jonathanculp@gmail.com> on 03/26/2020
 //  Copyright © 2020 HovelHouseApps. All rights reserved.
 //  Unauthorized copying of this file, via any medium is strictly prohibited
 //  Proprietary and confidential
@@ -17,6 +17,12 @@ using UnityEngine;
 
 namespace HovelHouse.CloudKit
 {
+    /// <summary>
+    /// A limited implementation of NSUrl
+    /// </summary>
+    /// <remarks>
+    /// NSURL is a huge class. Only a small part of it is implemented since most of it&apos;s functionality is duplicated by unity&apos;s URL class.
+    /// </remarks>
     public class NSURL : CKObject, IDisposable
     {
         #region dll
@@ -63,7 +69,10 @@ namespace HovelHouse.CloudKit
         internal NSURL(IntPtr ptr) : base(ptr) {}
         
         
-        
+        /// <summary>
+        /// </summary>
+        /// <param name="URLString"></param>
+        /// <returns>val</returns>
         public static NSURL URLWithString(
             string URLString)
         { 
@@ -85,7 +94,10 @@ namespace HovelHouse.CloudKit
         
 
         
-        
+        /// <summary>
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns>val</returns>
         public static NSURL FileURLWithPath(
             string path)
         { 
@@ -114,7 +126,8 @@ namespace HovelHouse.CloudKit
         
         
         
-        public string AbsoluteString 
+        /// <value>AbsoluteString</value>
+        public string AbsoluteString
         {
             get 
             { 
@@ -122,6 +135,7 @@ namespace HovelHouse.CloudKit
                 return Marshal.PtrToStringAuto(absoluteString);
             }
         }
+
         
 
         

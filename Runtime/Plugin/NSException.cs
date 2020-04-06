@@ -1,7 +1,7 @@
 //
 //  NSException.cs
 //
-//  Created by Jonathan Culp <jonathanculp@gmail.com> on 03/13/2020
+//  Created by Jonathan Culp <jonathanculp@gmail.com> on 03/26/2020
 //  Copyright © 2020 HovelHouseApps. All rights reserved.
 //  Unauthorized copying of this file, via any medium is strictly prohibited
 //  Proprietary and confidential
@@ -17,6 +17,12 @@ using UnityEngine;
 
 namespace HovelHouse.CloudKit
 {
+    /// <summary>
+    /// An exception object
+    /// </summary>
+    /// <remarks>
+    /// Apple makes a heavy distinction between errors and exceptions. Exceptions are typically generated when incorrect paramaters are sent to a method. Whenever a native exception is generated, the exception is caught and sent up to the plugin to be re-thrown as a managed CloudKitException. The CloudKitException will contain a reference to the NativeException which can be used to get it&apos;s type, and callstack if needed.
+    /// </remarks>
     public class NSException : CKObject, IDisposable
     {
         #region dll
@@ -60,7 +66,8 @@ namespace HovelHouse.CloudKit
         
         
         
-        public string Name 
+        /// <value>Name</value>
+        public string Name
         {
             get 
             { 
@@ -68,8 +75,10 @@ namespace HovelHouse.CloudKit
                 return Marshal.PtrToStringAuto(name);
             }
         }
+
         
-        public string Reason 
+        /// <value>Reason</value>
+        public string Reason
         {
             get 
             { 
@@ -77,6 +86,7 @@ namespace HovelHouse.CloudKit
                 return Marshal.PtrToStringAuto(reason);
             }
         }
+
         
         // TODO: PROPERTYSTRINGARRAY
         

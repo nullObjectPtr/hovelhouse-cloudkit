@@ -1,7 +1,7 @@
 //
 //  CKAsset.cs
 //
-//  Created by Jonathan Culp <jonathanculp@gmail.com> on 03/13/2020
+//  Created by Jonathan Culp <jonathanculp@gmail.com> on 03/26/2020
 //  Copyright © 2020 HovelHouseApps. All rights reserved.
 //  Unauthorized copying of this file, via any medium is strictly prohibited
 //  Proprietary and confidential
@@ -17,6 +17,12 @@ using UnityEngine;
 
 namespace HovelHouse.CloudKit
 {
+    /// <summary>
+    /// An object wrapper for a large file in the database
+    /// </summary>
+    /// <remarks>
+    /// Apple reccomends that large files (think binary assets) be stored in Records using the CKAsset field type instead of a byte-array. The CKAsset will point to a URL where the asset is hosted. Until the asset is syncd with CloudKit this URL may be a file URL that points to the asset on the users local file system.
+    /// </remarks>
     public class CKAsset : CKObject, IDisposable
     {
         #region dll
@@ -83,7 +89,8 @@ namespace HovelHouse.CloudKit
         
         
         
-        public NSURL FileURL 
+        /// <value>FileURL</value>
+        public NSURL FileURL
         {
             get 
             { 
@@ -91,6 +98,7 @@ namespace HovelHouse.CloudKit
                 return fileURL == IntPtr.Zero ? null : new NSURL(fileURL);
             }
         }
+
         
 
         

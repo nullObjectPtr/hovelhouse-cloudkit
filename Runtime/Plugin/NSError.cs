@@ -1,7 +1,7 @@
 //
 //  NSError.cs
 //
-//  Created by Jonathan Culp <jonathanculp@gmail.com> on 03/13/2020
+//  Created by Jonathan Culp <jonathanculp@gmail.com> on 03/26/2020
 //  Copyright © 2020 HovelHouseApps. All rights reserved.
 //  Unauthorized copying of this file, via any medium is strictly prohibited
 //  Proprietary and confidential
@@ -17,6 +17,12 @@ using UnityEngine;
 
 namespace HovelHouse.CloudKit
 {
+    /// <summary>
+    /// An error object
+    /// </summary>
+    /// <remarks>
+    /// Unlike C# apple makes a big distinction between Error&apos;s and Exceptions. All CKOperations will include an error as a parameter in it&apos;s handlers to indicate the failure of the operation. Use the code field provided and compare them against the various error enums to determine the type of error that happened.
+    /// </remarks>
     public class NSError : CKObject, IDisposable
     {
         #region dll
@@ -81,7 +87,8 @@ namespace HovelHouse.CloudKit
         
         
         
-        public long Code 
+        /// <value>Code</value>
+        public long Code
         {
             get 
             { 
@@ -89,8 +96,10 @@ namespace HovelHouse.CloudKit
                 return code;
             }
         }
+
         
-        public string LocalizedDescription 
+        /// <value>LocalizedDescription</value>
+        public string LocalizedDescription
         {
             get 
             { 
@@ -98,8 +107,10 @@ namespace HovelHouse.CloudKit
                 return Marshal.PtrToStringAuto(localizedDescription);
             }
         }
+
         
-        public string LocalizedRecoverySuggestion 
+        /// <value>LocalizedRecoverySuggestion</value>
+        public string LocalizedRecoverySuggestion
         {
             get 
             { 
@@ -107,8 +118,10 @@ namespace HovelHouse.CloudKit
                 return Marshal.PtrToStringAuto(localizedRecoverySuggestion);
             }
         }
+
         
-        public string LocalizedFailureReason 
+        /// <value>LocalizedFailureReason</value>
+        public string LocalizedFailureReason
         {
             get 
             { 
@@ -116,8 +129,10 @@ namespace HovelHouse.CloudKit
                 return Marshal.PtrToStringAuto(localizedFailureReason);
             }
         }
+
         
-        public string HelpAnchor 
+        /// <value>HelpAnchor</value>
+        public string HelpAnchor
         {
             get 
             { 
@@ -125,6 +140,7 @@ namespace HovelHouse.CloudKit
                 return Marshal.PtrToStringAuto(helpAnchor);
             }
         }
+
         
         // TODO: PROPERTYSTRINGARRAY
         

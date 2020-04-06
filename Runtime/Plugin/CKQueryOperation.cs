@@ -1,7 +1,7 @@
 //
 //  CKQueryOperation.cs
 //
-//  Created by Jonathan Culp <jonathanculp@gmail.com> on 03/13/2020
+//  Created by Jonathan Culp <jonathanculp@gmail.com> on 03/26/2020
 //  Copyright © 2020 HovelHouseApps. All rights reserved.
 //  Unauthorized copying of this file, via any medium is strictly prohibited
 //  Proprietary and confidential
@@ -17,6 +17,9 @@ using UnityEngine;
 
 namespace HovelHouse.CloudKit
 {
+    /// <summary>
+    /// A database operation used to lookup record ids using the provided query
+    /// </summary>
     public class CKQueryOperation : CKObject, IDisposable
     {
         #region dll
@@ -188,7 +191,8 @@ namespace HovelHouse.CloudKit
         
         
         
-        public CKQuery Query 
+        /// <value>Query</value>
+        public CKQuery Query
         {
             get 
             { 
@@ -200,8 +204,10 @@ namespace HovelHouse.CloudKit
                 CKQueryOperation_SetPropQuery(Handle, value != null ? HandleRef.ToIntPtr(value.Handle) : IntPtr.Zero, out IntPtr exceptionPtr);
             }
         }
+
         
-        public CKQueryCursor Cursor 
+        /// <value>Cursor</value>
+        public CKQueryCursor Cursor
         {
             get 
             { 
@@ -213,8 +219,10 @@ namespace HovelHouse.CloudKit
                 CKQueryOperation_SetPropCursor(Handle, value != null ? HandleRef.ToIntPtr(value.Handle) : IntPtr.Zero, out IntPtr exceptionPtr);
             }
         }
+
         
-        public CKRecordZoneID ZoneID 
+        /// <value>ZoneID</value>
+        public CKRecordZoneID ZoneID
         {
             get 
             { 
@@ -226,10 +234,12 @@ namespace HovelHouse.CloudKit
                 CKQueryOperation_SetPropZoneID(Handle, value != null ? HandleRef.ToIntPtr(value.Handle) : IntPtr.Zero, out IntPtr exceptionPtr);
             }
         }
+
         
         // TODO: PROPERTYSTRINGARRAY
         
-        public Action<CKRecord> RecordFetchedHandler 
+        /// <value>RecordFetchedHandler</value>
+        public Action<CKRecord> RecordFetchedHandler
         {
             get 
             {
@@ -272,7 +282,8 @@ namespace HovelHouse.CloudKit
         }
 
         
-        public Action<CKQueryCursor,NSError> QueryCompletionHandler 
+        /// <value>QueryCompletionHandler</value>
+        public Action<CKQueryCursor,NSError> QueryCompletionHandler
         {
             get 
             {

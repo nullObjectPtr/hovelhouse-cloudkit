@@ -1,7 +1,7 @@
 //
 //  NSPredicate.cs
 //
-//  Created by Jonathan Culp <jonathanculp@gmail.com> on 03/13/2020
+//  Created by Jonathan Culp <jonathanculp@gmail.com> on 03/26/2020
 //  Copyright © 2020 HovelHouseApps. All rights reserved.
 //  Unauthorized copying of this file, via any medium is strictly prohibited
 //  Proprietary and confidential
@@ -17,6 +17,12 @@ using UnityEngine;
 
 namespace HovelHouse.CloudKit
 {
+    /// <summary>
+    /// A predicate - A true/false evaluation that uses an apple-specific query syntax similar in purpose (but not syntax) to SQL
+    /// </summary>
+    /// <remarks>
+    /// TBH the NSPredicate syntax is pretty bizzare. It&apos;s sorta half SQL and half Regex. I&apos;d recommend reading a tutorial on it. https://nshipster.com/nspredicate/ Poorly formatter predicate strings will cause an exception to be thrown.
+    /// </remarks>
     public class NSPredicate : CKObject, IDisposable
     {
         #region dll
@@ -63,7 +69,10 @@ namespace HovelHouse.CloudKit
         internal NSPredicate(IntPtr ptr) : base(ptr) {}
         
         
-        
+        /// <summary>
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns>val</returns>
         public static NSPredicate PredicateWithValue(
             bool value)
         { 
@@ -83,7 +92,10 @@ namespace HovelHouse.CloudKit
         
 
         
-        
+        /// <summary>
+        /// </summary>
+        /// <param name="predicateFormat"></param>
+        /// <returns>val</returns>
         public static NSPredicate PredicateWithFormat(
             string predicateFormat)
         { 
@@ -110,7 +122,8 @@ namespace HovelHouse.CloudKit
         
         
         
-        public string PredicateFormat 
+        /// <value>PredicateFormat</value>
+        public string PredicateFormat
         {
             get 
             { 
@@ -118,6 +131,7 @@ namespace HovelHouse.CloudKit
                 return Marshal.PtrToStringAuto(predicateFormat);
             }
         }
+
         
 
         

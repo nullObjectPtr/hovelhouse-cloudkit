@@ -1,7 +1,7 @@
 //
 //  CKContainer.cs
 //
-//  Created by Jonathan Culp <jonathanculp@gmail.com> on 03/13/2020
+//  Created by Jonathan Culp <jonathanculp@gmail.com> on 03/26/2020
 //  Copyright © 2020 HovelHouseApps. All rights reserved.
 //  Unauthorized copying of this file, via any medium is strictly prohibited
 //  Proprietary and confidential
@@ -17,6 +17,12 @@ using UnityEngine;
 
 namespace HovelHouse.CloudKit
 {
+    /// <summary>
+    /// An interface into the applications sandboxed contents
+    /// </summary>
+    /// <remarks>
+    /// A CKContainer represents an app-sandbox of sorts. In addition to sandboxing application data, a container also sandboxes communication with an applications public and private cloud databases. You can set up custom containers that can be shared between different apps. Containers are worth reading up on - they are not very straightforward.
+    /// </remarks>
     public class CKContainer : CKObject, IDisposable
     {
         #region dll
@@ -247,7 +253,10 @@ namespace HovelHouse.CloudKit
         internal CKContainer(IntPtr ptr) : base(ptr) {}
         
         
-        
+        /// <summary>
+        /// </summary>
+        /// 
+        /// <returns>val</returns>
         public static CKContainer DefaultContainer()
         { 
             var val = CKContainer_defaultContainer(out IntPtr exceptionPtr);
@@ -263,7 +272,10 @@ namespace HovelHouse.CloudKit
         
 
         
-        
+        /// <summary>
+        /// </summary>
+        /// <param name="containerIdentifier"></param>
+        /// <returns>val</returns>
         public static CKContainer ContainerWithIdentifier(
             string containerIdentifier)
         { 
@@ -290,7 +302,10 @@ namespace HovelHouse.CloudKit
 
 
         
-        
+        /// <summary>
+        /// </summary>
+        /// <param name="databaseScope"></param>
+        /// <returns>val</returns>
         public CKDatabase DatabaseWithDatabaseScope(
             CKDatabaseScope databaseScope)
         { 
@@ -312,7 +327,10 @@ namespace HovelHouse.CloudKit
 
         
         
-        
+        /// <summary>
+        /// </summary>
+        /// <param name="completionHandler"></param>
+        /// <returns>void</returns>
         public void FetchAllLongLivedOperationIDsWithCompletionHandler(
             Action<string[],NSError> completionHandler)
         { 
@@ -352,7 +370,10 @@ namespace HovelHouse.CloudKit
         
 
         
-        
+        /// <summary>
+        /// </summary>
+        /// <param name="completionHandler"></param>
+        /// <returns>void</returns>
         public void FetchUserRecordIDWithCompletionHandler(
             Action<CKRecordID,NSError> completionHandler)
         { 
@@ -391,7 +412,10 @@ namespace HovelHouse.CloudKit
         
 
         
-        
+        /// <summary>
+        /// </summary>
+        /// <param name="email"></param><param name="completionHandler"></param>
+        /// <returns>void</returns>
         public void DiscoverUserIdentityWithEmailAddress(
             string email, 
             Action<CKUserIdentity,NSError> completionHandler)
@@ -436,7 +460,10 @@ namespace HovelHouse.CloudKit
         
 
         
-        
+        /// <summary>
+        /// </summary>
+        /// <param name="emailAddress"></param><param name="completionHandler"></param>
+        /// <returns>void</returns>
         public void FetchShareParticipantWithEmailAddress(
             string emailAddress, 
             Action<CKShareParticipant,NSError> completionHandler)
@@ -481,7 +508,10 @@ namespace HovelHouse.CloudKit
         
 
         
-        
+        /// <summary>
+        /// </summary>
+        /// <param name="phoneNumber"></param><param name="completionHandler"></param>
+        /// <returns>void</returns>
         public void FetchShareParticipantWithPhoneNumber(
             string phoneNumber, 
             Action<CKShareParticipant,NSError> completionHandler)
@@ -526,7 +556,10 @@ namespace HovelHouse.CloudKit
         
 
         
-        
+        /// <summary>
+        /// </summary>
+        /// <param name="userRecordID"></param><param name="completionHandler"></param>
+        /// <returns>void</returns>
         public void FetchShareParticipantWithUserRecordID(
             CKRecordID userRecordID, 
             Action<CKShareParticipant,NSError> completionHandler)
@@ -571,7 +604,10 @@ namespace HovelHouse.CloudKit
         
 
         
-        
+        /// <summary>
+        /// </summary>
+        /// <param name="operationID"></param><param name="completionHandler"></param>
+        /// <returns>void</returns>
         public void FetchLongLivedOperationWithID(
             string operationID, 
             Action<CKOperation,NSError> completionHandler)
@@ -616,7 +652,10 @@ namespace HovelHouse.CloudKit
         
 
         
-        
+        /// <summary>
+        /// </summary>
+        /// <param name="metadata"></param><param name="completionHandler"></param>
+        /// <returns>void</returns>
         public void AcceptShareMetadata(
             CKShareMetadata metadata, 
             Action<CKShare,NSError> completionHandler)
@@ -661,7 +700,10 @@ namespace HovelHouse.CloudKit
         
 
         
-        
+        /// <summary>
+        /// </summary>
+        /// <param name="applicationPermission"></param><param name="completionHandler"></param>
+        /// <returns>void</returns>
         public void RequestApplicationPermission(
             CKApplicationPermissions applicationPermission, 
             Action<CKApplicationPermissionStatus,NSError> completionHandler)
@@ -704,7 +746,10 @@ namespace HovelHouse.CloudKit
         
 
         
-        
+        /// <summary>
+        /// </summary>
+        /// <param name="completionHandler"></param>
+        /// <returns>void</returns>
         public void AccountStatusWithCompletionHandler(
             Action<CKAccountStatus,NSError> completionHandler)
         { 
@@ -743,7 +788,10 @@ namespace HovelHouse.CloudKit
         
 
         
-        
+        /// <summary>
+        /// </summary>
+        /// <param name="applicationPermission"></param><param name="completionHandler"></param>
+        /// <returns>void</returns>
         public void StatusForApplicationPermission(
             CKApplicationPermissions applicationPermission, 
             Action<CKApplicationPermissionStatus,NSError> completionHandler)
@@ -786,7 +834,10 @@ namespace HovelHouse.CloudKit
         
 
         
-        
+        /// <summary>
+        /// </summary>
+        /// <param name="operation"></param>
+        /// <returns>void</returns>
         public void AddOperation(
             CKOperation operation)
         { 
@@ -808,7 +859,10 @@ namespace HovelHouse.CloudKit
         
 
         
-        
+        /// <summary>
+        /// </summary>
+        /// <param name="url"></param><param name="completionHandler"></param>
+        /// <returns>void</returns>
         public void FetchShareMetadataWithURL(
             NSURL url, 
             Action<CKShareMetadata,NSError> completionHandler)
@@ -854,7 +908,8 @@ namespace HovelHouse.CloudKit
 
         
         
-        public CKDatabase PrivateCloudDatabase 
+        /// <value>PrivateCloudDatabase</value>
+        public CKDatabase PrivateCloudDatabase
         {
             get 
             { 
@@ -862,8 +917,10 @@ namespace HovelHouse.CloudKit
                 return privateCloudDatabase == IntPtr.Zero ? null : new CKDatabase(privateCloudDatabase);
             }
         }
+
         
-        public CKDatabase PublicCloudDatabase 
+        /// <value>PublicCloudDatabase</value>
+        public CKDatabase PublicCloudDatabase
         {
             get 
             { 
@@ -871,8 +928,10 @@ namespace HovelHouse.CloudKit
                 return publicCloudDatabase == IntPtr.Zero ? null : new CKDatabase(publicCloudDatabase);
             }
         }
+
         
-        public CKDatabase SharedCloudDatabase 
+        /// <value>SharedCloudDatabase</value>
+        public CKDatabase SharedCloudDatabase
         {
             get 
             { 
@@ -880,8 +939,10 @@ namespace HovelHouse.CloudKit
                 return sharedCloudDatabase == IntPtr.Zero ? null : new CKDatabase(sharedCloudDatabase);
             }
         }
+
         
-        public string ContainerIdentifier 
+        /// <value>ContainerIdentifier</value>
+        public string ContainerIdentifier
         {
             get 
             { 
@@ -889,6 +950,7 @@ namespace HovelHouse.CloudKit
                 return Marshal.PtrToStringAuto(containerIdentifier);
             }
         }
+
         
 
         

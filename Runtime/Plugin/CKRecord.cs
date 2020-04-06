@@ -1,7 +1,7 @@
 //
 //  CKRecord.cs
 //
-//  Created by Jonathan Culp <jonathanculp@gmail.com> on 03/13/2020
+//  Created by Jonathan Culp <jonathanculp@gmail.com> on 03/26/2020
 //  Copyright © 2020 HovelHouseApps. All rights reserved.
 //  Unauthorized copying of this file, via any medium is strictly prohibited
 //  Proprietary and confidential
@@ -17,6 +17,12 @@ using UnityEngine;
 
 namespace HovelHouse.CloudKit
 {
+    /// <summary>
+    /// A single record inside a CloudKit database
+    /// </summary>
+    /// <remarks>
+    /// Everything stored in a database is stored as a CKRecord. All CKRecords are of a &apos;type&apos; which you specify during construction. Records contain one or more fields of a certain limited set of types: strings, bools, ints, doubles, dates, locations, references or assets. All records are uniquely identified by a recordID which you may (optionally) specify. If you don&apos;t specify a record id, one is automatically generated for you. Once a record is saved to the database it will contain useful metadata, such as creation time, last modified time, and change tokens.
+    /// </remarks>
     public class CKRecord : CKObject, IDisposable
     {
         #region dll
@@ -400,7 +406,11 @@ namespace HovelHouse.CloudKit
 
 
         
-            
+        /// <summary>
+        /// </summary>
+        /// 
+        /// <returns>val</returns>
+    
     public string[] AllKeys()
     {
            
@@ -429,7 +439,11 @@ namespace HovelHouse.CloudKit
     
 
         
-            
+        /// <summary>
+        /// </summary>
+        /// 
+        /// <returns>val</returns>
+    
     public string[] ChangedKeys()
     {
            
@@ -458,7 +472,11 @@ namespace HovelHouse.CloudKit
     
 
         
-            
+        /// <summary>
+        /// </summary>
+        /// 
+        /// <returns>val</returns>
+    
     public string[] AllTokens()
     {
            
@@ -487,7 +505,11 @@ namespace HovelHouse.CloudKit
     
 
         
-        public byte[] BufferForKey(
+        /// <summary>
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns>val</returns>
+public byte[] BufferForKey(
             string key)
         {
             IntPtr source = IntPtr.Zero;
@@ -506,7 +528,10 @@ namespace HovelHouse.CloudKit
         
 
         
-        
+        /// <summary>
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns>val</returns>
         public string StringForKey(
             string key)
         { 
@@ -529,7 +554,10 @@ namespace HovelHouse.CloudKit
         
 
         
-        
+        /// <summary>
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns>val</returns>
         public long IntForKey(
             string key)
         { 
@@ -552,7 +580,10 @@ namespace HovelHouse.CloudKit
         
 
         
-        
+        /// <summary>
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns>val</returns>
         public double DoubleForKey(
             string key)
         { 
@@ -575,7 +606,10 @@ namespace HovelHouse.CloudKit
         
 
         
-        
+        /// <summary>
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns>val</returns>
         public CKAsset AssetForKey(
             string key)
         { 
@@ -599,7 +633,10 @@ namespace HovelHouse.CloudKit
 
         
         
-        
+        /// <summary>
+        /// </summary>
+        /// <param name="coder"></param>
+        /// <returns>void</returns>
         public void EncodeSystemFieldsWithCoder(
             NSCoder coder)
         { 
@@ -621,7 +658,10 @@ namespace HovelHouse.CloudKit
         
 
         
-        
+        /// <summary>
+        /// </summary>
+        /// <param name="parentRecord"></param>
+        /// <returns>void</returns>
         public void SetParentReferenceFromRecord(
             CKRecord parentRecord)
         { 
@@ -641,7 +681,10 @@ namespace HovelHouse.CloudKit
         
 
         
-        
+        /// <summary>
+        /// </summary>
+        /// <param name="parentRecordID"></param>
+        /// <returns>void</returns>
         public void SetParentReferenceFromRecordID(
             CKRecordID parentRecordID)
         { 
@@ -661,7 +704,11 @@ namespace HovelHouse.CloudKit
         
 
         
-        public void SetBuffer(
+        /// <summary>
+        /// </summary>
+        /// <param name="obj"></param><param name="key"></param>
+        /// <returns>void</returns>
+public void SetBuffer(
             byte[] bytes, 
             string key)
         {
@@ -674,7 +721,10 @@ namespace HovelHouse.CloudKit
         
 
         
-        
+        /// <summary>
+        /// </summary>
+        /// <param name="reference"></param><param name="key"></param>
+        /// <returns>void</returns>
         public void SetReference(
             CKReference reference, 
             string key)
@@ -700,7 +750,10 @@ namespace HovelHouse.CloudKit
         
 
         
-        
+        /// <summary>
+        /// </summary>
+        /// <param name="obj"></param><param name="key"></param>
+        /// <returns>void</returns>
         public void SetAsset(
             CKAsset obj, 
             string key)
@@ -726,7 +779,10 @@ namespace HovelHouse.CloudKit
         
 
         
-        
+        /// <summary>
+        /// </summary>
+        /// <param name="obj"></param><param name="key"></param>
+        /// <returns>void</returns>
         public void SetString(
             string obj, 
             string key)
@@ -752,7 +808,10 @@ namespace HovelHouse.CloudKit
         
 
         
-        
+        /// <summary>
+        /// </summary>
+        /// <param name="obj"></param><param name="key"></param>
+        /// <returns>void</returns>
         public void SetInt(
             long obj, 
             string key)
@@ -778,7 +837,10 @@ namespace HovelHouse.CloudKit
         
 
         
-        
+        /// <summary>
+        /// </summary>
+        /// <param name="obj"></param><param name="key"></param>
+        /// <returns>void</returns>
         public void SetDouble(
             double obj, 
             string key)
@@ -805,7 +867,8 @@ namespace HovelHouse.CloudKit
 
         
         
-        public CKRecordID RecordID 
+        /// <value>RecordID</value>
+        public CKRecordID RecordID
         {
             get 
             { 
@@ -813,8 +876,10 @@ namespace HovelHouse.CloudKit
                 return recordID == IntPtr.Zero ? null : new CKRecordID(recordID);
             }
         }
+
         
-        public string RecordType 
+        /// <value>RecordType</value>
+        public string RecordType
         {
             get 
             { 
@@ -822,8 +887,10 @@ namespace HovelHouse.CloudKit
                 return Marshal.PtrToStringAuto(recordType);
             }
         }
+
         
-        public DateTime CreationDate 
+        /// <value>CreationDate</value>
+        public DateTime CreationDate
         {
             get 
             { 
@@ -831,8 +898,10 @@ namespace HovelHouse.CloudKit
                 return new DateTime(1970, 1, 1, 0, 0, 0,DateTimeKind.Utc).AddSeconds(creationDate);;
             }
         }
+
         
-        public CKRecordID CreatorUserRecordID 
+        /// <value>CreatorUserRecordID</value>
+        public CKRecordID CreatorUserRecordID
         {
             get 
             { 
@@ -840,8 +909,10 @@ namespace HovelHouse.CloudKit
                 return creatorUserRecordID == IntPtr.Zero ? null : new CKRecordID(creatorUserRecordID);
             }
         }
+
         
-        public DateTime ModificationDate 
+        /// <value>ModificationDate</value>
+        public DateTime ModificationDate
         {
             get 
             { 
@@ -849,8 +920,10 @@ namespace HovelHouse.CloudKit
                 return new DateTime(1970, 1, 1, 0, 0, 0,DateTimeKind.Utc).AddSeconds(modificationDate);;
             }
         }
+
         
-        public CKRecordID LastModifiedUserRecordID 
+        /// <value>LastModifiedUserRecordID</value>
+        public CKRecordID LastModifiedUserRecordID
         {
             get 
             { 
@@ -858,8 +931,10 @@ namespace HovelHouse.CloudKit
                 return lastModifiedUserRecordID == IntPtr.Zero ? null : new CKRecordID(lastModifiedUserRecordID);
             }
         }
+
         
-        public string RecordChangeTag 
+        /// <value>RecordChangeTag</value>
+        public string RecordChangeTag
         {
             get 
             { 
@@ -867,8 +942,10 @@ namespace HovelHouse.CloudKit
                 return Marshal.PtrToStringAuto(recordChangeTag);
             }
         }
+
         
-        public CKReference Parent 
+        /// <value>Parent</value>
+        public CKReference Parent
         {
             get 
             { 
@@ -880,8 +957,10 @@ namespace HovelHouse.CloudKit
                 CKRecord_SetPropParent(Handle, value != null ? HandleRef.ToIntPtr(value.Handle) : IntPtr.Zero, out IntPtr exceptionPtr);
             }
         }
+
         
-        public CKReference Share 
+        /// <value>Share</value>
+        public CKReference Share
         {
             get 
             { 
@@ -889,6 +968,7 @@ namespace HovelHouse.CloudKit
                 return share == IntPtr.Zero ? null : new CKReference(share);
             }
         }
+
         
 
         

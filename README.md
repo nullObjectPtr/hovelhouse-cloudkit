@@ -1,9 +1,7 @@
 # Hello
 Thank you for downloading the Hovel House CloudKit Plugin
  
-The plugin was written specifically with Apple Arcade in mind. It is a thin wrapper over the CloudKit framework and made to work on MacOS, iOS and TVOS. It was written as an alternative to Prime31's and Stan's Assets CloudKit plugins which do not offer full access to the CloudKit API.
- 
-If you got your cloud saves working with either of those plugins and didn't need access to things like CKRecord's ChangeToken then good on you! But if you were aggravated that you didn't have access to more advanced functions than this plugin is for you. It's aim is to be as close as possible to writing the equivalent in objective-c and makes very few assumptions and how you intend to use it. It simply marshals your data to the appropriate API calls.
+The plugin was written specifically with Apple Arcade in mind. It is a thin wrapper over the CloudKit framework and made to work on MacOS, iOS and TVOS. It's aim is to be as close as possible to writing the equivalent in objective-c and makes very few assumptions and how you intend to use it. It simply marshals your data to the appropriate API calls.
  
 The CloudKit plugin is a work in progress. While the majority of the API is covered. Some of it is not yet (some things are more difficult to marshal than others). These will become available shortly. I welcome your feedback on what to prioritize.
 
@@ -12,7 +10,7 @@ The CloudKit plugin is a work in progress. While the majority of the API is cove
 Support is handled mainly via the forums: http://www.hovelhouse.com/forums but you are welcome to send an e-mail directly to us at support@hovelhouse.com
 
 ## Documentation
-Some rudimentary web documentation is available here: http://www.hovelhouse.com/docs. It's thin on explanations, but it does provide an outline of which API methods are currently covered. For the moment, if you need explanations of what the various API methods do please refer to the apple documentation: https://developer.apple.com/documentation/cloudkit?language=objc By and large, the method names and parameters will be the same. 
+Setup and installation is covered in this document. Some rudimentary web documentation for the API is available here: http://www.hovelhouse.com/docs. It's thin on explanations, but it does provide an outline of which API methods are currently covered. For the moment, if you need explanations of what the various API methods do please refer to the apple documentation: https://developer.apple.com/documentation/cloudkit?language=objc By and large, the method names and parameters will be the same. 
  
 # Setup
  
@@ -46,7 +44,7 @@ In order to use cloudkit you will need the following
 * Have set the "Target Minimum iOS Version" to 11.0 or higher
  
 ### iOS and TVOS
-Before you build you want to make sure you have set a good bundle identifier in Unity settings. Once you get to the step where you add the CloudKit capability xcode will automatically generate a container identifier you **cannot** delete. Having set the bundle identifier you want now will save you the pain of having your cloudkit dashboard junked up with a bunch of test container id's. You can read more about containers here: https://developer.apple.com/library/archive/documentation/DataManagement/Conceptual/CloudKitQuickStart/EnablingiCloudandConfiguringCloudKit/EnablingiCloudandConfiguringCloudKit.html 
+Before you build you want to make sure you have set a good bundle identifier in Unity settings. Once you get to the step where you add the CloudKit capability, xcode will automatically generate a container identifier you **cannot** delete. Having set the bundle identifier you want now will save you the pain of having your cloudkit dashboard junked up with a bunch of test container id's. You can read more about containers here: https://developer.apple.com/library/archive/documentation/DataManagement/Conceptual/CloudKitQuickStart/EnablingiCloudandConfiguringCloudKit/EnablingiCloudandConfiguringCloudKit.html 
  
  * The plugin adds the appropriate CloudKit entitlements as a post process build step. On first launch a BuildSettings asset will be created in the folder "Assets/Plugins/HovelHouse/CloudKit/Resources" with default options.
  ** By default, key-value storage and iCloud Documents are disabled.
@@ -55,16 +53,14 @@ Before you build you want to make sure you have set a good bundle identifier in 
  ** If you have your own post process build scripts, and this conflicts with that, you can disable this step by unchecking the "Enable Post Process Build" checkbox.
  
 ### MacOS
-* If you've made a MacOS build yet, then you already know that unity doesn't support exporting to an XCode project. It is therefore recommended that you first create an iOS or TVOS build before attempting to create a MacOS build. By doing so, xcode will automatically create the appropriate CloudKit container for your app, and you will not need to create one manually on the apple developer website (which is a big pain)
-* Unity's inability to generate an xcode project for macOS causes problems for apps that require custom entitlements to run. Sadly, CloudKit is a framework that requires the appropriate entitlements. Attempting to execute a cloud kit api method without them will result in your application exiting with an error. In order to use this plugin on your MacOS build, you'll need to use a command line program to insert the appropriate entitlements and re-sign your app.
-* TODO: specific details about how to do this
-* TODO: a tool or script to help with this
+* To build to macOS follow the instructions at http://www.hovelhouse.com/building_for_macos.html
  
 # Known Issues
-Again, some of the API isn't yet covered.
+* Again, some of the API isn't yet covered
+* When Key-Value-Storage is enabled, some versions of Unity will cause Unity Cloud Build to fail with an error message about the entitlements not matching the provisions profile. The cause of this is currently unknown, as the entitlements are the same in all build versions.
  
 # FAQ
-No questions yet. Be the first!
+* No questions yet. Be the first! Send an e-mail to support@hovelhouse.com
  
 # Road Map
  
@@ -73,7 +69,6 @@ No questions yet. Be the first!
 * Unit tests for everything
 * Better documentation
 * Tutorials
-* A script or instructions for making a MacOS build
 
 ### P2
 * Use weak references for storing property callbacks
