@@ -28,7 +28,7 @@
         {
             "displayName": "Samples",
             "description": "Eight sample scenes that demonstrate common usages of CloudKit",
-            "path":"Samples/ExampleHub"
+            "path":"Samples~/ExampleHub"
         }
     ]
 }
