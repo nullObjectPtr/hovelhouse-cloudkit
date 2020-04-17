@@ -1,7 +1,7 @@
 //
 //  CKShare.cs
 //
-//  Created by Jonathan Culp <jonathanculp@gmail.com> on 03/26/2020
+//  Created by Jonathan Culp <jonathanculp@gmail.com> on 04/16/2020
 //  Copyright © 2020 HovelHouseApps. All rights reserved.
 //  Unauthorized copying of this file, via any medium is strictly prohibited
 //  Proprietary and confidential
@@ -28,12 +28,112 @@ namespace HovelHouse.CloudKit
         
 
         
+        #if UNITY_IPHONE || UNITY_TVOS
+        [DllImport("__Internal")]
+        #else
+        [DllImport("HHCloudKitMacOS")]
+        #endif
+        private static extern IntPtr CKShare_initWithCoder(
+            IntPtr aDecoder, 
+            out IntPtr exceptionPtr
+            );
+        
+        #if UNITY_IPHONE || UNITY_TVOS
+        [DllImport("__Internal")]
+        #else
+        [DllImport("HHCloudKitMacOS")]
+        #endif
+        private static extern IntPtr CKShare_initWithRootRecord(
+            IntPtr rootRecord, 
+            out IntPtr exceptionPtr
+            );
+        
+        #if UNITY_IPHONE || UNITY_TVOS
+        [DllImport("__Internal")]
+        #else
+        [DllImport("HHCloudKitMacOS")]
+        #endif
+        private static extern IntPtr CKShare_initWithRootRecord_shareID(
+            IntPtr rootRecord, 
+            IntPtr shareID, 
+            out IntPtr exceptionPtr
+            );
+        
+
+        
+        #if UNITY_IPHONE || UNITY_TVOS
+        [DllImport("__Internal")]
+        #else
+        [DllImport("HHCloudKitMacOS")]
+        #endif
+        private static extern void CKShare_addParticipant(
+            HandleRef ptr, 
+            IntPtr participant,
+            out IntPtr exceptionPtr);
+
+        
+        #if UNITY_IPHONE || UNITY_TVOS
+        [DllImport("__Internal")]
+        #else
+        [DllImport("HHCloudKitMacOS")]
+        #endif
+        private static extern void CKShare_removeParticipant(
+            HandleRef ptr, 
+            IntPtr participant,
+            out IntPtr exceptionPtr);
 
         
 
         
 
         // Properties
+        
+        #if UNITY_IPHONE || UNITY_TVOS
+        [DllImport("__Internal")]
+        #else
+        [DllImport("HHCloudKitMacOS")]
+        #endif
+        private static extern CKShareParticipantPermission CKShare_GetPropPublicPermission(HandleRef ptr);
+        
+        #if UNITY_IPHONE || UNITY_TVOS
+        [DllImport("__Internal")]
+        #else
+        [DllImport("HHCloudKitMacOS")]
+        #endif
+        private static extern void CKShare_SetPropPublicPermission(HandleRef ptr, long publicPermission, out IntPtr exceptionPtr);
+
+        
+        #if UNITY_IPHONE || UNITY_TVOS
+        [DllImport("__Internal")]
+        #else
+        [DllImport("HHCloudKitMacOS")]
+        #endif
+        private static extern IntPtr CKShare_GetPropURL(HandleRef ptr);
+
+        
+        #if UNITY_IPHONE || UNITY_TVOS
+        [DllImport("__Internal")]
+        #else
+        [DllImport("HHCloudKitMacOS")]
+        #endif
+        private static extern IntPtr CKShare_GetPropCurrentUserParticipant(HandleRef ptr);
+
+        
+        #if UNITY_IPHONE || UNITY_TVOS
+        [DllImport("__Internal")]
+        #else
+        [DllImport("HHCloudKitMacOS")]
+        #endif
+        private static extern IntPtr CKShare_GetPropOwner(HandleRef ptr);
+
+        
+        #if UNITY_IPHONE || UNITY_TVOS
+        [DllImport("__Internal")]
+        #else
+        [DllImport("HHCloudKitMacOS")]
+        #endif
+        private static extern void CKShare_GetPropParticipants(HandleRef ptr, ref IntPtr buffer, ref long count);
+
         
 
         #endregion
@@ -43,10 +143,188 @@ namespace HovelHouse.CloudKit
         
         
         
+        public CKShare(
+            NSCoder aDecoder
+            )
+        {
+            
+            IntPtr ptr = CKShare_initWithCoder(
+                aDecoder != null ? HandleRef.ToIntPtr(aDecoder.Handle) : IntPtr.Zero, 
+                out IntPtr exceptionPtr);
+
+            if(exceptionPtr != IntPtr.Zero)
+            {
+                var nativeException = new NSException(exceptionPtr);
+                throw new CloudKitException(nativeException, nativeException.Reason);
+            }
+
+            Handle = new HandleRef(this,ptr);
+        }
+        
+        
+        public CKShare(
+            CKRecord rootRecord
+            )
+        {
+            
+            IntPtr ptr = CKShare_initWithRootRecord(
+                rootRecord != null ? HandleRef.ToIntPtr(rootRecord.Handle) : IntPtr.Zero, 
+                out IntPtr exceptionPtr);
+
+            if(exceptionPtr != IntPtr.Zero)
+            {
+                var nativeException = new NSException(exceptionPtr);
+                throw new CloudKitException(nativeException, nativeException.Reason);
+            }
+
+            Handle = new HandleRef(this,ptr);
+        }
+        
+        
+        public CKShare(
+            CKRecord rootRecord, 
+            CKRecordID shareID
+            )
+        {
+            
+            IntPtr ptr = CKShare_initWithRootRecord_shareID(
+                rootRecord != null ? HandleRef.ToIntPtr(rootRecord.Handle) : IntPtr.Zero, 
+                shareID != null ? HandleRef.ToIntPtr(shareID.Handle) : IntPtr.Zero, 
+                out IntPtr exceptionPtr);
+
+            if(exceptionPtr != IntPtr.Zero)
+            {
+                var nativeException = new NSException(exceptionPtr);
+                throw new CloudKitException(nativeException, nativeException.Reason);
+            }
+
+            Handle = new HandleRef(this,ptr);
+        }
+        
+        
 
 
         
+        /// <summary>
+        /// </summary>
+        /// <param name="participant"></param>
+        /// <returns>void</returns>
+        public void AddParticipant(
+            CKShareParticipant participant)
+        { 
+            
+            CKShare_addParticipant(
+                Handle, 
+                participant != null ? HandleRef.ToIntPtr(participant.Handle) : IntPtr.Zero, 
+                out IntPtr exceptionPtr);
+
+            if(exceptionPtr != IntPtr.Zero)
+            {
+                var nativeException = new NSException(exceptionPtr);
+                throw new CloudKitException(nativeException, nativeException.Reason);
+            }
+            
+        }
         
+
+        
+        /// <summary>
+        /// </summary>
+        /// <param name="participant"></param>
+        /// <returns>void</returns>
+        public void RemoveParticipant(
+            CKShareParticipant participant)
+        { 
+            
+            CKShare_removeParticipant(
+                Handle, 
+                participant != null ? HandleRef.ToIntPtr(participant.Handle) : IntPtr.Zero, 
+                out IntPtr exceptionPtr);
+
+            if(exceptionPtr != IntPtr.Zero)
+            {
+                var nativeException = new NSException(exceptionPtr);
+                throw new CloudKitException(nativeException, nativeException.Reason);
+            }
+            
+        }
+        
+
+        
+        
+        
+        /// <value>PublicPermission</value>
+        public CKShareParticipantPermission PublicPermission
+        {
+            get 
+            { 
+                CKShareParticipantPermission publicPermission = CKShare_GetPropPublicPermission(Handle);
+                return publicPermission;
+            }
+            set
+            {
+                CKShare_SetPropPublicPermission(Handle, (long) value, out IntPtr exceptionPtr);
+            }
+        }
+
+        
+        /// <value>URL</value>
+        public NSURL URL
+        {
+            get 
+            { 
+                IntPtr URL = CKShare_GetPropURL(Handle);
+                return URL == IntPtr.Zero ? null : new NSURL(URL);
+            }
+        }
+
+        
+        /// <value>CurrentUserParticipant</value>
+        public CKShareParticipant CurrentUserParticipant
+        {
+            get 
+            { 
+                IntPtr currentUserParticipant = CKShare_GetPropCurrentUserParticipant(Handle);
+                return currentUserParticipant == IntPtr.Zero ? null : new CKShareParticipant(currentUserParticipant);
+            }
+        }
+
+        
+        /// <value>Owner</value>
+        public CKShareParticipant Owner
+        {
+            get 
+            { 
+                IntPtr owner = CKShare_GetPropOwner(Handle);
+                return owner == IntPtr.Zero ? null : new CKShareParticipant(owner);
+            }
+        }
+
+        
+        /// <value>Participants</value>
+        public CKShareParticipant[] Participants
+        {
+            get 
+            { 
+                IntPtr bufferPtr = IntPtr.Zero;
+                long bufferLen = 0;
+
+                CKShare_GetPropParticipants(Handle, ref bufferPtr, ref bufferLen);
+
+                var participants = new CKShareParticipant[bufferLen];
+
+                for (int i = 0; i < bufferLen; i++)
+                {
+                    IntPtr ptr2 = Marshal.ReadIntPtr(bufferPtr + (i * IntPtr.Size));
+                    participants[i] = ptr2 == IntPtr.Zero ? null : new CKShareParticipant(ptr2);
+                }
+
+                Marshal.FreeHGlobal(bufferPtr);
+
+                return participants;
+            }
+        }
+
         
 
         
@@ -56,7 +334,7 @@ namespace HovelHouse.CloudKit
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
         #else
-        [DllImport("HHCloudKit")]
+        [DllImport("HHCloudKitMacOS")]
         #endif
         private static extern void CKShare_Dispose(HandleRef handle);
             

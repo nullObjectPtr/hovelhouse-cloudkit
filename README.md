@@ -66,13 +66,12 @@ Before you build you want to make sure you have set a good bundle identifier in 
  
 ### P1
 * Get continuous integration up and running with UnityCloudBuild
-* Unit tests for everything
+* Integration tests for everything
 * Better documentation
 * Tutorials
 
 ### P2
 * Use weak references for storing property callbacks
-* Reuse existing C# instances instead of creating new when possible
 * Support field arrays in CKRecord
 * Remove the type-specific Set(Type)ForKey and replace them with overloaded versions of SetObjectForKey (Breaking Change)
 * Array support for CKRecord's setObject forKey methods
