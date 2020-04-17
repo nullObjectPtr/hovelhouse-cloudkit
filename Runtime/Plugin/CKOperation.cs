@@ -1,7 +1,7 @@
 //
 //  CKOperation.cs
 //
-//  Created by Jonathan Culp <jonathanculp@gmail.com> on 03/26/2020
+//  Created by Jonathan Culp <jonathanculp@gmail.com> on 04/16/2020
 //  Copyright © 2020 HovelHouseApps. All rights reserved.
 //  Unauthorized copying of this file, via any medium is strictly prohibited
 //  Proprietary and confidential
@@ -38,37 +38,40 @@ namespace HovelHouse.CloudKit
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
         #else
-        [DllImport("HHCloudKit")]
+        [DllImport("HHCloudKitMacOS")]
         #endif
         private static extern IntPtr CKOperation_GetPropConfiguration(HandleRef ptr);
         
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
         #else
-        [DllImport("HHCloudKit")]
+        [DllImport("HHCloudKitMacOS")]
         #endif
         private static extern void CKOperation_SetPropConfiguration(HandleRef ptr, IntPtr configuration, out IntPtr exceptionPtr);
+
         
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
         #else
-        [DllImport("HHCloudKit")]
+        [DllImport("HHCloudKitMacOS")]
         #endif
         private static extern IntPtr CKOperation_GetPropOperationID(HandleRef ptr);
+
         
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
         #else
-        [DllImport("HHCloudKit")]
+        [DllImport("HHCloudKitMacOS")]
         #endif
         private static extern IntPtr CKOperation_GetPropGroup(HandleRef ptr);
         
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
         #else
-        [DllImport("HHCloudKit")]
+        [DllImport("HHCloudKitMacOS")]
         #endif
         private static extern void CKOperation_SetPropGroup(HandleRef ptr, IntPtr group, out IntPtr exceptionPtr);
+
         
 
         #endregion
@@ -133,7 +136,7 @@ namespace HovelHouse.CloudKit
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
         #else
-        [DllImport("HHCloudKit")]
+        [DllImport("HHCloudKitMacOS")]
         #endif
         private static extern void CKOperation_Dispose(HandleRef handle);
             

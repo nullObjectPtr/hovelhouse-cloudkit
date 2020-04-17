@@ -1,7 +1,7 @@
 //
 //  CKReference.cs
 //
-//  Created by Jonathan Culp <jonathanculp@gmail.com> on 03/26/2020
+//  Created by Jonathan Culp <jonathanculp@gmail.com> on 04/16/2020
 //  Copyright © 2020 HovelHouseApps. All rights reserved.
 //  Unauthorized copying of this file, via any medium is strictly prohibited
 //  Proprietary and confidential
@@ -34,7 +34,7 @@ namespace HovelHouse.CloudKit
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
         #else
-        [DllImport("HHCloudKit")]
+        [DllImport("HHCloudKitMacOS")]
         #endif
         private static extern IntPtr CKReference_initWithRecordID_action(
             IntPtr recordID, 
@@ -45,7 +45,7 @@ namespace HovelHouse.CloudKit
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
         #else
-        [DllImport("HHCloudKit")]
+        [DllImport("HHCloudKitMacOS")]
         #endif
         private static extern IntPtr CKReference_initWithRecord_action(
             IntPtr record, 
@@ -63,16 +63,18 @@ namespace HovelHouse.CloudKit
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
         #else
-        [DllImport("HHCloudKit")]
+        [DllImport("HHCloudKitMacOS")]
         #endif
         private static extern CKReferenceAction CKReference_GetPropReferenceAction(HandleRef ptr);
+
         
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
         #else
-        [DllImport("HHCloudKit")]
+        [DllImport("HHCloudKitMacOS")]
         #endif
         private static extern IntPtr CKReference_GetPropRecordID(HandleRef ptr);
+
         
 
         #endregion
@@ -163,7 +165,7 @@ namespace HovelHouse.CloudKit
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
         #else
-        [DllImport("HHCloudKit")]
+        [DllImport("HHCloudKitMacOS")]
         #endif
         private static extern void CKReference_Dispose(HandleRef handle);
             

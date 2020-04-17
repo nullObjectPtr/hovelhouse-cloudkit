@@ -1,7 +1,7 @@
 //
 //  NSPersonNameComponents.cs
 //
-//  Created by Jonathan Culp <jonathanculp@gmail.com> on 03/26/2020
+//  Created by Jonathan Culp <jonathanculp@gmail.com> on 04/16/2020
 //  Copyright © 2020 HovelHouseApps. All rights reserved.
 //  Unauthorized copying of this file, via any medium is strictly prohibited
 //  Proprietary and confidential
@@ -38,100 +38,107 @@ namespace HovelHouse.CloudKit
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
         #else
-        [DllImport("HHCloudKit")]
+        [DllImport("HHCloudKitMacOS")]
         #endif
         private static extern IntPtr NSPersonNameComponents_GetPropNamePrefix(HandleRef ptr);
         
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
         #else
-        [DllImport("HHCloudKit")]
+        [DllImport("HHCloudKitMacOS")]
         #endif
         private static extern void NSPersonNameComponents_SetPropNamePrefix(HandleRef ptr, string namePrefix, out IntPtr exceptionPtr);
+
         
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
         #else
-        [DllImport("HHCloudKit")]
+        [DllImport("HHCloudKitMacOS")]
         #endif
         private static extern IntPtr NSPersonNameComponents_GetPropGivenName(HandleRef ptr);
         
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
         #else
-        [DllImport("HHCloudKit")]
+        [DllImport("HHCloudKitMacOS")]
         #endif
         private static extern void NSPersonNameComponents_SetPropGivenName(HandleRef ptr, string givenName, out IntPtr exceptionPtr);
+
         
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
         #else
-        [DllImport("HHCloudKit")]
+        [DllImport("HHCloudKitMacOS")]
         #endif
         private static extern IntPtr NSPersonNameComponents_GetPropMiddleName(HandleRef ptr);
         
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
         #else
-        [DllImport("HHCloudKit")]
+        [DllImport("HHCloudKitMacOS")]
         #endif
         private static extern void NSPersonNameComponents_SetPropMiddleName(HandleRef ptr, string middleName, out IntPtr exceptionPtr);
+
         
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
         #else
-        [DllImport("HHCloudKit")]
+        [DllImport("HHCloudKitMacOS")]
         #endif
         private static extern IntPtr NSPersonNameComponents_GetPropFamilyName(HandleRef ptr);
         
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
         #else
-        [DllImport("HHCloudKit")]
+        [DllImport("HHCloudKitMacOS")]
         #endif
         private static extern void NSPersonNameComponents_SetPropFamilyName(HandleRef ptr, string familyName, out IntPtr exceptionPtr);
+
         
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
         #else
-        [DllImport("HHCloudKit")]
+        [DllImport("HHCloudKitMacOS")]
         #endif
         private static extern IntPtr NSPersonNameComponents_GetPropNameSuffix(HandleRef ptr);
         
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
         #else
-        [DllImport("HHCloudKit")]
+        [DllImport("HHCloudKitMacOS")]
         #endif
         private static extern void NSPersonNameComponents_SetPropNameSuffix(HandleRef ptr, string nameSuffix, out IntPtr exceptionPtr);
+
         
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
         #else
-        [DllImport("HHCloudKit")]
+        [DllImport("HHCloudKitMacOS")]
         #endif
         private static extern IntPtr NSPersonNameComponents_GetPropNickname(HandleRef ptr);
         
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
         #else
-        [DllImport("HHCloudKit")]
+        [DllImport("HHCloudKitMacOS")]
         #endif
         private static extern void NSPersonNameComponents_SetPropNickname(HandleRef ptr, string nickname, out IntPtr exceptionPtr);
+
         
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
         #else
-        [DllImport("HHCloudKit")]
+        [DllImport("HHCloudKitMacOS")]
         #endif
         private static extern IntPtr NSPersonNameComponents_GetPropPhoneticRepresentation(HandleRef ptr);
         
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
         #else
-        [DllImport("HHCloudKit")]
+        [DllImport("HHCloudKitMacOS")]
         #endif
         private static extern void NSPersonNameComponents_SetPropPhoneticRepresentation(HandleRef ptr, IntPtr phoneticRepresentation, out IntPtr exceptionPtr);
+
         
 
         #endregion
@@ -259,7 +266,7 @@ namespace HovelHouse.CloudKit
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
         #else
-        [DllImport("HHCloudKit")]
+        [DllImport("HHCloudKitMacOS")]
         #endif
         private static extern void NSPersonNameComponents_Dispose(HandleRef handle);
             

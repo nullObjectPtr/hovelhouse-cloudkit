@@ -1,7 +1,7 @@
 //
 //  CKUserIdentityLookupInfo.cs
 //
-//  Created by Jonathan Culp <jonathanculp@gmail.com> on 03/26/2020
+//  Created by Jonathan Culp <jonathanculp@gmail.com> on 04/16/2020
 //  Copyright © 2020 HovelHouseApps. All rights reserved.
 //  Unauthorized copying of this file, via any medium is strictly prohibited
 //  Proprietary and confidential
@@ -31,7 +31,7 @@ namespace HovelHouse.CloudKit
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
         #else
-        [DllImport("HHCloudKit")]
+        [DllImport("HHCloudKitMacOS")]
         #endif
         private static extern IntPtr CKUserIdentityLookupInfo_initWithEmailAddress(
             string emailAddress, 
@@ -41,7 +41,7 @@ namespace HovelHouse.CloudKit
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
         #else
-        [DllImport("HHCloudKit")]
+        [DllImport("HHCloudKitMacOS")]
         #endif
         private static extern IntPtr CKUserIdentityLookupInfo_initWithUserRecordID(
             IntPtr userRecordID, 
@@ -58,23 +58,26 @@ namespace HovelHouse.CloudKit
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
         #else
-        [DllImport("HHCloudKit")]
+        [DllImport("HHCloudKitMacOS")]
         #endif
         private static extern IntPtr CKUserIdentityLookupInfo_GetPropEmailAddress(HandleRef ptr);
+
         
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
         #else
-        [DllImport("HHCloudKit")]
+        [DllImport("HHCloudKitMacOS")]
         #endif
         private static extern IntPtr CKUserIdentityLookupInfo_GetPropPhoneNumber(HandleRef ptr);
+
         
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
         #else
-        [DllImport("HHCloudKit")]
+        [DllImport("HHCloudKitMacOS")]
         #endif
         private static extern IntPtr CKUserIdentityLookupInfo_GetPropUserRecordID(HandleRef ptr);
+
         
 
         #endregion
@@ -172,7 +175,7 @@ namespace HovelHouse.CloudKit
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
         #else
-        [DllImport("HHCloudKit")]
+        [DllImport("HHCloudKitMacOS")]
         #endif
         private static extern void CKUserIdentityLookupInfo_Dispose(HandleRef handle);
             

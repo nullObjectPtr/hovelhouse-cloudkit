@@ -12,7 +12,7 @@ namespace HovelHouse.CloudKit
         public string[] CustomContainers;
 
         [Header("iOS and tvOS Build Settings")]
-        public bool EnablePostProcessIOSandTVOS = true;
+        public bool EnablePostProcessXCodeProject = true;
 
         [Header("MacOS Build Settings")]
         public bool EnablePostProcessMacOS = true;
