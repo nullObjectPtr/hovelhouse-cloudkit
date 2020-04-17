@@ -1,7 +1,7 @@
 //
 //  CKFetchDatabaseChangesOperation.cs
 //
-//  Created by Jonathan Culp <jonathanculp@gmail.com> on 03/26/2020
+//  Created by Jonathan Culp <jonathanculp@gmail.com> on 04/16/2020
 //  Copyright © 2020 HovelHouseApps. All rights reserved.
 //  Unauthorized copying of this file, via any medium is strictly prohibited
 //  Proprietary and confidential
@@ -31,7 +31,7 @@ namespace HovelHouse.CloudKit
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
         #else
-        [DllImport("HHCloudKit")]
+        [DllImport("HHCloudKitMacOS")]
         #endif
         private static extern IntPtr CKFetchDatabaseChangesOperation_init(
             out IntPtr exceptionPtr
@@ -40,7 +40,7 @@ namespace HovelHouse.CloudKit
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
         #else
-        [DllImport("HHCloudKit")]
+        [DllImport("HHCloudKitMacOS")]
         #endif
         private static extern IntPtr CKFetchDatabaseChangesOperation_initWithPreviousServerChangeToken(
             IntPtr previousServerChangeToken, 
@@ -56,75 +56,83 @@ namespace HovelHouse.CloudKit
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
         #else
-        [DllImport("HHCloudKit")]
+        [DllImport("HHCloudKitMacOS")]
         #endif
         private static extern void CKFetchDatabaseChangesOperation_SetPropChangeTokenUpdatedHandler(HandleRef ptr, ChangeTokenUpdatedDelegate changeTokenUpdatedHandler, out IntPtr exceptionPtr);
+
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
         #else
-        [DllImport("HHCloudKit")]
+        [DllImport("HHCloudKitMacOS")]
         #endif
         private static extern void CKFetchDatabaseChangesOperation_SetPropFetchDatabaseChangesCompletionHandler(HandleRef ptr, FetchDatabaseChangesCompletionDelegate fetchDatabaseChangesCompletionHandler, out IntPtr exceptionPtr);
+
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
         #else
-        [DllImport("HHCloudKit")]
+        [DllImport("HHCloudKitMacOS")]
         #endif
         private static extern void CKFetchDatabaseChangesOperation_SetPropRecordZoneWithIDChangedHandler(HandleRef ptr, RecordZoneWithIDChangedDelegate recordZoneWithIDChangedHandler, out IntPtr exceptionPtr);
+
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
         #else
-        [DllImport("HHCloudKit")]
+        [DllImport("HHCloudKitMacOS")]
         #endif
         private static extern void CKFetchDatabaseChangesOperation_SetPropRecordZoneWithIDWasDeletedHandler(HandleRef ptr, RecordZoneWithIDWasDeletedDelegate recordZoneWithIDWasDeletedHandler, out IntPtr exceptionPtr);
+
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
         #else
-        [DllImport("HHCloudKit")]
+        [DllImport("HHCloudKitMacOS")]
         #endif
         private static extern void CKFetchDatabaseChangesOperation_SetPropRecordZoneWithIDWasPurgedHandler(HandleRef ptr, RecordZoneWithIDWasPurgedDelegate recordZoneWithIDWasPurgedHandler, out IntPtr exceptionPtr);
+
         
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
         #else
-        [DllImport("HHCloudKit")]
+        [DllImport("HHCloudKitMacOS")]
         #endif
         private static extern IntPtr CKFetchDatabaseChangesOperation_GetPropPreviousServerChangeToken(HandleRef ptr);
         
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
         #else
-        [DllImport("HHCloudKit")]
+        [DllImport("HHCloudKitMacOS")]
         #endif
         private static extern void CKFetchDatabaseChangesOperation_SetPropPreviousServerChangeToken(HandleRef ptr, IntPtr previousServerChangeToken, out IntPtr exceptionPtr);
+
         
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
         #else
-        [DllImport("HHCloudKit")]
+        [DllImport("HHCloudKitMacOS")]
         #endif
         private static extern bool CKFetchDatabaseChangesOperation_GetPropFetchAllChanges(HandleRef ptr);
         
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
         #else
-        [DllImport("HHCloudKit")]
+        [DllImport("HHCloudKitMacOS")]
         #endif
         private static extern void CKFetchDatabaseChangesOperation_SetPropFetchAllChanges(HandleRef ptr, bool fetchAllChanges, out IntPtr exceptionPtr);
+
         
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
         #else
-        [DllImport("HHCloudKit")]
+        [DllImport("HHCloudKitMacOS")]
         #endif
         private static extern ulong CKFetchDatabaseChangesOperation_GetPropResultsLimit(HandleRef ptr);
         
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
         #else
-        [DllImport("HHCloudKit")]
+        [DllImport("HHCloudKitMacOS")]
         #endif
         private static extern void CKFetchDatabaseChangesOperation_SetPropResultsLimit(HandleRef ptr, ulong resultsLimit, out IntPtr exceptionPtr);
+
         
 
         #endregion
@@ -450,7 +458,7 @@ namespace HovelHouse.CloudKit
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
         #else
-        [DllImport("HHCloudKit")]
+        [DllImport("HHCloudKitMacOS")]
         #endif
         private static extern void CKFetchDatabaseChangesOperation_Dispose(HandleRef handle);
             

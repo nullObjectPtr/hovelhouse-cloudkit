@@ -1,7 +1,7 @@
 //
 //  CKContainer.cs
 //
-//  Created by Jonathan Culp <jonathanculp@gmail.com> on 03/26/2020
+//  Created by Jonathan Culp <jonathanculp@gmail.com> on 04/16/2020
 //  Copyright © 2020 HovelHouseApps. All rights reserved.
 //  Unauthorized copying of this file, via any medium is strictly prohibited
 //  Proprietary and confidential
@@ -32,19 +32,21 @@ namespace HovelHouse.CloudKit
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
         #else
-        [DllImport("HHCloudKit")]
+        [DllImport("HHCloudKitMacOS")]
         #endif
         private static extern IntPtr CKContainer_defaultContainer(
             out IntPtr exceptionPtr);
+
         
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
         #else
-        [DllImport("HHCloudKit")]
+        [DllImport("HHCloudKitMacOS")]
         #endif
         private static extern IntPtr CKContainer_containerWithIdentifier(
             string containerIdentifier,
             out IntPtr exceptionPtr);
+
         
 
         
@@ -53,153 +55,167 @@ namespace HovelHouse.CloudKit
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
         #else
-        [DllImport("HHCloudKit")]
+        [DllImport("HHCloudKitMacOS")]
         #endif
         private static extern IntPtr CKContainer_databaseWithDatabaseScope(
             HandleRef ptr, 
             long databaseScope,
             out IntPtr exceptionPtr);
+
         
 
         
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
         #else
-        [DllImport("HHCloudKit")]
+        [DllImport("HHCloudKitMacOS")]
         #endif
         private static extern void CKContainer_fetchAllLongLivedOperationIDsWithCompletionHandler(
             HandleRef ptr, 
             ulong invocationId, CKLongLivedOperationIdsDelegate completionHandler,
             out IntPtr exceptionPtr);
+
         
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
         #else
-        [DllImport("HHCloudKit")]
+        [DllImport("HHCloudKitMacOS")]
         #endif
         private static extern void CKContainer_fetchUserRecordIDWithCompletionHandler(
             HandleRef ptr, 
             ulong invocationId, CKRecordIDDelegate completionHandler,
             out IntPtr exceptionPtr);
+
         
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
         #else
-        [DllImport("HHCloudKit")]
+        [DllImport("HHCloudKitMacOS")]
         #endif
         private static extern void CKContainer_discoverUserIdentityWithEmailAddress_completionHandler(
             HandleRef ptr, 
             string email,
             ulong invocationId, UserIdentityDelegate completionHandler,
             out IntPtr exceptionPtr);
+
         
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
         #else
-        [DllImport("HHCloudKit")]
+        [DllImport("HHCloudKitMacOS")]
         #endif
         private static extern void CKContainer_fetchShareParticipantWithEmailAddress_completionHandler(
             HandleRef ptr, 
             string emailAddress,
             ulong invocationId, CKShareParticipantDelegate completionHandler,
             out IntPtr exceptionPtr);
+
         
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
         #else
-        [DllImport("HHCloudKit")]
+        [DllImport("HHCloudKitMacOS")]
         #endif
         private static extern void CKContainer_fetchShareParticipantWithPhoneNumber_completionHandler(
             HandleRef ptr, 
             string phoneNumber,
             ulong invocationId, CKShareParticipantDelegate completionHandler,
             out IntPtr exceptionPtr);
+
         
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
         #else
-        [DllImport("HHCloudKit")]
+        [DllImport("HHCloudKitMacOS")]
         #endif
         private static extern void CKContainer_fetchShareParticipantWithUserRecordID_completionHandler(
             HandleRef ptr, 
             IntPtr userRecordID,
             ulong invocationId, CKShareParticipantDelegate completionHandler,
             out IntPtr exceptionPtr);
+
         
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
         #else
-        [DllImport("HHCloudKit")]
+        [DllImport("HHCloudKitMacOS")]
         #endif
         private static extern void CKContainer_fetchLongLivedOperationWithID_completionHandler(
             HandleRef ptr, 
             string operationID,
             ulong invocationId, CKLongLivedOperationDelegate completionHandler,
             out IntPtr exceptionPtr);
+
         
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
         #else
-        [DllImport("HHCloudKit")]
+        [DllImport("HHCloudKitMacOS")]
         #endif
         private static extern void CKContainer_acceptShareMetadata_completionHandler(
             HandleRef ptr, 
             IntPtr metadata,
             ulong invocationId, CKShareDelegate completionHandler,
             out IntPtr exceptionPtr);
+
         
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
         #else
-        [DllImport("HHCloudKit")]
+        [DllImport("HHCloudKitMacOS")]
         #endif
         private static extern void CKContainer_requestApplicationPermission_completionHandler(
             HandleRef ptr, 
             long applicationPermission,
             ulong invocationId, CKApplicationPermissionsDelegate completionHandler,
             out IntPtr exceptionPtr);
+
         
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
         #else
-        [DllImport("HHCloudKit")]
+        [DllImport("HHCloudKitMacOS")]
         #endif
         private static extern void CKContainer_accountStatusWithCompletionHandler(
             HandleRef ptr, 
             ulong invocationId, CKAccountStatusDelegate completionHandler,
             out IntPtr exceptionPtr);
+
         
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
         #else
-        [DllImport("HHCloudKit")]
+        [DllImport("HHCloudKitMacOS")]
         #endif
         private static extern void CKContainer_statusForApplicationPermission_completionHandler(
             HandleRef ptr, 
             long applicationPermission,
             ulong invocationId, CKApplicationPermissionsDelegate completionHandler,
             out IntPtr exceptionPtr);
+
         
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
         #else
-        [DllImport("HHCloudKit")]
+        [DllImport("HHCloudKitMacOS")]
         #endif
         private static extern void CKContainer_addOperation(
             HandleRef ptr, 
             IntPtr operation,
             out IntPtr exceptionPtr);
+
         
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
         #else
-        [DllImport("HHCloudKit")]
+        [DllImport("HHCloudKitMacOS")]
         #endif
         private static extern void CKContainer_fetchShareMetadataWithURL_completionHandler(
             HandleRef ptr, 
             IntPtr url,
             ulong invocationId, CKShareMetadataDelegate completionHandler,
             out IntPtr exceptionPtr);
+
         
 
         // Properties
@@ -207,43 +223,47 @@ namespace HovelHouse.CloudKit
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
         #else
-        [DllImport("HHCloudKit")]
+        [DllImport("HHCloudKitMacOS")]
         #endif
         private static extern IntPtr CKContainer_GetPropPrivateCloudDatabase(HandleRef ptr);
+
         
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
         #else
-        [DllImport("HHCloudKit")]
+        [DllImport("HHCloudKitMacOS")]
         #endif
         private static extern IntPtr CKContainer_GetPropPublicCloudDatabase(HandleRef ptr);
+
         
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
         #else
-        [DllImport("HHCloudKit")]
+        [DllImport("HHCloudKitMacOS")]
         #endif
         private static extern IntPtr CKContainer_GetPropSharedCloudDatabase(HandleRef ptr);
+
         
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
         #else
-        [DllImport("HHCloudKit")]
+        [DllImport("HHCloudKitMacOS")]
         #endif
         private static extern IntPtr CKContainer_GetPropContainerIdentifier(HandleRef ptr);
+
         
 
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
         #else
-        [DllImport("HHCloudKit")]
+        [DllImport("HHCloudKitMacOS")]
         #endif
         private static extern IntPtr AddCKAccountChangedNotificationObserver(NotificationDelegate handler, ref IntPtr exceptionPtr);
 
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
         #else
-        [DllImport("HHCloudKit")]
+        [DllImport("HHCloudKitMacOS")]
         #endif
         private static extern void RemoveCKAccountChangedNotificationObserver(HandleRef observerHandle, ref IntPtr exceptionPtr);
         
@@ -1005,7 +1025,7 @@ namespace HovelHouse.CloudKit
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
         #else
-        [DllImport("HHCloudKit")]
+        [DllImport("HHCloudKitMacOS")]
         #endif
         private static extern void CKContainer_Dispose(HandleRef handle);
             

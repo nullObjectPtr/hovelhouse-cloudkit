@@ -2,7 +2,22 @@
 All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
-- Unit tests
+- More integration tests
+
+## [0.3.0] - 2020-04-17
+### Added
+- Added integration test stubs (and a few) integration tests. You can run them by adding the entry "testables":["com.hovelhouse.cloudkit"] to the manifest.json file in the packages directory
+
+### Changed
+- Overrode equality for CKObject so that managed objects are considered equal when they point to the same underlying unmanaged pointer (breaking change)
+- Added missing methods to CKShare
+- Adjusted post process build step for MacOS target, so that it does not run the signing script when the "Create XCode Project" option is checked in build settings
+- Renamed MacOS bundle to HHCloudKitMacOS to match the other libraries better
+
+## [0.2.3] - 2020-04-09
+### Added
+- Added methods for the class CKShare
+- Stubs for Integration Tests
 
 ## [0.2.2] - 2020-04-04
 ### Added

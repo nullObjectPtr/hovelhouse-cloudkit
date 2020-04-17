@@ -1,7 +1,7 @@
 //
 //  CKAcceptSharesOperation.cs
 //
-//  Created by Jonathan Culp <jonathanculp@gmail.com> on 03/26/2020
+//  Created by Jonathan Culp <jonathanculp@gmail.com> on 04/16/2020
 //  Copyright © 2020 HovelHouseApps. All rights reserved.
 //  Unauthorized copying of this file, via any medium is strictly prohibited
 //  Proprietary and confidential
@@ -31,7 +31,7 @@ namespace HovelHouse.CloudKit
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
         #else
-        [DllImport("HHCloudKit")]
+        [DllImport("HHCloudKitMacOS")]
         #endif
         private static extern IntPtr CKAcceptSharesOperation_init(
             out IntPtr exceptionPtr
@@ -40,7 +40,7 @@ namespace HovelHouse.CloudKit
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
         #else
-        [DllImport("HHCloudKit")]
+        [DllImport("HHCloudKitMacOS")]
         #endif
         private static extern IntPtr CKAcceptSharesOperation_initWithShareMetadatas(
             [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.SysInt, SizeParamIndex = 2)]
@@ -59,29 +59,32 @@ namespace HovelHouse.CloudKit
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
         #else
-        [DllImport("HHCloudKit")]
+        [DllImport("HHCloudKitMacOS")]
         #endif
         private static extern void CKAcceptSharesOperation_GetPropShareMetadatas(HandleRef ptr, ref IntPtr buffer, ref long count);
         
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
         #else
-        [DllImport("HHCloudKit")]
+        [DllImport("HHCloudKitMacOS")]
         #endif
         private static extern void CKAcceptSharesOperation_SetPropShareMetadatas(HandleRef ptr, IntPtr[] shareMetadatas,
 			int shareMetadatasCount, out IntPtr exceptionPtr);
+
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
         #else
-        [DllImport("HHCloudKit")]
+        [DllImport("HHCloudKitMacOS")]
         #endif
         private static extern void CKAcceptSharesOperation_SetPropAcceptSharesHandler(HandleRef ptr, AcceptSharesCompletionDelegate acceptSharesHandler, out IntPtr exceptionPtr);
+
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
         #else
-        [DllImport("HHCloudKit")]
+        [DllImport("HHCloudKitMacOS")]
         #endif
         private static extern void CKAcceptSharesOperation_SetPropPerShareCompletionHandler(HandleRef ptr, PerShareCompletionDelegate perShareCompletionHandler, out IntPtr exceptionPtr);
+
         
 
         #endregion
@@ -269,7 +272,7 @@ namespace HovelHouse.CloudKit
         #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
         #else
-        [DllImport("HHCloudKit")]
+        [DllImport("HHCloudKitMacOS")]
         #endif
         private static extern void CKAcceptSharesOperation_Dispose(HandleRef handle);
             

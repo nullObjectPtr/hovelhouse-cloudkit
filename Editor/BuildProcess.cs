@@ -34,26 +34,33 @@ namespace HovelHouse.CloudKit
         [PostProcessBuild(999)]
         public static void OnPostprocessBuild(BuildTarget target, string path)
         {
-            Debug.Log(string.Format("[HovelHouse.CloudKit] building for target: '{0}'", target));
+                Debug.Log(string.Format("[HovelHouse.CloudKit] building for target: '{0}'", target));
 
-            switch (target)
+            bool isXCodeTarget = false;
+
+            if(target == BuildTarget.iOS || target == BuildTarget.tvOS)
             {
-                case BuildTarget.iOS:
-                case BuildTarget.tvOS:
-#if UNITY_IOS || UNITY_TVOS
-                    PostProcessIOSandTVOS(path);
+                isXCodeTarget = true;
+            }
+            else if(target == BuildTarget.StandaloneOSX)
+            {
+                // xcode for MacOS builds not supported before this version
+#if UNITY_2019_3_OR_NEWER
+                string setting = EditorUserBuildSettings.GetPlatformSettings("OSXUniversal", "CreateXcodeProject");
+                bool.TryParse(setting, out isXCodeTarget);
 #endif
-                    break;
+            }
 
-                case BuildTarget.StandaloneOSX:
-#if UNITY_STANDALONE_OSX
-                    PostProcessMacOS(path);
-#endif
-                    break;
+            if(isXCodeTarget)
+            {
+                PostProcessXCodeProject(path);
+            }
+            else if(target == BuildTarget.StandaloneOSX)
+            {
+                PostProcessMacOS(path);
             }
         }
 
-#if UNITY_STANDALONE_OSX
         private const string KeyValueStoreEntitlement = "com.apple.developer.ubiquity-kvstore-identifier";
         private const string ContainersEntitlement = "com.apple.developer.icloud-container-identifiers";
         private const string iCloudServicesEntitlement = "com.apple.developer.icloud-services";
@@ -181,30 +188,53 @@ namespace HovelHouse.CloudKit
                 throw new BuildFailedException(ex);
             }
         }
-#endif
 
-#if UNITY_IOS || UNITY_TVOS
-        private static void PostProcessIOSandTVOS(string path)
+#if UNITY_IOS || UNITY_TVOS || UNITY_STANDALONE_OSX
+        private static void PostProcessXCodeProject(string path)
         {
             var settings = GetBuildSettings();
-            if (settings.EnablePostProcessIOSandTVOS == false)
+            if (settings.EnablePostProcessXCodeProject == false)
             {
                 Debug.Log("[HovelHouse.CloudKit] skipping post process build step...");
                 return;
             }
 
+            Debug.Log("[HovelHouse.CloudKit] " + path);
+
+            // When building a MacOS xCode project, unity's GetPBXProjectPath
+            // returns the wrong pbxproject path
+#if UNITY_STANDALONE_OSX && UNITY_2019_3_OR_NEWER
+            string pbxPath = Path.Combine(path, "./project.pbxproj");
+#else
             string pbxPath = PBXProject.GetPBXProjectPath(path);
+#endif
             var pbxProject = new PBXProject();
             pbxProject.ReadFromFile(pbxPath);
 
             var name = PlayerSettings.applicationIdentifier.Split('.').Last();
 
+
 #if UNITY_2019_3_OR_NEWER
-            ProjectCapabilityManager projCapability = new ProjectCapabilityManager(
-                pbxPath, name + ".entitlements", null, pbxProject.GetUnityMainTargetGuid());
+
+            // On MacOS GetUnityManTargetGuid returns null - so we have to look it up by name
+            // but honestly, doesn't even look like the ProjectCapabilityManager is doing anything
+            // on MacOS
+#if UNITY_STANDALONE_OSX
+            string targetGUID = pbxProject.TargetGuidByName(name);
+            string entitlementsFilename = name + "/" + name + ".entitlements";
 #else
+            string targetGUID = pbxProject.GetUnityMainTargetGuid();
+            string entitlementsFilename = name + ".entitlements";
+#endif
+            if (string.IsNullOrEmpty(targetGUID))
+                throw new BuildFailedException("unable to find the GUID of the build target");
+
             ProjectCapabilityManager projCapability = new ProjectCapabilityManager(
-                pbxPath, name + ".entitlements", PBXProject.GetUnityTargetName());
+                pbxPath, entitlementsFilename, null, targetGUID);
+#else
+            string entitlementsFilename = name + ".entitlements";
+            ProjectCapabilityManager projCapability = new ProjectCapabilityManager(
+                pbxPath, entitlementsFilename, PBXProject.GetUnityTargetName());
 #endif
 
             projCapability.AddiCloud(
@@ -218,7 +248,7 @@ namespace HovelHouse.CloudKit
     }
 #endif
 
-        private static BuildSettings GetBuildSettings()
+            private static BuildSettings GetBuildSettings()
         {
             var settings = Resources.Load<BuildSettings>(Path.GetFileNameWithoutExtension(SettingsAssetFilePath));
 

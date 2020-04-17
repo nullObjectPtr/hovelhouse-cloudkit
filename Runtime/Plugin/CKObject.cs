@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Runtime.InteropServices;
-using UnityEngine;
 
 public class CKObject : object
 {
@@ -15,33 +12,46 @@ public class CKObject : object
         Handle = new HandleRef(this, ptr);
     }
 
-    internal static object NewTypeOf(long typeId, IntPtr ptr)
+    public override bool Equals(object obj)
     {
-        switch(typeId)
-        {
-            case 0:
-                return null;
-            case 1:
-                //ptr == IntPtr.Zero ? new NSNumber(ptr);
-                throw new NotImplementedException();
-            case 2:
-                //return ptr == IntPtr.Zero ? null : new NSString(ptr);
-                throw new NotImplementedException();
-            case 3:
-                //return ptr == IntPtr.Zero ? null : new NSDate(ptr);
-                throw new NotImplementedException();
-            case 4:
-                //return ptr == IntPtr.Zero ? null : new NSData(ptr);
-                throw new NotImplementedException();
-            case 5:
-                //return ptr == IntPtr.Zero ? null : new NSArray(ptr);
-                throw new NotImplementedException();
-            case 6:
-                //return ptr == IntPtr.Zero ? null : new NSDictionary(ptr);
-                throw new NotImplementedException();
+        if (ReferenceEquals(null, obj)) return false;
+        return Equals(obj as CKObject);
+    }
 
+    public bool Equals(CKObject rhs)
+    {
+        if (rhs == null)
+            return false;
+
+        return Handle.Handle == rhs.Handle.Handle;
+    }
+
+    public static bool operator ==(CKObject lhs, CKObject rhs)
+    {
+        // Check for null on left side.
+        if (ReferenceEquals(lhs, null))
+        {
+            if (ReferenceEquals(rhs, null))
+            {
+                // null == null = true.
+                return true;
+            }
+
+            // Only the left side is null.
+            return false;
         }
 
-        throw new NotImplementedException();
+        // Equals handles case of null on right side.
+        return lhs.Equals(rhs);
+    }
+
+    public static bool operator !=(CKObject lhs, CKObject rhs)
+    {
+        return !(lhs == rhs);
+    }
+
+    public override int GetHashCode()
+    {
+        return Handle.Handle.ToInt32(); //Handle.GetHashCode();
     }
 }
