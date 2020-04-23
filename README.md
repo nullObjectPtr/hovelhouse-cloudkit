@@ -39,14 +39,14 @@ The plugin comes with some examples that you can run to validate everything is w
  
 ## Building
 In order to use cloudkit you will need the following
-* An active (as in, paid, up to date and not suspended) account with the apple developer program. You will not be able to add the appropriate CloudKit capability to your project without one. Attempting to run your build without it can result in confusing error messages
+* An active (as in, paid, up to date and not suspended) account with the apple developer program. You will not be able to add the appropriate CloudKit capability to your project without one.
 * Have set a valid bundle identifier in "Player Settings->Other Settings". Being able to sign your app is a requirement since cloud-kit containers are included in your provisioning profile
 * Have set the "Target Minimum iOS Version" to 11.0 or higher
  
 ### iOS and TVOS
 Before you build you want to make sure you have set a good bundle identifier in Unity settings. Once you get to the step where you add the CloudKit capability, xcode will automatically generate a container identifier you **cannot** delete. Having set the bundle identifier you want now will save you the pain of having your cloudkit dashboard junked up with a bunch of test container id's. You can read more about containers here: https://developer.apple.com/library/archive/documentation/DataManagement/Conceptual/CloudKitQuickStart/EnablingiCloudandConfiguringCloudKit/EnablingiCloudandConfiguringCloudKit.html 
  
- * The plugin adds the appropriate CloudKit entitlements as a post process build step. On first launch a BuildSettings asset will be created in the folder "Assets/Plugins/HovelHouse/CloudKit/Resources" with default options.
+ * The plugin adds the appropriate CloudKit entitlements as a post process build step. On first launch, a BuildSettings asset will be created in the folder "Assets/Plugins/HovelHouse/CloudKit/Resources" with default options.
  ** By default, key-value storage and iCloud Documents are disabled.
  ** The default container is automatically added, but can be disabled
  ** You can add custom containers here
