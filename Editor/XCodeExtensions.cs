@@ -9,6 +9,12 @@ namespace HovelHouse.CloudKit
 {
     public static class XCodeExtensions
     {
+        public static void AddIfMissing(this PlistElementDict dict, string key, string value)
+        {
+            if (dict.values.ContainsKey(key) == false)
+                dict.SetString(key, value);
+        }
+
         public static void AddRangeIfMissing(this PlistElementArray elementArray, IEnumerable<string> values)
         {
             if (elementArray is null)

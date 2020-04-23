@@ -6,7 +6,7 @@ namespace HovelHouse.CloudKit
     {
         [Header("Entitlements")]
         public bool EnableCloudKit = true;
-        public bool EnableKeyVaueStorage = true;
+        public bool EnableKeyVaueStorage;
         public bool EnableDocumentStorage;
         public bool AddDefaultContainers = true;
         public string[] CustomContainers;
