@@ -43,8 +43,9 @@ echo "Code signing application at '$applicationPath'"
 
 echo "Copying provisioning profile to application directory..."
 
-echo copying \"$profile\" to \"$applicationPath/Contents/embedded.provisionprofile\"
-cp $profile $applicationPath/Contents/embedded.provisionprofile || { echo "Error: failed to copy provisionprofile into application"; exit 1; }
+echo "copying \"$profile\" to \"$applicationPath/Contents/embedded.provisionprofile\""
+
+cp "$profile" "$applicationPath/Contents/embedded.provisionprofile" || { echo "Error: failed to copy provisionprofile into application"; exit 1; }
 
 echo "Delete Unity Meta Files."
 find "$applicationPath/Contents/Plugins" -name '*.meta' -print -delete
@@ -63,6 +64,6 @@ for i in $(find $applicationPath/Contents/Frameworks/* -name '*.bundle'); do
 done
 
 echo "Signing application..."
-codesign --force --verbose=4 --verify --sign "$identity" --entitlements "$entitlements" $applicationPath || { echo "Error: failed to resign the application. the mostly likely cause of this is that your signing identity is not contained in your provisionprofile"; exit 1; }
+codesign --force --verbose=4 --verify --sign "$identity" --entitlements "$entitlements" "$applicationPath" || { echo "Error: failed to resign the application. the mostly likely cause of this is that your signing identity is not contained in your provisionprofile"; exit 1; }
 
 echo "Resigning Complete"

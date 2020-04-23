@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 ## [Unreleased]
 - More integration tests
 
+## [0.3.1] - 2020-04-22
+### Changed
+- fixed bug where the signing script could not be located if the plugin was not imported as an embedded package
+- fixed a bug in the signing script that did not handle paths with spaces
+- fixed a bug with the MacOS build process where the creation of the entitlements file would fail if no partial entitlements file was specified in the build settings (you can now build a MacOS project without needing to specify a partial entitlements file)
+- MacOS standalone project now automatically adds the (required) ApplicationIdentifier entitlement
+- KVS disabled by default in build settings due to an issue with UnityCloudBuild
+
 ## [0.3.0] - 2020-04-17
 ### Added
 - Added integration test stubs (and a few) integration tests. You can run them by adding the entry "testables":["com.hovelhouse.cloudkit"] to the manifest.json file in the packages directory
