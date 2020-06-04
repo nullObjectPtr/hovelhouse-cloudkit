@@ -16,6 +16,7 @@ public class ExampleHub : MonoBehaviour
         buttons[5].onClick.AddListener(() => SceneManager.LoadScene("Example6_Progress"));
         buttons[6].onClick.AddListener(() => SceneManager.LoadScene("Example7_AccountStatus"));
         buttons[7].onClick.AddListener(() => SceneManager.LoadScene("Example8_KeyValueStore"));
+        buttons[8].onClick.AddListener(() => SceneManager.LoadScene("Example9_Subscriptions"));
     }
 
     // Update is called once per frame

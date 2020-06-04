@@ -1,7 +1,7 @@
 //
 //  CKFetchShareMetadataOperation.cs
 //
-//  Created by Jonathan Culp <jonathanculp@gmail.com> on 04/16/2020
+//  Created by Jonathan Culp <jonathanculp@gmail.com> on 05/28/2020
 //  Copyright © 2020 HovelHouseApps. All rights reserved.
 //  Unauthorized copying of this file, via any medium is strictly prohibited
 //  Proprietary and confidential
@@ -213,9 +213,10 @@ namespace HovelHouse.CloudKit
         {
             get 
             {
-                Action<NSError> value;
-                FetchShareMetadataCompletionHandlerCallbacks.TryGetValue(HandleRef.ToIntPtr(Handle), out value);
-                return value;
+                FetchShareMetadataCompletionHandlerCallbacks.TryGetValue(
+                    HandleRef.ToIntPtr(Handle), 
+                    out ExecutionContext<NSError> value);
+                return value.Callback;
             }    
             set 
             {
@@ -226,7 +227,7 @@ namespace HovelHouse.CloudKit
                 }
                 else
                 {
-                    FetchShareMetadataCompletionHandlerCallbacks[myPtr] = value;
+                    FetchShareMetadataCompletionHandlerCallbacks[myPtr] = new ExecutionContext<NSError>(value);
                 }
                 CKFetchShareMetadataOperation_SetPropFetchShareMetadataCompletionHandler(Handle, FetchShareMetadataCompletionHandlerCallback, out IntPtr exceptionPtr);
 
@@ -238,16 +239,15 @@ namespace HovelHouse.CloudKit
             }
         }
 
-        private static readonly Dictionary<IntPtr,Action<NSError>> FetchShareMetadataCompletionHandlerCallbacks = new Dictionary<IntPtr,Action<NSError>>();
+        private static readonly Dictionary<IntPtr,ExecutionContext<NSError>> FetchShareMetadataCompletionHandlerCallbacks = new Dictionary<IntPtr,ExecutionContext<NSError>>();
 
         [MonoPInvokeCallback(typeof(FetchShareMetadataCompletionDelegate))]
         private static void FetchShareMetadataCompletionHandlerCallback(IntPtr thisPtr, IntPtr _operationError)
         {
-            if(FetchShareMetadataCompletionHandlerCallbacks.TryGetValue(thisPtr, out Action<NSError> callback))
+            if(FetchShareMetadataCompletionHandlerCallbacks.TryGetValue(thisPtr, out ExecutionContext<NSError> callback))
             {
-                Dispatcher.Instance.EnqueueOnMainThread(() => 
-                    callback(
-                        _operationError == IntPtr.Zero ? null : new NSError(_operationError)));
+                callback.Invoke(
+                        _operationError == IntPtr.Zero ? null : new NSError(_operationError));
             }
         }
 
@@ -257,9 +257,10 @@ namespace HovelHouse.CloudKit
         {
             get 
             {
-                Action<NSURL,CKShareMetadata,NSError> value;
-                PerShareMetadataHandlerCallbacks.TryGetValue(HandleRef.ToIntPtr(Handle), out value);
-                return value;
+                PerShareMetadataHandlerCallbacks.TryGetValue(
+                    HandleRef.ToIntPtr(Handle), 
+                    out ExecutionContext<NSURL,CKShareMetadata,NSError> value);
+                return value.Callback;
             }    
             set 
             {
@@ -270,7 +271,7 @@ namespace HovelHouse.CloudKit
                 }
                 else
                 {
-                    PerShareMetadataHandlerCallbacks[myPtr] = value;
+                    PerShareMetadataHandlerCallbacks[myPtr] = new ExecutionContext<NSURL,CKShareMetadata,NSError>(value);
                 }
                 CKFetchShareMetadataOperation_SetPropPerShareMetadataHandler(Handle, PerShareMetadataHandlerCallback, out IntPtr exceptionPtr);
 
@@ -282,18 +283,17 @@ namespace HovelHouse.CloudKit
             }
         }
 
-        private static readonly Dictionary<IntPtr,Action<NSURL,CKShareMetadata,NSError>> PerShareMetadataHandlerCallbacks = new Dictionary<IntPtr,Action<NSURL,CKShareMetadata,NSError>>();
+        private static readonly Dictionary<IntPtr,ExecutionContext<NSURL,CKShareMetadata,NSError>> PerShareMetadataHandlerCallbacks = new Dictionary<IntPtr,ExecutionContext<NSURL,CKShareMetadata,NSError>>();
 
         [MonoPInvokeCallback(typeof(PerShareMetadataDelegate))]
         private static void PerShareMetadataHandlerCallback(IntPtr thisPtr, IntPtr _shareURL, IntPtr _shareMetadata, IntPtr _error)
         {
-            if(PerShareMetadataHandlerCallbacks.TryGetValue(thisPtr, out Action<NSURL,CKShareMetadata,NSError> callback))
+            if(PerShareMetadataHandlerCallbacks.TryGetValue(thisPtr, out ExecutionContext<NSURL,CKShareMetadata,NSError> callback))
             {
-                Dispatcher.Instance.EnqueueOnMainThread(() => 
-                    callback(
+                callback.Invoke(
                         _shareURL == IntPtr.Zero ? null : new NSURL(_shareURL),
                         _shareMetadata == IntPtr.Zero ? null : new CKShareMetadata(_shareMetadata),
-                        _error == IntPtr.Zero ? null : new NSError(_error)));
+                        _error == IntPtr.Zero ? null : new NSError(_error));
             }
         }
 

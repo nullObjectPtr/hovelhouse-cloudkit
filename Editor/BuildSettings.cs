@@ -1,4 +1,11 @@
-﻿using UnityEngine;
+﻿#if UNITY_EDITOR
+
+#if UNITY_IOS || UNITY_TVOS || UNITY_STANDALONE_OSX
+using UnityEditor.iOS.Xcode;
+#endif
+
+using UnityEngine;
+
 
 namespace HovelHouse.CloudKit
 {
@@ -37,5 +44,14 @@ namespace HovelHouse.CloudKit
         [Tooltip("Your custom entitlements file")]
         [FilePath("entitlements")]
         public string EntitlementsPath;
+
+#if UNITY_IOS || UNITY_TVOS || UNITY_STANDALONE_OSX
+        [Tooltip("If enabled, adds the BackgroundData capability to the XCode project. The RemoteNotifications background mode is required for CloudKit Subscriptions to work")]
+        public bool AddBackgroundModes;
+
+        [Tooltip("If you use subscriptions - remote notifications must be enabled")]
+        public BackgroundModesOptions BackgroundModes = BackgroundModesOptions.RemoteNotifications;
+#endif
     }
 }
+#endif

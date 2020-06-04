@@ -1,7 +1,7 @@
 //
 //  CKDiscoverUserIdentitiesOperation.cs
 //
-//  Created by Jonathan Culp <jonathanculp@gmail.com> on 04/16/2020
+//  Created by Jonathan Culp <jonathanculp@gmail.com> on 05/28/2020
 //  Copyright © 2020 HovelHouseApps. All rights reserved.
 //  Unauthorized copying of this file, via any medium is strictly prohibited
 //  Proprietary and confidential
@@ -179,9 +179,10 @@ namespace HovelHouse.CloudKit
         {
             get 
             {
-                Action<CKUserIdentity,CKUserIdentityLookupInfo> value;
-                UserIdentityDiscoveredHandlerCallbacks.TryGetValue(HandleRef.ToIntPtr(Handle), out value);
-                return value;
+                UserIdentityDiscoveredHandlerCallbacks.TryGetValue(
+                    HandleRef.ToIntPtr(Handle), 
+                    out ExecutionContext<CKUserIdentity,CKUserIdentityLookupInfo> value);
+                return value.Callback;
             }    
             set 
             {
@@ -192,7 +193,7 @@ namespace HovelHouse.CloudKit
                 }
                 else
                 {
-                    UserIdentityDiscoveredHandlerCallbacks[myPtr] = value;
+                    UserIdentityDiscoveredHandlerCallbacks[myPtr] = new ExecutionContext<CKUserIdentity,CKUserIdentityLookupInfo>(value);
                 }
                 CKDiscoverUserIdentitiesOperation_SetPropUserIdentityDiscoveredHandler(Handle, UserIdentityDiscoveredHandlerCallback, out IntPtr exceptionPtr);
 
@@ -204,17 +205,16 @@ namespace HovelHouse.CloudKit
             }
         }
 
-        private static readonly Dictionary<IntPtr,Action<CKUserIdentity,CKUserIdentityLookupInfo>> UserIdentityDiscoveredHandlerCallbacks = new Dictionary<IntPtr,Action<CKUserIdentity,CKUserIdentityLookupInfo>>();
+        private static readonly Dictionary<IntPtr,ExecutionContext<CKUserIdentity,CKUserIdentityLookupInfo>> UserIdentityDiscoveredHandlerCallbacks = new Dictionary<IntPtr,ExecutionContext<CKUserIdentity,CKUserIdentityLookupInfo>>();
 
         [MonoPInvokeCallback(typeof(UserIdentityDiscoveredDelegate))]
         private static void UserIdentityDiscoveredHandlerCallback(IntPtr thisPtr, IntPtr _identity, IntPtr _lookupInfo)
         {
-            if(UserIdentityDiscoveredHandlerCallbacks.TryGetValue(thisPtr, out Action<CKUserIdentity,CKUserIdentityLookupInfo> callback))
+            if(UserIdentityDiscoveredHandlerCallbacks.TryGetValue(thisPtr, out ExecutionContext<CKUserIdentity,CKUserIdentityLookupInfo> callback))
             {
-                Dispatcher.Instance.EnqueueOnMainThread(() => 
-                    callback(
+                callback.Invoke(
                         _identity == IntPtr.Zero ? null : new CKUserIdentity(_identity),
-                        _lookupInfo == IntPtr.Zero ? null : new CKUserIdentityLookupInfo(_lookupInfo)));
+                        _lookupInfo == IntPtr.Zero ? null : new CKUserIdentityLookupInfo(_lookupInfo));
             }
         }
 
@@ -224,9 +224,10 @@ namespace HovelHouse.CloudKit
         {
             get 
             {
-                Action<NSError> value;
-                DiscoverUserIdentitiesCompletionHandlerCallbacks.TryGetValue(HandleRef.ToIntPtr(Handle), out value);
-                return value;
+                DiscoverUserIdentitiesCompletionHandlerCallbacks.TryGetValue(
+                    HandleRef.ToIntPtr(Handle), 
+                    out ExecutionContext<NSError> value);
+                return value.Callback;
             }    
             set 
             {
@@ -237,7 +238,7 @@ namespace HovelHouse.CloudKit
                 }
                 else
                 {
-                    DiscoverUserIdentitiesCompletionHandlerCallbacks[myPtr] = value;
+                    DiscoverUserIdentitiesCompletionHandlerCallbacks[myPtr] = new ExecutionContext<NSError>(value);
                 }
                 CKDiscoverUserIdentitiesOperation_SetPropDiscoverUserIdentitiesCompletionHandler(Handle, DiscoverUserIdentitiesCompletionHandlerCallback, out IntPtr exceptionPtr);
 
@@ -249,16 +250,15 @@ namespace HovelHouse.CloudKit
             }
         }
 
-        private static readonly Dictionary<IntPtr,Action<NSError>> DiscoverUserIdentitiesCompletionHandlerCallbacks = new Dictionary<IntPtr,Action<NSError>>();
+        private static readonly Dictionary<IntPtr,ExecutionContext<NSError>> DiscoverUserIdentitiesCompletionHandlerCallbacks = new Dictionary<IntPtr,ExecutionContext<NSError>>();
 
         [MonoPInvokeCallback(typeof(DiscoverUserIdentitiesCompletionDelegate))]
         private static void DiscoverUserIdentitiesCompletionHandlerCallback(IntPtr thisPtr, IntPtr _operationError)
         {
-            if(DiscoverUserIdentitiesCompletionHandlerCallbacks.TryGetValue(thisPtr, out Action<NSError> callback))
+            if(DiscoverUserIdentitiesCompletionHandlerCallbacks.TryGetValue(thisPtr, out ExecutionContext<NSError> callback))
             {
-                Dispatcher.Instance.EnqueueOnMainThread(() => 
-                    callback(
-                        _operationError == IntPtr.Zero ? null : new NSError(_operationError)));
+                callback.Invoke(
+                        _operationError == IntPtr.Zero ? null : new NSError(_operationError));
             }
         }
 

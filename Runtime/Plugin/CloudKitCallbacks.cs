@@ -1,7 +1,7 @@
 //
 //  CloudKitCallbacks.cs
 //
-//  Created by Jonathan Culp <jonathanculp@gmail.com> on 04/16/2020
+//  Created by Jonathan Culp <jonathanculp@gmail.com> on 05/28/2020
 //  Copyright © 2020 HovelHouseApps. All rights reserved.
 //  Unauthorized copying of this file, via any medium is strictly prohibited
 //  Proprietary and confidential
@@ -105,7 +105,7 @@ namespace HovelHouse.CloudKit
 	public delegate void CKLongLivedOperationIdsDelegate(
         IntPtr _this, 
         ulong invocationId,
-    	[MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.SysInt, SizeParamIndex = 3)]
+    	[MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPStr, SizeParamIndex = 3)]
 		IntPtr[] outstandingOperationIDs,
 		long outstandingOperationIDsCount,
     	IntPtr error);
@@ -299,9 +299,35 @@ namespace HovelHouse.CloudKit
         IntPtr _this,
     	IntPtr _record);
     
+	public delegate void ModifySubscriptionsCompletionDelegate(
+        IntPtr _this,
+    	[MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.SysInt, SizeParamIndex = 2)]
+		IntPtr[] savedSubscriptions,
+		long savedSubscriptionsCount,
+    	[MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPStr, SizeParamIndex = 4)]
+		IntPtr[] deletedSubscriptionIDs,
+		long deletedSubscriptionIDsCount,
+    	IntPtr operationError);
+    
+	public delegate void FetchSubscriptionCompletionDelegate(
+        IntPtr _this,
+    	[MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.SysInt, SizeParamIndex = 3)]
+		IntPtr[] subscriptionsBySubscriptionIDKeys,
+		[MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.SysInt, SizeParamIndex = 3)]
+		IntPtr[] subscriptionsBySubscriptionIDValues,
+		long subscriptionsBySubscriptionIDCount,
+    	IntPtr operationError);
+    
 
 public delegate void NSUbiquitousKeyValueStoreDidChangeExternallyDelegate(IntPtr observerHandle, long reason, IntPtr changedKeysPtr, long count);
 
 public delegate void NotificationDelegate(IntPtr observerHandle, IntPtr notification);
+public delegate void CKNotificationDelegate(IntPtr notification, string className);
+
+public delegate void RegisteredForNotificationsCallback(
+    [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.U1, SizeParamIndex = 1)]
+    byte[] token,
+    long tokenLength,
+    IntPtr error);
 }
 

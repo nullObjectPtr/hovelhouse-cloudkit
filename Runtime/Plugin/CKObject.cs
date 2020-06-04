@@ -54,4 +54,9 @@ public class CKObject : object
     {
         return Handle.Handle.ToInt32(); //Handle.GetHashCode();
     }
+
+    public override string ToString()
+    {
+        return String.Format("{0} 0x{1}", this.GetType().Name, Handle.Handle.ToInt64());
+    }
 }

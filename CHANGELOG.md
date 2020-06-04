@@ -4,6 +4,19 @@ All notable changes to this project will be documented in this file.
 ## [Unreleased]
 - More integration tests
 
+## [1.0.1] - 2020-06-04
+### Changed
+- Callbacks are now invoked on the calling methods syncronization context instead of the unity game thread. This makes callbacks usable in a wider variety of contexts, such as a separate worker thread. Potentially a breaking change for anyone who had coded around this limitation. Most users should be fine.
+### Added
+- Added support for CloudKit notifications. Added missing API classes and methods: CKDatabaseSubscription, CKFetchSubscriptionsOperation, CKModifySubscriptionsOperation, and CKRecordZoneSubscription.
+- Added an example script that demo's how to use subscriptions
+### Removed
+- Removed the link to the git url from the setup instructions. The repository will become private once the plugin goes live on the asset store. 
+
+## [1.0.0] - 2020-05-02
+### Changed
+- this version is exactly the same as version 0.3.1 - it was submitted to the asset store for consideration as a paid plugin and the version number was bumped to 1.0.0 to take it out of "preview" status in the package manager
+
 ## [0.3.1] - 2020-04-22
 ### Changed
 - fixed bug where the signing script could not be located if the plugin was not imported as an embedded package

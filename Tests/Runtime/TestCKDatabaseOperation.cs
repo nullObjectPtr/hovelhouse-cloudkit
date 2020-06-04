@@ -16,16 +16,7 @@ using HovelHouse.CloudKit;
 
 
     public class CKDatabaseOperationTests
-    {
-        
-
-        
-
-        
-
-        
-        
-        
+    {    
         [Test]
         public void DatabaseTest()
         {

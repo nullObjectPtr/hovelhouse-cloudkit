@@ -1,7 +1,7 @@
 //
 //  CKFetchRecordsOperation.cs
 //
-//  Created by Jonathan Culp <jonathanculp@gmail.com> on 04/16/2020
+//  Created by Jonathan Culp <jonathanculp@gmail.com> on 05/28/2020
 //  Copyright © 2020 HovelHouseApps. All rights reserved.
 //  Unauthorized copying of this file, via any medium is strictly prohibited
 //  Proprietary and confidential
@@ -221,9 +221,10 @@ namespace HovelHouse.CloudKit
         {
             get 
             {
-                Action<Dictionary<CKRecordID,CKRecord>,NSError> value;
-                FetchRecordsCompletionHandlerCallbacks.TryGetValue(HandleRef.ToIntPtr(Handle), out value);
-                return value;
+                FetchRecordsCompletionHandlerCallbacks.TryGetValue(
+                    HandleRef.ToIntPtr(Handle), 
+                    out ExecutionContext<Dictionary<CKRecordID,CKRecord>,NSError> value);
+                return value.Callback;
             }    
             set 
             {
@@ -234,7 +235,7 @@ namespace HovelHouse.CloudKit
                 }
                 else
                 {
-                    FetchRecordsCompletionHandlerCallbacks[myPtr] = value;
+                    FetchRecordsCompletionHandlerCallbacks[myPtr] = new ExecutionContext<Dictionary<CKRecordID,CKRecord>,NSError>(value);
                 }
                 CKFetchRecordsOperation_SetPropFetchRecordsCompletionHandler(Handle, FetchRecordsCompletionHandlerCallback, out IntPtr exceptionPtr);
 
@@ -246,7 +247,7 @@ namespace HovelHouse.CloudKit
             }
         }
 
-        private static readonly Dictionary<IntPtr,Action<Dictionary<CKRecordID,CKRecord>,NSError>> FetchRecordsCompletionHandlerCallbacks = new Dictionary<IntPtr,Action<Dictionary<CKRecordID,CKRecord>,NSError>>();
+        private static readonly Dictionary<IntPtr,ExecutionContext<Dictionary<CKRecordID,CKRecord>,NSError>> FetchRecordsCompletionHandlerCallbacks = new Dictionary<IntPtr,ExecutionContext<Dictionary<CKRecordID,CKRecord>,NSError>>();
 
         [MonoPInvokeCallback(typeof(FetchRecordsCompletionDelegate))]
         private static void FetchRecordsCompletionHandlerCallback(IntPtr thisPtr, [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.SysInt, SizeParamIndex = 3)]
@@ -255,12 +256,11 @@ namespace HovelHouse.CloudKit
 		IntPtr[] _recordsByRecordIDValues,
 		long _recordsByRecordIDCount, IntPtr _operationError)
         {
-            if(FetchRecordsCompletionHandlerCallbacks.TryGetValue(thisPtr, out Action<Dictionary<CKRecordID,CKRecord>,NSError> callback))
+            if(FetchRecordsCompletionHandlerCallbacks.TryGetValue(thisPtr, out ExecutionContext<Dictionary<CKRecordID,CKRecord>,NSError> callback))
             {
-                Dispatcher.Instance.EnqueueOnMainThread(() => 
-                    callback(
+                callback.Invoke(
                         _recordsByRecordIDKeys.Zip(_recordsByRecordIDValues, (k, v) => ( k == IntPtr.Zero ? null : new CKRecordID(k), v == IntPtr.Zero ? null : new CKRecord(v) )).ToDictionary(item => item.Item1, item => item.Item2),
-                        _operationError == IntPtr.Zero ? null : new NSError(_operationError)));
+                        _operationError == IntPtr.Zero ? null : new NSError(_operationError));
             }
         }
 
@@ -270,9 +270,10 @@ namespace HovelHouse.CloudKit
         {
             get 
             {
-                Action<CKRecord,CKRecordID,NSError> value;
-                PerRecordCompletionHandlerCallbacks.TryGetValue(HandleRef.ToIntPtr(Handle), out value);
-                return value;
+                PerRecordCompletionHandlerCallbacks.TryGetValue(
+                    HandleRef.ToIntPtr(Handle), 
+                    out ExecutionContext<CKRecord,CKRecordID,NSError> value);
+                return value.Callback;
             }    
             set 
             {
@@ -283,7 +284,7 @@ namespace HovelHouse.CloudKit
                 }
                 else
                 {
-                    PerRecordCompletionHandlerCallbacks[myPtr] = value;
+                    PerRecordCompletionHandlerCallbacks[myPtr] = new ExecutionContext<CKRecord,CKRecordID,NSError>(value);
                 }
                 CKFetchRecordsOperation_SetPropPerRecordCompletionHandler(Handle, PerRecordCompletionHandlerCallback, out IntPtr exceptionPtr);
 
@@ -295,18 +296,17 @@ namespace HovelHouse.CloudKit
             }
         }
 
-        private static readonly Dictionary<IntPtr,Action<CKRecord,CKRecordID,NSError>> PerRecordCompletionHandlerCallbacks = new Dictionary<IntPtr,Action<CKRecord,CKRecordID,NSError>>();
+        private static readonly Dictionary<IntPtr,ExecutionContext<CKRecord,CKRecordID,NSError>> PerRecordCompletionHandlerCallbacks = new Dictionary<IntPtr,ExecutionContext<CKRecord,CKRecordID,NSError>>();
 
         [MonoPInvokeCallback(typeof(PerRecordCompletionDelegate2))]
         private static void PerRecordCompletionHandlerCallback(IntPtr thisPtr, IntPtr _record, IntPtr _recordID, IntPtr _error)
         {
-            if(PerRecordCompletionHandlerCallbacks.TryGetValue(thisPtr, out Action<CKRecord,CKRecordID,NSError> callback))
+            if(PerRecordCompletionHandlerCallbacks.TryGetValue(thisPtr, out ExecutionContext<CKRecord,CKRecordID,NSError> callback))
             {
-                Dispatcher.Instance.EnqueueOnMainThread(() => 
-                    callback(
+                callback.Invoke(
                         _record == IntPtr.Zero ? null : new CKRecord(_record),
                         _recordID == IntPtr.Zero ? null : new CKRecordID(_recordID),
-                        _error == IntPtr.Zero ? null : new NSError(_error)));
+                        _error == IntPtr.Zero ? null : new NSError(_error));
             }
         }
 
@@ -316,9 +316,10 @@ namespace HovelHouse.CloudKit
         {
             get 
             {
-                Action<CKRecordID,double> value;
-                ProgressHandlerCallbacks.TryGetValue(HandleRef.ToIntPtr(Handle), out value);
-                return value;
+                ProgressHandlerCallbacks.TryGetValue(
+                    HandleRef.ToIntPtr(Handle), 
+                    out ExecutionContext<CKRecordID,double> value);
+                return value.Callback;
             }    
             set 
             {
@@ -329,7 +330,7 @@ namespace HovelHouse.CloudKit
                 }
                 else
                 {
-                    ProgressHandlerCallbacks[myPtr] = value;
+                    ProgressHandlerCallbacks[myPtr] = new ExecutionContext<CKRecordID,double>(value);
                 }
                 CKFetchRecordsOperation_SetPropProgressHandler(Handle, ProgressHandlerCallback, out IntPtr exceptionPtr);
 
@@ -341,17 +342,16 @@ namespace HovelHouse.CloudKit
             }
         }
 
-        private static readonly Dictionary<IntPtr,Action<CKRecordID,double>> ProgressHandlerCallbacks = new Dictionary<IntPtr,Action<CKRecordID,double>>();
+        private static readonly Dictionary<IntPtr,ExecutionContext<CKRecordID,double>> ProgressHandlerCallbacks = new Dictionary<IntPtr,ExecutionContext<CKRecordID,double>>();
 
         [MonoPInvokeCallback(typeof(PerRecordProgressDelegate2))]
         private static void ProgressHandlerCallback(IntPtr thisPtr, IntPtr _record, double _progress)
         {
-            if(ProgressHandlerCallbacks.TryGetValue(thisPtr, out Action<CKRecordID,double> callback))
+            if(ProgressHandlerCallbacks.TryGetValue(thisPtr, out ExecutionContext<CKRecordID,double> callback))
             {
-                Dispatcher.Instance.EnqueueOnMainThread(() => 
-                    callback(
+                callback.Invoke(
                         _record == IntPtr.Zero ? null : new CKRecordID(_record),
-                        _progress));
+                        _progress);
             }
         }
 
