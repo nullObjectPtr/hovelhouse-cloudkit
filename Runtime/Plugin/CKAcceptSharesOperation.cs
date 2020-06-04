@@ -1,7 +1,7 @@
 //
 //  CKAcceptSharesOperation.cs
 //
-//  Created by Jonathan Culp <jonathanculp@gmail.com> on 04/16/2020
+//  Created by Jonathan Culp <jonathanculp@gmail.com> on 05/28/2020
 //  Copyright © 2020 HovelHouseApps. All rights reserved.
 //  Unauthorized copying of this file, via any medium is strictly prohibited
 //  Proprietary and confidential
@@ -179,9 +179,10 @@ namespace HovelHouse.CloudKit
         {
             get 
             {
-                Action<NSError> value;
-                AcceptSharesHandlerCallbacks.TryGetValue(HandleRef.ToIntPtr(Handle), out value);
-                return value;
+                AcceptSharesHandlerCallbacks.TryGetValue(
+                    HandleRef.ToIntPtr(Handle), 
+                    out ExecutionContext<NSError> value);
+                return value.Callback;
             }    
             set 
             {
@@ -192,7 +193,7 @@ namespace HovelHouse.CloudKit
                 }
                 else
                 {
-                    AcceptSharesHandlerCallbacks[myPtr] = value;
+                    AcceptSharesHandlerCallbacks[myPtr] = new ExecutionContext<NSError>(value);
                 }
                 CKAcceptSharesOperation_SetPropAcceptSharesHandler(Handle, AcceptSharesHandlerCallback, out IntPtr exceptionPtr);
 
@@ -204,16 +205,15 @@ namespace HovelHouse.CloudKit
             }
         }
 
-        private static readonly Dictionary<IntPtr,Action<NSError>> AcceptSharesHandlerCallbacks = new Dictionary<IntPtr,Action<NSError>>();
+        private static readonly Dictionary<IntPtr,ExecutionContext<NSError>> AcceptSharesHandlerCallbacks = new Dictionary<IntPtr,ExecutionContext<NSError>>();
 
         [MonoPInvokeCallback(typeof(AcceptSharesCompletionDelegate))]
         private static void AcceptSharesHandlerCallback(IntPtr thisPtr, IntPtr _operationError)
         {
-            if(AcceptSharesHandlerCallbacks.TryGetValue(thisPtr, out Action<NSError> callback))
+            if(AcceptSharesHandlerCallbacks.TryGetValue(thisPtr, out ExecutionContext<NSError> callback))
             {
-                Dispatcher.Instance.EnqueueOnMainThread(() => 
-                    callback(
-                        _operationError == IntPtr.Zero ? null : new NSError(_operationError)));
+                callback.Invoke(
+                        _operationError == IntPtr.Zero ? null : new NSError(_operationError));
             }
         }
 
@@ -223,9 +223,10 @@ namespace HovelHouse.CloudKit
         {
             get 
             {
-                Action<CKShareMetadata,CKShare,NSError> value;
-                PerShareCompletionHandlerCallbacks.TryGetValue(HandleRef.ToIntPtr(Handle), out value);
-                return value;
+                PerShareCompletionHandlerCallbacks.TryGetValue(
+                    HandleRef.ToIntPtr(Handle), 
+                    out ExecutionContext<CKShareMetadata,CKShare,NSError> value);
+                return value.Callback;
             }    
             set 
             {
@@ -236,7 +237,7 @@ namespace HovelHouse.CloudKit
                 }
                 else
                 {
-                    PerShareCompletionHandlerCallbacks[myPtr] = value;
+                    PerShareCompletionHandlerCallbacks[myPtr] = new ExecutionContext<CKShareMetadata,CKShare,NSError>(value);
                 }
                 CKAcceptSharesOperation_SetPropPerShareCompletionHandler(Handle, PerShareCompletionHandlerCallback, out IntPtr exceptionPtr);
 
@@ -248,18 +249,17 @@ namespace HovelHouse.CloudKit
             }
         }
 
-        private static readonly Dictionary<IntPtr,Action<CKShareMetadata,CKShare,NSError>> PerShareCompletionHandlerCallbacks = new Dictionary<IntPtr,Action<CKShareMetadata,CKShare,NSError>>();
+        private static readonly Dictionary<IntPtr,ExecutionContext<CKShareMetadata,CKShare,NSError>> PerShareCompletionHandlerCallbacks = new Dictionary<IntPtr,ExecutionContext<CKShareMetadata,CKShare,NSError>>();
 
         [MonoPInvokeCallback(typeof(PerShareCompletionDelegate))]
         private static void PerShareCompletionHandlerCallback(IntPtr thisPtr, IntPtr _shareMetadata, IntPtr _acceptedShare, IntPtr _error)
         {
-            if(PerShareCompletionHandlerCallbacks.TryGetValue(thisPtr, out Action<CKShareMetadata,CKShare,NSError> callback))
+            if(PerShareCompletionHandlerCallbacks.TryGetValue(thisPtr, out ExecutionContext<CKShareMetadata,CKShare,NSError> callback))
             {
-                Dispatcher.Instance.EnqueueOnMainThread(() => 
-                    callback(
+                callback.Invoke(
                         _shareMetadata == IntPtr.Zero ? null : new CKShareMetadata(_shareMetadata),
                         _acceptedShare == IntPtr.Zero ? null : new CKShare(_acceptedShare),
-                        _error == IntPtr.Zero ? null : new NSError(_error)));
+                        _error == IntPtr.Zero ? null : new NSError(_error));
             }
         }
 

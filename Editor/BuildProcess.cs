@@ -8,11 +8,9 @@ using UnityEngine;
 using Debug = UnityEngine.Debug;
 using System.Diagnostics;
 using System;
-using System.Collections.Generic;
 using UnityEditor.Build;
 using System.Linq;
 using UnityEditor.iOS.Xcode;
-using System.Text.RegularExpressions;
 #endif
 
 namespace HovelHouse.CloudKit
@@ -64,6 +62,7 @@ namespace HovelHouse.CloudKit
         }
 
 #if UNITY_IOS || UNITY_TVOS || UNITY_STANDALONE_OSX
+        private const string PushNotificationEntitlementKey = "com.apple.developer.aps-environment";
         private const string KeyValueStoreEntitlement = "com.apple.developer.ubiquity-kvstore-identifier";
         private const string ContainersEntitlement = "com.apple.developer.icloud-container-identifiers";
         private const string iCloudServicesEntitlement = "com.apple.developer.icloud-services";
@@ -82,29 +81,29 @@ namespace HovelHouse.CloudKit
             {
                 // This step merges the plist thats in the app folder with a partial
                 // one you specify
+                var appPList = new PlistDocument();
+                var appPListPath = Path.Combine(path, "Contents/info.plist");
+
+                appPList.ReadFromFile(appPListPath);
+                PlistElementDict appRoot = appPList.root;
 
                 if (settings.PerformMergePlistsStep)
                 {
                     Debug.Log("[HovelHouse.CloudKit] merging plists");
 
-                    var appPList = new PlistDocument();
                     var partialPList = new PlistDocument();
 
-                    var appPListPath = Path.Combine(path, "Contents/info.plist");
-
-                    appPList.ReadFromFile(appPListPath);
                     partialPList.ReadFromFile(settings.PlistPath);
 
                     PlistElementDict partialProot = partialPList.root;
-                    PlistElementDict appRoot = appPList.root;
-
+                    
                     foreach (var prop in partialProot.values)
                     {
                         appRoot[prop.Key] = prop.Value;
                     }
-
-                    appPList.WriteToFile(appPListPath);
                 }
+
+                appPList.WriteToFile(appPListPath);
 
                 var appEntitlements = new PlistDocument();
 
@@ -123,6 +122,11 @@ namespace HovelHouse.CloudKit
                 }
 
                 var cloudContainers = appEntitlements.root.CreateArray(ContainersEntitlement);
+                if(settings.AddDefaultContainers)
+                {
+                    var defaultContainerName = string.Format("iCloud.{0}", PlayerSettings.applicationIdentifier);
+                    cloudContainers.AddIfMissing(defaultContainerName);
+                }
                 cloudContainers.AddRangeIfMissing(settings.CustomContainers);
 
                 // Normally x-code adds the ApplicationIdentifierEntitlement during signing, but we're not
@@ -145,6 +149,24 @@ namespace HovelHouse.CloudKit
                 {
                     appEntitlements.root.SetString(KeyValueStoreEntitlement, "$(TeamIdentifierPrefix)$(CFBundleIdentifier)");
                 }
+
+                if (settings.AddBackgroundModes)
+                {
+                    var apsEnvironment = "development";
+                    appEntitlements.root.AddIfMissing(PushNotificationEntitlementKey, apsEnvironment);
+                    //var backgroundModesPropertyKey = "UIBackgroundModes";
+                    //var backgroundModeRemoteNotifications = "remote-notification";
+
+                    //if (appRoot[backgroundModesPropertyKey] is PlistElementArray == false)
+                    //{
+                    //    appRoot.CreateArray(backgroundModesPropertyKey);
+                    //}
+
+                    //var backgroundModesArray = (PlistElementArray)appRoot[backgroundModesPropertyKey];
+
+                    //backgroundModesArray.AddString(backgroundModeRemoteNotifications);
+                }
+
 
                 var appEntitlementsPath = Path.Combine(path,
                    string.Format("../{0}.entitlements", PlayerSettings.applicationIdentifier.Split('.').Last()));
@@ -258,6 +280,11 @@ namespace HovelHouse.CloudKit
                 settings.EnableCloudKit,
                 settings.AddDefaultContainers,
                 settings.CustomContainers);
+
+            if (settings.AddBackgroundModes)
+            {
+                projCapability.AddBackgroundModes(settings.BackgroundModes);
+            }
 
             projCapability.WriteToFile();
         }

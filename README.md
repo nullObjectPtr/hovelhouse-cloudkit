@@ -25,10 +25,6 @@ This plugin is provided as a unity package. You can import via the Package Manag
 * Select the "package.json" file in the "CloudKit" folder of inside the unzipped directory
 * Unity will now import the package into your project
  
-### From Git URL
-* You can also import the package from it's git URL: "https://github.com/nullObjectPtr/hovelhouse-cloudkit.git"
-* You can find instructions on how to do this here: https://docs.unity3d.com/Manual/upm-git.html
- 
 There are three libraries provided. One dynamic library for MacOS, one static library for iOS, and one static library for TVOS.
  
 ## Usage
@@ -57,6 +53,7 @@ Before you build you want to make sure you have set a good bundle identifier in 
  
 # Known Issues
 * Again, some of the API isn't yet covered
+* CloudKit Notifications are not working on TVOS
 * When Key-Value-Storage is enabled, some versions of Unity will cause Unity Cloud Build to fail with an error message about the entitlements not matching the provisions profile. The cause of this is currently unknown, as the entitlements are the same in all build versions.
  
 # FAQ
@@ -65,21 +62,14 @@ Before you build you want to make sure you have set a good bundle identifier in 
 # Road Map
  
 ### P1
-* Get continuous integration up and running with UnityCloudBuild
-* Integration tests for everything
 * Better documentation
-* Tutorials
+* Integration tests for everything
+* Video Tutorials
 
 ### P2
-* Use weak references for storing property callbacks
-* Support field arrays in CKRecord
+* A save system layer that conforms to apple arcades save paradigm
+* Support array fields in CKRecord
 * Remove the type-specific Set(Type)ForKey and replace them with overloaded versions of SetObjectForKey (Breaking Change)
-* Array support for CKRecord's setObject forKey methods
  
 ### P3
-* Better code examples
- 
-### P4
 * Add classes / methods not supported on TVOS, and conditionally compile them out of TVOS
-* ? you let me know
-* CloudSaveManager? - a save system that helps with cloud saves and conforms to apple's save paradigm

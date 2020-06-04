@@ -1,7 +1,7 @@
 //
 //  CKFetchDatabaseChangesOperation.cs
 //
-//  Created by Jonathan Culp <jonathanculp@gmail.com> on 04/16/2020
+//  Created by Jonathan Culp <jonathanculp@gmail.com> on 05/28/2020
 //  Copyright © 2020 HovelHouseApps. All rights reserved.
 //  Unauthorized copying of this file, via any medium is strictly prohibited
 //  Proprietary and confidential
@@ -188,9 +188,10 @@ namespace HovelHouse.CloudKit
         {
             get 
             {
-                Action<CKServerChangeToken> value;
-                ChangeTokenUpdatedHandlerCallbacks.TryGetValue(HandleRef.ToIntPtr(Handle), out value);
-                return value;
+                ChangeTokenUpdatedHandlerCallbacks.TryGetValue(
+                    HandleRef.ToIntPtr(Handle), 
+                    out ExecutionContext<CKServerChangeToken> value);
+                return value.Callback;
             }    
             set 
             {
@@ -201,7 +202,7 @@ namespace HovelHouse.CloudKit
                 }
                 else
                 {
-                    ChangeTokenUpdatedHandlerCallbacks[myPtr] = value;
+                    ChangeTokenUpdatedHandlerCallbacks[myPtr] = new ExecutionContext<CKServerChangeToken>(value);
                 }
                 CKFetchDatabaseChangesOperation_SetPropChangeTokenUpdatedHandler(Handle, ChangeTokenUpdatedHandlerCallback, out IntPtr exceptionPtr);
 
@@ -213,16 +214,15 @@ namespace HovelHouse.CloudKit
             }
         }
 
-        private static readonly Dictionary<IntPtr,Action<CKServerChangeToken>> ChangeTokenUpdatedHandlerCallbacks = new Dictionary<IntPtr,Action<CKServerChangeToken>>();
+        private static readonly Dictionary<IntPtr,ExecutionContext<CKServerChangeToken>> ChangeTokenUpdatedHandlerCallbacks = new Dictionary<IntPtr,ExecutionContext<CKServerChangeToken>>();
 
         [MonoPInvokeCallback(typeof(ChangeTokenUpdatedDelegate))]
         private static void ChangeTokenUpdatedHandlerCallback(IntPtr thisPtr, IntPtr _serverChangeToken)
         {
-            if(ChangeTokenUpdatedHandlerCallbacks.TryGetValue(thisPtr, out Action<CKServerChangeToken> callback))
+            if(ChangeTokenUpdatedHandlerCallbacks.TryGetValue(thisPtr, out ExecutionContext<CKServerChangeToken> callback))
             {
-                Dispatcher.Instance.EnqueueOnMainThread(() => 
-                    callback(
-                        _serverChangeToken == IntPtr.Zero ? null : new CKServerChangeToken(_serverChangeToken)));
+                callback.Invoke(
+                        _serverChangeToken == IntPtr.Zero ? null : new CKServerChangeToken(_serverChangeToken));
             }
         }
 
@@ -232,9 +232,10 @@ namespace HovelHouse.CloudKit
         {
             get 
             {
-                Action<CKServerChangeToken,bool,NSError> value;
-                FetchDatabaseChangesCompletionHandlerCallbacks.TryGetValue(HandleRef.ToIntPtr(Handle), out value);
-                return value;
+                FetchDatabaseChangesCompletionHandlerCallbacks.TryGetValue(
+                    HandleRef.ToIntPtr(Handle), 
+                    out ExecutionContext<CKServerChangeToken,bool,NSError> value);
+                return value.Callback;
             }    
             set 
             {
@@ -245,7 +246,7 @@ namespace HovelHouse.CloudKit
                 }
                 else
                 {
-                    FetchDatabaseChangesCompletionHandlerCallbacks[myPtr] = value;
+                    FetchDatabaseChangesCompletionHandlerCallbacks[myPtr] = new ExecutionContext<CKServerChangeToken,bool,NSError>(value);
                 }
                 CKFetchDatabaseChangesOperation_SetPropFetchDatabaseChangesCompletionHandler(Handle, FetchDatabaseChangesCompletionHandlerCallback, out IntPtr exceptionPtr);
 
@@ -257,18 +258,17 @@ namespace HovelHouse.CloudKit
             }
         }
 
-        private static readonly Dictionary<IntPtr,Action<CKServerChangeToken,bool,NSError>> FetchDatabaseChangesCompletionHandlerCallbacks = new Dictionary<IntPtr,Action<CKServerChangeToken,bool,NSError>>();
+        private static readonly Dictionary<IntPtr,ExecutionContext<CKServerChangeToken,bool,NSError>> FetchDatabaseChangesCompletionHandlerCallbacks = new Dictionary<IntPtr,ExecutionContext<CKServerChangeToken,bool,NSError>>();
 
         [MonoPInvokeCallback(typeof(FetchDatabaseChangesCompletionDelegate))]
         private static void FetchDatabaseChangesCompletionHandlerCallback(IntPtr thisPtr, IntPtr _serverChangeToken, bool _moreComing, IntPtr _operationError)
         {
-            if(FetchDatabaseChangesCompletionHandlerCallbacks.TryGetValue(thisPtr, out Action<CKServerChangeToken,bool,NSError> callback))
+            if(FetchDatabaseChangesCompletionHandlerCallbacks.TryGetValue(thisPtr, out ExecutionContext<CKServerChangeToken,bool,NSError> callback))
             {
-                Dispatcher.Instance.EnqueueOnMainThread(() => 
-                    callback(
+                callback.Invoke(
                         _serverChangeToken == IntPtr.Zero ? null : new CKServerChangeToken(_serverChangeToken),
                         _moreComing,
-                        _operationError == IntPtr.Zero ? null : new NSError(_operationError)));
+                        _operationError == IntPtr.Zero ? null : new NSError(_operationError));
             }
         }
 
@@ -278,9 +278,10 @@ namespace HovelHouse.CloudKit
         {
             get 
             {
-                Action<CKRecordZoneID> value;
-                RecordZoneWithIDChangedHandlerCallbacks.TryGetValue(HandleRef.ToIntPtr(Handle), out value);
-                return value;
+                RecordZoneWithIDChangedHandlerCallbacks.TryGetValue(
+                    HandleRef.ToIntPtr(Handle), 
+                    out ExecutionContext<CKRecordZoneID> value);
+                return value.Callback;
             }    
             set 
             {
@@ -291,7 +292,7 @@ namespace HovelHouse.CloudKit
                 }
                 else
                 {
-                    RecordZoneWithIDChangedHandlerCallbacks[myPtr] = value;
+                    RecordZoneWithIDChangedHandlerCallbacks[myPtr] = new ExecutionContext<CKRecordZoneID>(value);
                 }
                 CKFetchDatabaseChangesOperation_SetPropRecordZoneWithIDChangedHandler(Handle, RecordZoneWithIDChangedHandlerCallback, out IntPtr exceptionPtr);
 
@@ -303,16 +304,15 @@ namespace HovelHouse.CloudKit
             }
         }
 
-        private static readonly Dictionary<IntPtr,Action<CKRecordZoneID>> RecordZoneWithIDChangedHandlerCallbacks = new Dictionary<IntPtr,Action<CKRecordZoneID>>();
+        private static readonly Dictionary<IntPtr,ExecutionContext<CKRecordZoneID>> RecordZoneWithIDChangedHandlerCallbacks = new Dictionary<IntPtr,ExecutionContext<CKRecordZoneID>>();
 
         [MonoPInvokeCallback(typeof(RecordZoneWithIDChangedDelegate))]
         private static void RecordZoneWithIDChangedHandlerCallback(IntPtr thisPtr, IntPtr _zoneID)
         {
-            if(RecordZoneWithIDChangedHandlerCallbacks.TryGetValue(thisPtr, out Action<CKRecordZoneID> callback))
+            if(RecordZoneWithIDChangedHandlerCallbacks.TryGetValue(thisPtr, out ExecutionContext<CKRecordZoneID> callback))
             {
-                Dispatcher.Instance.EnqueueOnMainThread(() => 
-                    callback(
-                        _zoneID == IntPtr.Zero ? null : new CKRecordZoneID(_zoneID)));
+                callback.Invoke(
+                        _zoneID == IntPtr.Zero ? null : new CKRecordZoneID(_zoneID));
             }
         }
 
@@ -322,9 +322,10 @@ namespace HovelHouse.CloudKit
         {
             get 
             {
-                Action<CKRecordZoneID> value;
-                RecordZoneWithIDWasDeletedHandlerCallbacks.TryGetValue(HandleRef.ToIntPtr(Handle), out value);
-                return value;
+                RecordZoneWithIDWasDeletedHandlerCallbacks.TryGetValue(
+                    HandleRef.ToIntPtr(Handle), 
+                    out ExecutionContext<CKRecordZoneID> value);
+                return value.Callback;
             }    
             set 
             {
@@ -335,7 +336,7 @@ namespace HovelHouse.CloudKit
                 }
                 else
                 {
-                    RecordZoneWithIDWasDeletedHandlerCallbacks[myPtr] = value;
+                    RecordZoneWithIDWasDeletedHandlerCallbacks[myPtr] = new ExecutionContext<CKRecordZoneID>(value);
                 }
                 CKFetchDatabaseChangesOperation_SetPropRecordZoneWithIDWasDeletedHandler(Handle, RecordZoneWithIDWasDeletedHandlerCallback, out IntPtr exceptionPtr);
 
@@ -347,16 +348,15 @@ namespace HovelHouse.CloudKit
             }
         }
 
-        private static readonly Dictionary<IntPtr,Action<CKRecordZoneID>> RecordZoneWithIDWasDeletedHandlerCallbacks = new Dictionary<IntPtr,Action<CKRecordZoneID>>();
+        private static readonly Dictionary<IntPtr,ExecutionContext<CKRecordZoneID>> RecordZoneWithIDWasDeletedHandlerCallbacks = new Dictionary<IntPtr,ExecutionContext<CKRecordZoneID>>();
 
         [MonoPInvokeCallback(typeof(RecordZoneWithIDWasDeletedDelegate))]
         private static void RecordZoneWithIDWasDeletedHandlerCallback(IntPtr thisPtr, IntPtr _zoneID)
         {
-            if(RecordZoneWithIDWasDeletedHandlerCallbacks.TryGetValue(thisPtr, out Action<CKRecordZoneID> callback))
+            if(RecordZoneWithIDWasDeletedHandlerCallbacks.TryGetValue(thisPtr, out ExecutionContext<CKRecordZoneID> callback))
             {
-                Dispatcher.Instance.EnqueueOnMainThread(() => 
-                    callback(
-                        _zoneID == IntPtr.Zero ? null : new CKRecordZoneID(_zoneID)));
+                callback.Invoke(
+                        _zoneID == IntPtr.Zero ? null : new CKRecordZoneID(_zoneID));
             }
         }
 
@@ -366,9 +366,10 @@ namespace HovelHouse.CloudKit
         {
             get 
             {
-                Action<CKRecordZoneID> value;
-                RecordZoneWithIDWasPurgedHandlerCallbacks.TryGetValue(HandleRef.ToIntPtr(Handle), out value);
-                return value;
+                RecordZoneWithIDWasPurgedHandlerCallbacks.TryGetValue(
+                    HandleRef.ToIntPtr(Handle), 
+                    out ExecutionContext<CKRecordZoneID> value);
+                return value.Callback;
             }    
             set 
             {
@@ -379,7 +380,7 @@ namespace HovelHouse.CloudKit
                 }
                 else
                 {
-                    RecordZoneWithIDWasPurgedHandlerCallbacks[myPtr] = value;
+                    RecordZoneWithIDWasPurgedHandlerCallbacks[myPtr] = new ExecutionContext<CKRecordZoneID>(value);
                 }
                 CKFetchDatabaseChangesOperation_SetPropRecordZoneWithIDWasPurgedHandler(Handle, RecordZoneWithIDWasPurgedHandlerCallback, out IntPtr exceptionPtr);
 
@@ -391,16 +392,15 @@ namespace HovelHouse.CloudKit
             }
         }
 
-        private static readonly Dictionary<IntPtr,Action<CKRecordZoneID>> RecordZoneWithIDWasPurgedHandlerCallbacks = new Dictionary<IntPtr,Action<CKRecordZoneID>>();
+        private static readonly Dictionary<IntPtr,ExecutionContext<CKRecordZoneID>> RecordZoneWithIDWasPurgedHandlerCallbacks = new Dictionary<IntPtr,ExecutionContext<CKRecordZoneID>>();
 
         [MonoPInvokeCallback(typeof(RecordZoneWithIDWasPurgedDelegate))]
         private static void RecordZoneWithIDWasPurgedHandlerCallback(IntPtr thisPtr, IntPtr _zoneID)
         {
-            if(RecordZoneWithIDWasPurgedHandlerCallbacks.TryGetValue(thisPtr, out Action<CKRecordZoneID> callback))
+            if(RecordZoneWithIDWasPurgedHandlerCallbacks.TryGetValue(thisPtr, out ExecutionContext<CKRecordZoneID> callback))
             {
-                Dispatcher.Instance.EnqueueOnMainThread(() => 
-                    callback(
-                        _zoneID == IntPtr.Zero ? null : new CKRecordZoneID(_zoneID)));
+                callback.Invoke(
+                        _zoneID == IntPtr.Zero ? null : new CKRecordZoneID(_zoneID));
             }
         }
 

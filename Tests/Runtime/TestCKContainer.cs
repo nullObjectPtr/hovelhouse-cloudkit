@@ -1,5 +1,5 @@
 //
-//  CKContainer.cs
+//  TestCKContainer.cs
 //
 //  Created by Jonathan Culp <jonathanculp@gmail.com> on 04/08/2020
 //  Copyright © 2020 HovelHouseApps. All rights reserved.
@@ -8,14 +8,15 @@
 //
 
 using System.Collections;
-using System.Collections.Generic;
 using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.TestTools;
 using HovelHouse.CloudKit;
+using System;
 
 public class CKContainerTests
 {
+    private const float DefaultTimeout = 5.0f;
 
     [Test]
     public void Default_container_exists()
@@ -29,8 +30,12 @@ public class CKContainerTests
     {
         var defaultContainer = CKContainer.DefaultContainer();
         var identifier = defaultContainer.ContainerIdentifier;
+        var otherContainer = CKContainer.ContainerWithIdentifier(identifier);
 
-        Assert.AreEqual(defaultContainer, CKContainer.ContainerWithIdentifier(identifier));
+        Assert.AreEqual(identifier, otherContainer.ContainerIdentifier);
+
+        //These are not the same object?
+        //Assert.AreEqual(defaultContainer, otherContainer);
     }
 
     [Test]
@@ -41,53 +46,109 @@ public class CKContainerTests
         Assert.NotNull(CKContainer.DefaultContainer().DatabaseWithDatabaseScope(scope));
     }
 
-    [Test]
-    public void FetchAllLongLivedOperationIDsWithCompletionHandlerTest()
+    [UnityTest]
+    public IEnumerator Can_fetch_all_long_lived_operationIDs()
     {
-        // STUB - fix me
-        Assert.Fail("FetchAllLongLivedOperationIDsWithCompletionHandlerTest Not Implemented");
+        var wasCalled = false;
+        CKContainer.DefaultContainer().FetchAllLongLivedOperationIDsWithCompletionHandler((operationIds, error) => {
+            wasCalled = true;
+        });
+
+        yield return WaitUntilWithTimeout(() => wasCalled, DefaultTimeout);
+
+        Assert.IsTrue(wasCalled);
     }
 
-    [Test]
-    public void FetchUserRecordIDWithCompletionHandlerTest()
+    [UnityTest]
+    public IEnumerator Can_fetch_user_recordID()
     {
-        // STUB - fix me
-        Assert.Fail("FetchUserRecordIDWithCompletionHandlerTest Not Implemented");
+        CKRecordID CKRecordID = null;
+        var wasCalled = false;
+
+        CKContainer.DefaultContainer().FetchUserRecordIDWithCompletionHandler((ckRecordId, error) => {
+            CKRecordID = ckRecordId;
+            wasCalled = true;
+        });
+
+        yield return WaitUntilWithTimeout(() => wasCalled, DefaultTimeout);
+
+        Assert.IsTrue(wasCalled);
+        Assert.IsNotNull(CKRecordID);
     }
 
-    [Test]
-    public void DiscoverUserIdentityWithEmailAddressTest()
+    [UnityTest]
+    public IEnumerator Can_discover_user_identity_with_email_address()
     {
-        // STUB - fix me
-        Assert.Fail("DiscoverUserIdentityWithEmailAddressTest Not Implemented");
+        var email = "support@hovelhouse.com";
+        var wasCalled = false;
+
+        CKContainer.DefaultContainer().DiscoverUserIdentityWithEmailAddress(email, (identity, error) => {
+            wasCalled = true;
+        });
+
+        yield return WaitUntilWithTimeout(() => wasCalled, DefaultTimeout);
+
+        Assert.IsTrue(wasCalled);
     }
 
-    [Test]
-    public void FetchShareParticipantWithEmailAddressTest()
+    [UnityTest]
+    public IEnumerator Can_fetch_share_participant_with_email_address()
     {
-        // STUB - fix me
-        Assert.Fail("FetchShareParticipantWithEmailAddressTest Not Implemented");
+        var email = "support@hovelhouse.com";
+        var wasCalled = false;
+
+        CKContainer.DefaultContainer().FetchShareParticipantWithEmailAddress(email, (participant, error) => {
+            wasCalled = true;
+        });
+
+        yield return WaitUntilWithTimeout(() => wasCalled, DefaultTimeout);
+
+        Assert.IsTrue(wasCalled);
     }
 
-    [Test]
-    public void FetchShareParticipantWithPhoneNumberTest()
+    [UnityTest]
+    public IEnumerator Can_fetch_share_participant_with_phone_number()
     {
-        // STUB - fix me
-        Assert.Fail("FetchShareParticipantWithPhoneNumberTest Not Implemented");
+        var number = "1-800-888-8888";
+        var wasCalled = false;
+
+        CKContainer.DefaultContainer().FetchShareParticipantWithPhoneNumber(number, (participant, error) => {
+            wasCalled = true;
+        });
+
+        yield return WaitUntilWithTimeout(() => wasCalled, DefaultTimeout);
+
+        Assert.IsTrue(wasCalled);
     }
 
-    [Test]
-    public void FetchShareParticipantWithUserRecordIDTest()
+    [UnityTest]
+    public IEnumerator Can_fetch_share_participant_with_user_recordID()
     {
-        // STUB - fix me
-        Assert.Fail("FetchShareParticipantWithUserRecordIDTest Not Implemented");
+        var recordId = new CKRecordID("recordName");
+        var wasCalled = false;
+
+        CKContainer.DefaultContainer().FetchShareParticipantWithUserRecordID(recordId, (participant, error) => {
+            wasCalled = true;
+        });
+
+        yield return WaitUntilWithTimeout(() => wasCalled, DefaultTimeout);
+
+        Assert.IsTrue(wasCalled);
     }
 
-    [Test]
-    public void FetchLongLivedOperationWithIDTest()
+    [UnityTest]
+    public IEnumerator Can_fetch_long_lived_operation_by_operation_id()
     {
-        // STUB - fix me
-        Assert.Fail("FetchLongLivedOperationWithIDTest Not Implemented");
+        var operationId = "operationId";
+        var wasCalled = false;
+
+        CKContainer.DefaultContainer().FetchLongLivedOperationWithID(operationId, (operation, error) => {
+            wasCalled = true;
+        });
+
+        yield return WaitUntilWithTimeout(() => wasCalled, DefaultTimeout);
+
+        Assert.IsTrue(wasCalled);
     }
 
     [Test]
@@ -97,25 +158,46 @@ public class CKContainerTests
         Assert.Fail("AcceptShareMetadataTest Not Implemented");
     }
 
-    [Test]
-    public void RequestApplicationPermissionTest()
+    [UnityTest]
+    public IEnumerator Can_request_application_permission()
     {
-        // STUB - fix me
-        Assert.Fail("RequestApplicationPermissionTest Not Implemented");
+        var wasCalled = false;
+
+        CKContainer.DefaultContainer().RequestApplicationPermission(CKApplicationPermissions.UserDiscoverability, (status, error) => {
+            wasCalled = true;
+        });
+
+        yield return WaitUntilWithTimeout(() => wasCalled, DefaultTimeout);
+
+        Assert.IsTrue(wasCalled);
     }
 
-    [Test]
-    public void AccountStatusWithCompletionHandlerTest()
+    [UnityTest]
+    public IEnumerator Can_get_account_status()
     {
-        // STUB - fix me
-        Assert.Fail("AccountStatusWithCompletionHandlerTest Not Implemented");
+        var wasCalled = false;
+        CKContainer.DefaultContainer().AccountStatusWithCompletionHandler((status, error) => {
+            wasCalled = true;
+        });
+
+        yield return WaitUntilWithTimeout(() => wasCalled, DefaultTimeout);
+
+        Assert.IsTrue(wasCalled);
     }
 
-    [Test]
-    public void StatusForApplicationPermissionTest()
+    [UnityTest]
+    public IEnumerator Can_get_status_for_application_permission()
     {
-        // STUB - fix me
-        Assert.Fail("StatusForApplicationPermissionTest Not Implemented");
+        var wasCalled = false;
+
+        var permission = CKApplicationPermissions.UserDiscoverability;
+        CKContainer.DefaultContainer().StatusForApplicationPermission(permission, (status, error) => {
+            wasCalled = true;
+        });
+
+        yield return WaitUntilWithTimeout(() => wasCalled, DefaultTimeout);
+
+        Assert.IsTrue(wasCalled);
     }
 
     [Test]
@@ -136,14 +218,20 @@ public class CKContainerTests
         Assert.AreEqual(op.Configuration.Container, container);
     }
 
-    [Test]
-    public void FetchShareMetadataWithURLTest()
+    [UnityTest]
+    public IEnumerator Can_fetch_share_metadata_by_URL()
     {
-        // STUB - fix me
-        Assert.Fail("FetchShareMetadataWithURLTest Not Implemented");
+        var url = NSURL.URLWithString("http://www.hovelhouse.com");
+        var wasCalled = false;
+
+        CKContainer.DefaultContainer().FetchShareMetadataWithURL(url, (shareMetadata, error) => {
+            wasCalled = true;
+        });
+
+        yield return WaitUntilWithTimeout(() => wasCalled, DefaultTimeout);
+
+        Assert.IsTrue(wasCalled);
     }
-
-
 
     [Test]
     public void Private_database_exists()
@@ -170,10 +258,22 @@ public class CKContainerTests
     }
 
     [Test]
-    public void AccountChangedNotificationNotificationTest()
+    public void Can_add_account_changed_notification_observer()
     {
-        // STUB - fix me
-        Assert.Fail("Test Not Implemented");
+        var unsub = CKContainer.AddAccountChangedNotificationObserver((notification) => { });
+        Assert.IsNotNull(unsub);
     }
 
+    private IEnumerator WaitUntilWithTimeout(Func<bool> condition, float timeLimit)
+    {
+        float timeElapsed = 0.0f;
+
+        while (!condition() && timeElapsed < timeLimit)
+        {
+            timeElapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        yield break;
+    }
 }
