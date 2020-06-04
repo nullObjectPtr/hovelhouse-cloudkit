@@ -13,51 +13,48 @@ using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.TestTools;
 using HovelHouse.CloudKit;
+using System;
 
-    public class CKDiscoverUserIdentitiesOperationTests
+public class CKDiscoverUserIdentitiesOperationTests
+{
+    [Test]
+    public void Can_create_discover_user_identities_operation()
     {
-        
-
-        
-        public void CanCreateCKDiscoverUserIdentitiesOperation()
-        {
-            // STUB - fix me
-            Assert.Fail("CanCreateCKDiscoverUserIdentitiesOperation Test Not Implemented");
-        }
-        
-        public void CanCreateCKDiscoverUserIdentitiesOperation2()
-        {
-            // STUB - fix me
-            Assert.Fail("CanCreateCKDiscoverUserIdentitiesOperation Test Not Implemented");
-        }
-        
-
-        
-
-        
-        
-        
-        [Test]
-        public void UserIdentityLookupInfosTest()
-        {
-            // STUB - fix me
-            Assert.Fail("UserIdentityLookupInfosTest Not Implemented");
-        }
-        
-        [Test]
-        public void UserIdentityDiscoveredHandlerTest()
-        {
-            // STUB - fix me
-            Assert.Fail("UserIdentityDiscoveredHandlerTest Not Implemented");
-        }
-        
-        [Test]
-        public void DiscoverUserIdentitiesCompletionHandlerTest()
-        {
-            // STUB - fix me
-            Assert.Fail("DiscoverUserIdentitiesCompletionHandlerTest Not Implemented");
-        }
-        
-
-        
+        var op = new CKDiscoverUserIdentitiesOperation();
+        Assert.IsNotNull(op);
     }
+
+    [Test]
+    public void Can_create_discover_user_identities_operation_with_lookup_info()
+    {
+        var lookupInfo = new CKUserIdentityLookupInfo[] { };
+        var op = new CKDiscoverUserIdentitiesOperation(lookupInfo);
+
+        Assert.AreSame(lookupInfo, op.UserIdentityLookupInfos);
+    }
+
+    [Test]
+    public void Cant_create_discover_user_identities_operation_with__null_lookup_info()
+    {
+        TestDelegate sut = () => new CKDiscoverUserIdentitiesOperation(null);
+        Assert.Throws<CloudKitException>(sut);
+    }
+
+    //[Test]
+    //public void Can_discover_user_identites()
+    //{
+    //    var op = new CKDiscoverUserIdentitiesOperation();
+    //    op.Configuration.QualityOfService = NSQualityOfService.UserInitiated;
+    //    op.UserIdentityDiscoveredHandler = OnUserIdentityDiscovered;
+
+    //    var container = CKContainer.DefaultContainer();
+    //    container.AddOperation(op);
+
+    //    Assert.Fail("Test not finished");
+    //}
+
+    //private void OnUserIdentityDiscovered(CKUserIdentity arg1, CKUserIdentityLookupInfo arg2)
+    //{
+    //    throw new NotImplementedException();
+    //}
+}

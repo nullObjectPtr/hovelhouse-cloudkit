@@ -1,7 +1,7 @@
 //
 //  CKFetchRecordZonesOperation.cs
 //
-//  Created by Jonathan Culp <jonathanculp@gmail.com> on 04/16/2020
+//  Created by Jonathan Culp <jonathanculp@gmail.com> on 05/28/2020
 //  Copyright © 2020 HovelHouseApps. All rights reserved.
 //  Unauthorized copying of this file, via any medium is strictly prohibited
 //  Proprietary and confidential
@@ -200,9 +200,10 @@ namespace HovelHouse.CloudKit
         {
             get 
             {
-                Action<Dictionary<CKRecordZoneID,CKRecordZone>,NSError> value;
-                FetchRecordZonesCompletionHandlerCallbacks.TryGetValue(HandleRef.ToIntPtr(Handle), out value);
-                return value;
+                FetchRecordZonesCompletionHandlerCallbacks.TryGetValue(
+                    HandleRef.ToIntPtr(Handle), 
+                    out ExecutionContext<Dictionary<CKRecordZoneID,CKRecordZone>,NSError> value);
+                return value.Callback;
             }    
             set 
             {
@@ -213,7 +214,7 @@ namespace HovelHouse.CloudKit
                 }
                 else
                 {
-                    FetchRecordZonesCompletionHandlerCallbacks[myPtr] = value;
+                    FetchRecordZonesCompletionHandlerCallbacks[myPtr] = new ExecutionContext<Dictionary<CKRecordZoneID,CKRecordZone>,NSError>(value);
                 }
                 CKFetchRecordZonesOperation_SetPropFetchRecordZonesCompletionHandler(Handle, FetchRecordZonesCompletionHandlerCallback, out IntPtr exceptionPtr);
 
@@ -225,7 +226,7 @@ namespace HovelHouse.CloudKit
             }
         }
 
-        private static readonly Dictionary<IntPtr,Action<Dictionary<CKRecordZoneID,CKRecordZone>,NSError>> FetchRecordZonesCompletionHandlerCallbacks = new Dictionary<IntPtr,Action<Dictionary<CKRecordZoneID,CKRecordZone>,NSError>>();
+        private static readonly Dictionary<IntPtr,ExecutionContext<Dictionary<CKRecordZoneID,CKRecordZone>,NSError>> FetchRecordZonesCompletionHandlerCallbacks = new Dictionary<IntPtr,ExecutionContext<Dictionary<CKRecordZoneID,CKRecordZone>,NSError>>();
 
         [MonoPInvokeCallback(typeof(FetchRecordZonesCompletionDelegate))]
         private static void FetchRecordZonesCompletionHandlerCallback(IntPtr thisPtr, [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.SysInt, SizeParamIndex = 3)]
@@ -234,12 +235,11 @@ namespace HovelHouse.CloudKit
 		IntPtr[] _recordZonesByZoneIDValues,
 		long _recordZonesByZoneIDCount, IntPtr _operationError)
         {
-            if(FetchRecordZonesCompletionHandlerCallbacks.TryGetValue(thisPtr, out Action<Dictionary<CKRecordZoneID,CKRecordZone>,NSError> callback))
+            if(FetchRecordZonesCompletionHandlerCallbacks.TryGetValue(thisPtr, out ExecutionContext<Dictionary<CKRecordZoneID,CKRecordZone>,NSError> callback))
             {
-                Dispatcher.Instance.EnqueueOnMainThread(() => 
-                    callback(
+                callback.Invoke(
                         _recordZonesByZoneIDKeys.Zip(_recordZonesByZoneIDValues, (k, v) => ( k == IntPtr.Zero ? null : new CKRecordZoneID(k), v == IntPtr.Zero ? null : new CKRecordZone(v) )).ToDictionary(item => item.Item1, item => item.Item2),
-                        _operationError == IntPtr.Zero ? null : new NSError(_operationError)));
+                        _operationError == IntPtr.Zero ? null : new NSError(_operationError));
             }
         }
 

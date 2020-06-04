@@ -14,51 +14,69 @@ using UnityEngine;
 using UnityEngine.TestTools;
 
 using HovelHouse.CloudKit;
+using System.Linq;
 
-    public class CKAcceptSharesOperationTests
+public class CKAcceptSharesOperationTests
+{
+    static CKShareMetadata[][] testCases = new[]
     {
-        
+        null,
+        new CKShareMetadata[] {},
+    };
 
-        
-        public void CanCreateCKAcceptSharesOperation()
-        {
-            // STUB - fix me
-            Assert.Fail("CanCreateCKAcceptSharesOperation Test Not Implemented");
-        }
-        
-        public void CanCreateCKAcceptSharesOperation2()
-        {
-            // STUB - fix me
-            Assert.Fail("CanCreateCKAcceptSharesOperation Test Not Implemented");
-        }
-        
-
-        
-
-        
-        
-        
-        [Test]
-        public void ShareMetadatasTest()
-        {
-            // STUB - fix me
-            Assert.Fail("ShareMetadatasTest Not Implemented");
-        }
-        
-        [Test]
-        public void AcceptSharesHandlerTest()
-        {
-            // STUB - fix me
-            Assert.Fail("AcceptSharesHandlerTest Not Implemented");
-        }
-        
-        [Test]
-        public void PerShareCompletionHandlerTest()
-        {
-            // STUB - fix me
-            Assert.Fail("PerShareCompletionHandlerTest Not Implemented");
-        }
-        
-
-        
+    [Test]
+    public void Can_create_accept_shares_operation()
+    {
+        var sut = new CKAcceptSharesOperation();
+        Assert.IsNotNull(sut);
     }
+
+    [Test]
+    public void Can_create_accept_shares_operation_with_metadata()
+    {
+        var metadata = new CKShareMetadata[] { };
+        var sut = new CKAcceptSharesOperation( metadata );
+
+        Assert.IsNull(sut);
+    }
+
+    [Test, TestCaseSource("testCases")]
+    public void Cant_create_accept_shared_operation_with_invalid_metadata(CKShareMetadata[] metadata)
+    {
+        TestDelegate sut = () => new CKAcceptSharesOperation(metadata);
+
+        Assert.Throws<CloudKitException>(sut);
+    }
+
+    [Test]
+    public void Can_set_and_get_share_metadatas()
+    {
+        //CKShareMetadata[] metadatas = new CKShareMetadata[]
+        //{
+        //};
+
+        //var operation = new CKAcceptSharesOperation();
+        //operation.ShareMetadatas = metadatas;
+
+        //var gotMetadatas = operation.ShareMetadatas;
+        //var hasAllMetadata = metadatas.All(x => gotMetadatas.Contains(x));
+
+        //Assert.IsTrue(hasAllMetadata);
+
+        Assert.Fail("Test not implemented");
+    }
+
+    [Test]
+    public void AcceptSharesHandlerTest()
+    {
+        // STUB - fix me
+        Assert.Fail("AcceptSharesHandlerTest Not Implemented");
+    }
+
+    [Test]
+    public void PerShareCompletionHandlerTest()
+    {
+        // STUB - fix me
+        Assert.Fail("PerShareCompletionHandlerTest Not Implemented");
+    }
+}

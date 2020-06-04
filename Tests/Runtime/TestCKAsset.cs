@@ -16,7 +16,7 @@ public class CKAssetTests
     [Test]
     public void Can_create_CKAsset()
     {
-        var url = NSURL.URLWithString("http://www.hovelhouse.com");
+        var url = NSURL.URLWithString("file:///readme.txt");
         var asset = new CKAsset(url);
 
         Assert.Equals(asset.FileURL, url);
@@ -29,5 +29,14 @@ public class CKAssetTests
         void sut() => new CKAsset(url);
 
         Assert.Throws<ArgumentNullException>(sut);
+    }
+
+    [Test]
+    public void Cant_create_CKAsset_with_nonfile_url()
+    {
+        var url = NSURL.URLWithString("http://www.hovelhouse.com");
+        void sut() => new CKAsset(url);
+
+        Assert.Throws<CloudKitException>(sut);
     }
 }

@@ -1,7 +1,7 @@
 //
 //  CKNotificationInfo.cs
 //
-//  Created by Jonathan Culp <jonathanculp@gmail.com> on 04/16/2020
+//  Created by Jonathan Culp <jonathanculp@gmail.com> on 05/28/2020
 //  Copyright © 2020 HovelHouseApps. All rights reserved.
 //  Unauthorized copying of this file, via any medium is strictly prohibited
 //  Proprietary and confidential
@@ -27,6 +27,15 @@ namespace HovelHouse.CloudKit
         // Class Methods
         
 
+        
+        #if UNITY_IPHONE || UNITY_TVOS
+        [DllImport("__Internal")]
+        #else
+        [DllImport("HHCloudKitMacOS")]
+        #endif
+        private static extern IntPtr CKNotificationInfo_init(
+            out IntPtr exceptionPtr
+            );
         
 
         
@@ -103,6 +112,23 @@ namespace HovelHouse.CloudKit
         internal CKNotificationInfo(IntPtr ptr) : base(ptr) {}
         
         
+        
+        
+        public CKNotificationInfo(
+            )
+        {
+            
+            IntPtr ptr = CKNotificationInfo_init(
+                out IntPtr exceptionPtr);
+
+            if(exceptionPtr != IntPtr.Zero)
+            {
+                var nativeException = new NSException(exceptionPtr);
+                throw new CloudKitException(nativeException, nativeException.Reason);
+            }
+
+            Handle = new HandleRef(this,ptr);
+        }
         
         
 

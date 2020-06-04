@@ -1,7 +1,7 @@
 //
 //  CKFetchShareParticipantsOperation.cs
 //
-//  Created by Jonathan Culp <jonathanculp@gmail.com> on 04/16/2020
+//  Created by Jonathan Culp <jonathanculp@gmail.com> on 05/28/2020
 //  Copyright © 2020 HovelHouseApps. All rights reserved.
 //  Unauthorized copying of this file, via any medium is strictly prohibited
 //  Proprietary and confidential
@@ -179,9 +179,10 @@ namespace HovelHouse.CloudKit
         {
             get 
             {
-                Action<NSError> value;
-                FetchShareParticipantsCompletionHandlerCallbacks.TryGetValue(HandleRef.ToIntPtr(Handle), out value);
-                return value;
+                FetchShareParticipantsCompletionHandlerCallbacks.TryGetValue(
+                    HandleRef.ToIntPtr(Handle), 
+                    out ExecutionContext<NSError> value);
+                return value.Callback;
             }    
             set 
             {
@@ -192,7 +193,7 @@ namespace HovelHouse.CloudKit
                 }
                 else
                 {
-                    FetchShareParticipantsCompletionHandlerCallbacks[myPtr] = value;
+                    FetchShareParticipantsCompletionHandlerCallbacks[myPtr] = new ExecutionContext<NSError>(value);
                 }
                 CKFetchShareParticipantsOperation_SetPropFetchShareParticipantsCompletionHandler(Handle, FetchShareParticipantsCompletionHandlerCallback, out IntPtr exceptionPtr);
 
@@ -204,16 +205,15 @@ namespace HovelHouse.CloudKit
             }
         }
 
-        private static readonly Dictionary<IntPtr,Action<NSError>> FetchShareParticipantsCompletionHandlerCallbacks = new Dictionary<IntPtr,Action<NSError>>();
+        private static readonly Dictionary<IntPtr,ExecutionContext<NSError>> FetchShareParticipantsCompletionHandlerCallbacks = new Dictionary<IntPtr,ExecutionContext<NSError>>();
 
         [MonoPInvokeCallback(typeof(FetchShareParticipantsCompletionDelegate))]
         private static void FetchShareParticipantsCompletionHandlerCallback(IntPtr thisPtr, IntPtr _operationError)
         {
-            if(FetchShareParticipantsCompletionHandlerCallbacks.TryGetValue(thisPtr, out Action<NSError> callback))
+            if(FetchShareParticipantsCompletionHandlerCallbacks.TryGetValue(thisPtr, out ExecutionContext<NSError> callback))
             {
-                Dispatcher.Instance.EnqueueOnMainThread(() => 
-                    callback(
-                        _operationError == IntPtr.Zero ? null : new NSError(_operationError)));
+                callback.Invoke(
+                        _operationError == IntPtr.Zero ? null : new NSError(_operationError));
             }
         }
 
@@ -223,9 +223,10 @@ namespace HovelHouse.CloudKit
         {
             get 
             {
-                Action<CKShareParticipant> value;
-                ShareParticipantFetchedHandlerCallbacks.TryGetValue(HandleRef.ToIntPtr(Handle), out value);
-                return value;
+                ShareParticipantFetchedHandlerCallbacks.TryGetValue(
+                    HandleRef.ToIntPtr(Handle), 
+                    out ExecutionContext<CKShareParticipant> value);
+                return value.Callback;
             }    
             set 
             {
@@ -236,7 +237,7 @@ namespace HovelHouse.CloudKit
                 }
                 else
                 {
-                    ShareParticipantFetchedHandlerCallbacks[myPtr] = value;
+                    ShareParticipantFetchedHandlerCallbacks[myPtr] = new ExecutionContext<CKShareParticipant>(value);
                 }
                 CKFetchShareParticipantsOperation_SetPropShareParticipantFetchedHandler(Handle, ShareParticipantFetchedHandlerCallback, out IntPtr exceptionPtr);
 
@@ -248,16 +249,15 @@ namespace HovelHouse.CloudKit
             }
         }
 
-        private static readonly Dictionary<IntPtr,Action<CKShareParticipant>> ShareParticipantFetchedHandlerCallbacks = new Dictionary<IntPtr,Action<CKShareParticipant>>();
+        private static readonly Dictionary<IntPtr,ExecutionContext<CKShareParticipant>> ShareParticipantFetchedHandlerCallbacks = new Dictionary<IntPtr,ExecutionContext<CKShareParticipant>>();
 
         [MonoPInvokeCallback(typeof(ShareParticipantFetchedDelegate))]
         private static void ShareParticipantFetchedHandlerCallback(IntPtr thisPtr, IntPtr _participant)
         {
-            if(ShareParticipantFetchedHandlerCallbacks.TryGetValue(thisPtr, out Action<CKShareParticipant> callback))
+            if(ShareParticipantFetchedHandlerCallbacks.TryGetValue(thisPtr, out ExecutionContext<CKShareParticipant> callback))
             {
-                Dispatcher.Instance.EnqueueOnMainThread(() => 
-                    callback(
-                        _participant == IntPtr.Zero ? null : new CKShareParticipant(_participant)));
+                callback.Invoke(
+                        _participant == IntPtr.Zero ? null : new CKShareParticipant(_participant));
             }
         }
 
