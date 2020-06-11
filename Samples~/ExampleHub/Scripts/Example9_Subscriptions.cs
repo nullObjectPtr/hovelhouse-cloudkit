@@ -3,7 +3,6 @@ using System.Collections;
 using UnityEngine;
 using HovelHouse.CloudKit;
 using System.Linq;
-using System;
 
 public class Example9_Subscriptions : MonoBehaviour
 {
@@ -14,9 +13,23 @@ public class Example9_Subscriptions : MonoBehaviour
     IEnumerator Start()
     {
         Debug.Log("Example 9 - Subscriptions");
-        Debug.Log("Registering for remote notifications...");
 
-        ICloudNotifications.RequestNotificationToken();
+        Debug.Log("Requesting notification token");
+
+        ICloudNotifications.RequestNotificationToken((tokenBytes, error) => {
+            if(error != null)
+            {
+                Debug.LogError("Failed to get push notification token: " + error.LocalizedDescription);
+            }
+            else
+            {
+                Debug.LogError("Got push notification token");
+            }
+        });
+
+        ICloudNotifications.SetRemoteNotificationHandler((p) => {
+            Debug.Log("remote notification handler called");
+        });
 
         database = CKContainer.DefaultContainer().PrivateCloudDatabase;
 
@@ -78,9 +91,6 @@ public class Example9_Subscriptions : MonoBehaviour
         var predicate = NSPredicate.PredicateWithValue(true);
 
         var notificationInfo = new CKNotificationInfo();
-        notificationInfo.ShouldSendContentAvailable = true;
-        notificationInfo.ShouldBadge = true;
-        notificationInfo.ShouldSendMutableContent = true;
 
         var querySubscription = new CKQuerySubscription(
             recordType,
