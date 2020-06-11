@@ -150,23 +150,11 @@ namespace HovelHouse.CloudKit
                     appEntitlements.root.SetString(KeyValueStoreEntitlement, "$(TeamIdentifierPrefix)$(CFBundleIdentifier)");
                 }
 
-                if (settings.AddBackgroundModes)
+                if (settings.EnableCloudKitNotifications)
                 {
-                    var apsEnvironment = "development";
+                    var apsEnvironment = settings.apsEnvironment.ToString().ToLowerInvariant();
                     appEntitlements.root.AddIfMissing(PushNotificationEntitlementKey, apsEnvironment);
-                    //var backgroundModesPropertyKey = "UIBackgroundModes";
-                    //var backgroundModeRemoteNotifications = "remote-notification";
-
-                    //if (appRoot[backgroundModesPropertyKey] is PlistElementArray == false)
-                    //{
-                    //    appRoot.CreateArray(backgroundModesPropertyKey);
-                    //}
-
-                    //var backgroundModesArray = (PlistElementArray)appRoot[backgroundModesPropertyKey];
-
-                    //backgroundModesArray.AddString(backgroundModeRemoteNotifications);
                 }
-
 
                 var appEntitlementsPath = Path.Combine(path,
                    string.Format("../{0}.entitlements", PlayerSettings.applicationIdentifier.Split('.').Last()));
@@ -229,6 +217,8 @@ namespace HovelHouse.CloudKit
 
         private static void PostProcessXCodeProject(string path)
         {
+            Debug.Log("Post Process X Code Project");
+
             var settings = GetBuildSettings();
             if (settings.EnablePostProcessXCodeProject == false)
             {
@@ -281,9 +271,10 @@ namespace HovelHouse.CloudKit
                 settings.AddDefaultContainers,
                 settings.CustomContainers);
 
-            if (settings.AddBackgroundModes)
+            if (settings.EnableCloudKitNotifications)
             {
-                projCapability.AddBackgroundModes(settings.BackgroundModes);
+                projCapability.AddPushNotifications(settings.apsEnvironment == APSEnvironment.Development);
+                projCapability.AddBackgroundModes((BackgroundModesOptions)settings.BackgroundModes);
             }
 
             projCapability.WriteToFile();
