@@ -91,12 +91,6 @@ public class Example9_Subscriptions : MonoBehaviour
         var predicate = NSPredicate.PredicateWithValue(true);
 
         var notificationInfo = new CKNotificationInfo();
-        notificationInfo.ShouldSendContentAvailable = true;
-        notificationInfo.ShouldBadge = true;
-        notificationInfo.ShouldSendMutableContent = true;
-
-        var info = new CKNotificationInfo();
-        
 
         var querySubscription = new CKQuerySubscription(
             recordType,
