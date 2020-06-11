@@ -2,7 +2,12 @@
 All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
-- More integration tests
+
+## [1.1.0] - 2020-06-11
+### Changed
+- CloudKit notifications working for all platforms now
+- Swizzled app delegate methods will call the original method if present now
+- Build process adds the APS entitlement if cloudkit notifications are enabled
 
 ## [1.0.1] - 2020-06-04
 ### Changed

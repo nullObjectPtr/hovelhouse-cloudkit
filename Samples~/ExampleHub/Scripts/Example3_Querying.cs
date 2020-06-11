@@ -21,7 +21,7 @@ public class Example3_Querying : MonoBehaviour
         database = CKContainer.DefaultContainer().PrivateCloudDatabase;
 
         // We need a bunch of records to search through
-        names = new String[] {
+        names = new string[] {
             "Alice",
             "Bob",
             "Charles",
@@ -65,10 +65,10 @@ public class Example3_Querying : MonoBehaviour
         op2.FetchRecordsCompletionHandler = (dictionary, error) =>
         {
             Debug.Log("Fetch records complete");
-            foreach (var kvp in dictionary)
-            {
-                Debug.Log(string.Format("key:{0} value:{1}", kvp.Key.RecordName, kvp.Value));
-            }
+            //foreach (var kvp in dictionary)
+            //{
+            //    Debug.Log(string.Format("key:{0} value:{1}", kvp.Key.RecordName, kvp.Value));
+            //}
         };
         database.AddOperation(op2);
     }
@@ -95,8 +95,7 @@ public class Example3_Querying : MonoBehaviour
         // down. Marshalling variadic arguments is tricky....
         // Just do your formatting on the C# side.
 
-        // Note that passing a bad predicate string will throw an exception from
-        // cloudkit and crash
+        // Note that passing a bad predicate string will throw an exception
 
         // Pick a random name out of the hat
         var queryStr = string.Format("name = '{0}'", names[UnityEngine.Random.Range(0, names.Length)]);
@@ -117,6 +116,8 @@ public class Example3_Querying : MonoBehaviour
 
     private void OnQueryComplete(CKRecord[] records, NSError error)
     {
+        Debug.Log("OnQueryComplete");
+
         if (error != null)
         {
             Debug.LogError(error.LocalizedDescription);
@@ -146,12 +147,14 @@ public class Example3_Querying : MonoBehaviour
 
     private void OnRecordsDeleted(CKRecord[] savedRecords, CKRecordID[] deletedRecordIds, NSError error)
     {
+        Debug.Log("Records deleted");
         if (error != null)
         {
             Debug.LogError(error.LocalizedDescription);
         }
         else
         {
+            Debug.Log("Deleted records");
             var str = string.Join(",\n", deletedRecordIds.Select(id => id.RecordName).ToArray());
             Debug.Log(string.Format("Deleted records: {0}", str));
         }

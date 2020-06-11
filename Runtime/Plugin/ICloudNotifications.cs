@@ -12,10 +12,6 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using AOT;
 using UnityEngine;
-#if UNITY_IOS
-using NotificationServices = UnityEngine.iOS.NotificationServices;
-using NotificationType = UnityEngine.iOS.NotificationType;
-#endif
 
 namespace HovelHouse.CloudKit
 {
@@ -42,70 +38,72 @@ namespace HovelHouse.CloudKit
         private static extern void RequestNotificationTokenMacOs(RegisteredForNotificationsCallback callback);
 #endif
 
+
+#if UNITY_IPHONE || UNITY_TVOS
+        [DllImport("__Internal")]
+        private static extern void RequestNotificationTokenIOS(RegisteredForNotificationsCallback del);
+#endif
+
+
 #if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
 #else
         [DllImport("HHCloudKitMacOS")]
-        #endif
-        private static extern void RegisterForRemoteNotifications(CKNotificationDelegate del);
-
-        
-
-        
-
-        
-
-        
+#endif
+        private static extern IntPtr SetNotificationHandler(CKNotificationDelegate handler);
 
         // Properties
-        
 
-        #if UNITY_IPHONE || UNITY_TVOS
+
+#if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
-        #else
+#else
         [DllImport("HHCloudKitMacOS")]
-        #endif
+#endif
         private static extern IntPtr AddNSUbiquityIdentityDidChangeNotificationObserver(NotificationDelegate handler, ref IntPtr exceptionPtr);
 
-        #if UNITY_IPHONE || UNITY_TVOS
+#if UNITY_IPHONE || UNITY_TVOS
         [DllImport("__Internal")]
-        #else
+#else
         [DllImport("HHCloudKitMacOS")]
-        #endif
+#endif
         private static extern void RemoveNSUbiquityIdentityDidChangeNotificationObserver(HandleRef observerHandle, ref IntPtr exceptionPtr);
-        
+
 
         #endregion
 
+        private static Action<byte[], NSError> _notificationTokenHandler;
+
         internal ICloudNotifications(IntPtr ptr) : base(ptr) {}
 
-        public static void RequestNotificationToken()
+        public static void RequestNotificationToken(Action<byte[], NSError> Callback)
         {
+            _notificationTokenHandler = Callback;
+
 #if UNITY_STANDALONE_OSX
-            RequestNotificationTokenMacOs(OnRegisteredForNotifications);
-#elif UNITY_IOS
-            NotificationServices.RegisterForNotifications(
-            NotificationType.Alert |
-            NotificationType.Badge |
-            NotificationType.Sound,
-            true);
+            RequestNotificationTokenMacOs(OnNotificationToken);
+#elif UNITY_IOS || UNITY_TVOS
+            RequestNotificationTokenIOS(OnNotificationToken);
 #else
             Debug.LogWarning("RequestNotificationToken is not implemented on this platform");
 #endif
         }
 
         [MonoPInvokeCallback(typeof(RegisteredForNotificationsCallback))]
-        private static void OnRegisteredForNotifications(byte[] tokenBytes, long length, IntPtr errorPtr)
+        private static void OnNotificationToken(byte[] tokenBytes, long length, IntPtr errorPtr)
         {
-            NSError error = errorPtr == IntPtr.Zero ? null : new NSError(errorPtr);
-            if(error != null)
+            try
             {
-                Debug.LogError(error.LocalizedDescription);
+                NSError error = errorPtr == IntPtr.Zero ? null : new NSError(errorPtr);
+
+                if (_notificationTokenHandler != null)
+                {
+                    _notificationTokenHandler.Invoke(tokenBytes, error);
+                }
             }
-            else
+            catch(Exception ex)
             {
-                string hexToken = "%" + System.BitConverter.ToString(tokenBytes).Replace('-', '%');
-                Debug.Log("Successfully registered for notification token: " + hexToken);
+                Debug.LogError(ex);
             }
         }
 
@@ -154,20 +152,24 @@ private static Action<CKNotification> _myRemoteNotificationHandler;
         public static void SetRemoteNotificationHandler(Action<CKNotification> p)
         {
             _myRemoteNotificationHandler = p;
-            RegisterForRemoteNotifications(_onRemoteNotification);
+#if UNITY_IOS || UNITY_TVOS
+            SetNotificationHandler(_onRemoteNotification);
+#else
+            SetNotificationHandler(_onRemoteNotification);
+#endif
         }
-        
-
-        
-        
-        
 
 
-        
-        
-        
 
-        
+
+
+
+
+
+
+
+
+
         private static readonly Dictionary<IntPtr,ExecutionContext<NSNotification>> IdentityDidChangeHandlers = new Dictionary<IntPtr,ExecutionContext<NSNotification>>();
 
         [MonoPInvokeCallback(typeof(NotificationDelegate))]
