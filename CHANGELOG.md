@@ -2,6 +2,11 @@
 All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
+- split the iOS fat binary into two separate libs, one for arm64 and one for armv7 to reduce build size
+
+## [1.1.1]- 2020-07-17
+### Changed
+- the iOS library is now a fat binary with with armv7 architecture included in it. armv7 is set to be deprecated, but building a universal binary is still the default in many unity versions. Also, it doesn't hurt to be backwards compatible if its easy to do. This reduces the minimum target iOS version from 11 to 10
 
 ## [1.1.0] - 2020-06-11
 ### Changed
