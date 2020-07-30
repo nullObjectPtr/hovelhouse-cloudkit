@@ -14,18 +14,27 @@ Setup and installation is covered in this document. Some rudimentary web documen
  
 # Setup
  
-This plugin is provided as a unity package. You can import via the Package Manager. 
+ IMPORTANT: This plugin is provided as a Unity Package Manager (UPM) package. It must be placed in the /packages directory for it to run correctly. It will NOT install correctly if you copy it into your assets folder.
  
 ## Installing the Unity Package
- 
-### From Disk
-* Clone or download the git project. If you downloaded the project as a zip, unzip it somewhere on your filesystem.
+
+* Unzip the archive and place the entire directory in the packages directory (this must be done from the finde0)
+
+OR
+
+* Move the archive to a folder outside of your unity project and unzip it.
 * Open "Window->Package Manager"
 * Click the "+" button in the upper left and select "Add Package From Disk"
 * Select the "package.json" file in the "CloudKit" folder of inside the unzipped directory
 * Unity will now import the package into your project
  
-There are three libraries provided. One dynamic library for MacOS, one static library for iOS, and one static library for TVOS.
+ There are three libraries provided. One dynamic library for MacOS, one static library for iOS, and one static library for TVOS.
+ 
+ ## Samples
+ The provided example scenes illustrate the many uses of CloudKit. We recommend that you test your build with these scenes to ensure that you have everything set up correctly. 
+ 
+ * In Unity 2019 and later, samples can be imported from the details panel for this plugin, inside the Package Manager window
+ * In Unity 2018 the option to import samples is missing from the package manager UI. They can be found in the /CloudKitPlugin/Samples~/ directory. Copy the entire contents of this folder (including the meta files) to your assets folder. The '~' in the hides this folder from the Unity project explorer window, so you must do this from the finder.
  
 ## Usage
 To use, import the namespace "HovelHouse.CloudKit". No plugin initialization is needed and you do not need to add anything to your scenes. Just start using the classes as you would if this were an objective-c project. Class names and methods very closely match their Objective-C counterparts. See the provided examples for details.
@@ -36,22 +45,30 @@ The plugin comes with some examples that you can run to validate everything is w
 In order to run example 7 - Key Value Storage - make sure that you enable Key Value Storage in the build settings. It is not enabled by default. 
 
 ## Building
+
+### Required Build Settings - iOS
+
+There are a few required build settings. Open "Player Settings -> Other Settings" and enter or set the following fields in the inspector:
+
+Set *Target Minimum IOS Version" to  11
+Set your "Signing Team ID" - this value is used by the MacOS post process build script to do codesigning from the command-line
+
+Recommended:
+It's also recommended that you set your bundle identifier, as your apps default container id is derived from this value.
  
-### iOS and TVOS
-Before you build you want to make sure you have set a good bundle identifier in Unity settings. Once you get to the step where you add the CloudKit capability, xcode will automatically generate a container identifier you **cannot** delete. Having set the bundle identifier you want now will save you the pain of having your cloudkit dashboard junked up with a bunch of test container id's. You can read more about containers here: https://developer.apple.com/library/archive/documentation/DataManagement/Conceptual/CloudKitQuickStart/EnablingiCloudandConfiguringCloudKit/EnablingiCloudandConfiguringCloudKit.html 
- 
- * The plugin adds the appropriate CloudKit entitlements as a post process build step.
+### Plugin Settings
+The plugin will create a config asset with various settings. These settings are used by the Post Process Build script to add the appropriate settings to the XCode project (if building for iOS or TVOS) or the Standalone Binary (if building for MacOS)
+
  ** By default, key-value storage and iCloud Documents are disabled.
  ** The default container is automatically added, but can be disabled
  ** You can add custom containers here
  ** If you have your own post process build scripts, and this conflicts with that, you can disable this step by unchecking the "Enable Post Process Build" checkbox.
  
 ### MacOS
-* To build to macOS follow the instructions at http://www.hovelhouse.com/building_for_macos.html
+* To build to macOS please follow the instructions at http://www.hovelhouse.com/building_for_macos.html
  
 # Known Issues
-* Again, some of the API isn't yet covered
-* CloudKit Notifications are not working on TVOS
+* Some of the API isn't yet covered
 * When Key-Value-Storage is enabled, some versions of Unity will cause Unity Cloud Build to fail with an error message about the entitlements not matching the provisions profile. The cause of this is currently unknown, as the entitlements are the same in all build versions.
  
 # FAQ
