@@ -1,8 +1,11 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class Unsubscriber : CKObject
-{
-    public Unsubscriber(IntPtr ptr) : base(ptr)
-}
+fileFormatVersion: 2
+guid: 0fa200921000000008b2009210000000
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
