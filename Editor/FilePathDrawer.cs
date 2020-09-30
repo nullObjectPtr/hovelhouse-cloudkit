@@ -1,4 +1,5 @@
 ﻿#if UNITY_EDITOR
+using System;
 using UnityEditor;
 using UnityEngine;
 
@@ -24,8 +25,15 @@ public class FilePathDrawer : PropertyDrawer
         Rect r2 = new Rect(rect.width + padding * 2, rect.y, btnWidth, rect.height);
         if(GUI.Button(r2, "find"))
         {
-            property.stringValue = EditorUtility.OpenFilePanel(property.name, "", attr.Ext);
-            property.serializedObject.ApplyModifiedProperties();
+            var fullPath = EditorUtility.OpenFilePanel(property.name, "", attr.Ext);
+            if(string.IsNullOrEmpty(fullPath) == false)
+            {
+                var uriA = new Uri(Application.dataPath);
+                var uriB = new Uri(fullPath);
+                var relativePath = uriA.MakeRelativeUri(uriB);
+                property.stringValue = relativePath.ToString();
+                property.serializedObject.ApplyModifiedProperties();
+            }
         }
 
         EditorGUI.EndProperty();
