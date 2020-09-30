@@ -39,6 +39,8 @@ fi
 # echo "$entitlements"
 # echo "$profile"
 
+echo "Script executed from: ${PWD}"
+
 echo "Code signing application at '$applicationPath'"
 
 echo "Copying provisioning profile to application directory..."
@@ -52,18 +54,23 @@ find "$applicationPath/Contents/Plugins" -name '*.meta' -print -delete
 echo "Finished deleting meta files"
 
 echo "Resigning dylibs..."
-for i in $(find $applicationPath/Contents/Frameworks/* -name '*.dylib'); do # Whitespace-safe and recursive
-  [ -f "$i" ] || break
-   codesign --force --verbose=4 --verify --sign "$identity" --preserve-metadata=identifier,entitlements,flags $i || { echo "Error: failed to codesign $i"; exit 1; }
+find "$applicationPath/Contents/Frameworks/*" -name '*.dylib' | while read line; do
+  echo "signing -> $line";
+  codesign --force --verbose=4 --verify --sign "$identity" --preserve-metadata=identifier,entitlements,flags $i || { echo "Error: failed to codesign $i"; exit 1; }
 done
 
 echo "Resigning bundles..."
-for i in $(find $applicationPath/Contents/Frameworks/* -name '*.bundle'); do
-  [ -f "$i" ] || break
+find "$applicationPath/Contents/Frameworks/*" -name '*.bundle' | while read line; do
+  echo "signing -> $line";
+  codesign --force --verbose=4 --verify --sign "$identity" $i | { echo "Error: failed to codesign $i"; exit 1; }
+done
+
+find "$applicationPath/Contents/Plugins/*" -name '*.bundle' | while read line; do
+  echo "signing -> $line";
   codesign --force --verbose=4 --verify --sign "$identity" $i | { echo "Error: failed to codesign $i"; exit 1; }
 done
 
 echo "Signing application..."
-codesign --force --verbose=4 --verify --sign "$identity" --entitlements "$entitlements" "$applicationPath" || { echo "Error: failed to resign the application. the mostly likely cause of this is that your signing identity is not contained in your provisionprofile"; exit 1; }
+codesign --force --verbose=4 --verify --sign "$identity" --entitlements "$entitlements" "$applicationPath" || { echo "Error: failed to resign the application."; exit 1; }
 
 echo "Resigning Complete"

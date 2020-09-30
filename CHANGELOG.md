@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 ## [Unreleased]
 - split the iOS fat binary into two separate libs, one for arm64 and one for armv7 to reduce build size
 
+## [1.1.3] - 2020-09-29
+### Changed
+- zip file unzips to the properly named directory now, fixes issue where the build post process script could not find the resigning script path unless the user renamed the folder after installation
+- the MacOS settings now use relative paths for the info.plist and entitlements file
+- fixes bug in signing script that could not handle signing apps with spaces in the path
+
 ## [1.1.2] - 2020-07-29
 ### Changed
 - adding a missing didRecieveRemoteNotifications:fetchCompletion handler, the absence of which prevented some types of CloudKitNotifications from being recieved by the client
