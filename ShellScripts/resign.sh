@@ -54,20 +54,20 @@ find "$applicationPath/Contents/Plugins" -name '*.meta' -print -delete
 echo "Finished deleting meta files"
 
 echo "Resigning dylibs..."
-find "$applicationPath/Contents/Frameworks/*" -name '*.dylib' | while read line; do
+find "$applicationPath/Contents/Frameworks/" -name '*.dylib' | while read line; do
   echo "signing -> $line";
-  codesign --force --verbose=4 --verify --sign "$identity" --preserve-metadata=identifier,entitlements,flags $i || { echo "Error: failed to codesign $i"; exit 1; }
+  codesign --force --verbose=4 --verify --sign "$identity" --preserve-metadata=identifier,entitlements,flags $line || { echo "Error: failed to codesign $line"; exit 1; }
 done
 
 echo "Resigning bundles..."
-find "$applicationPath/Contents/Frameworks/*" -name '*.bundle' | while read line; do
+find "$applicationPath/Contents/Frameworks/" -name '*.bundle' | while read line; do
   echo "signing -> $line";
-  codesign --force --verbose=4 --verify --sign "$identity" $i | { echo "Error: failed to codesign $i"; exit 1; }
+  codesign --force --verbose=4 --verify --sign "$identity" $line || { echo "Error: failed to codesign $line"; exit 1; }
 done
 
-find "$applicationPath/Contents/Plugins/*" -name '*.bundle' | while read line; do
+find "$applicationPath/Contents/Plugins/" -name '*.bundle' | while read line; do
   echo "signing -> $line";
-  codesign --force --verbose=4 --verify --sign "$identity" $i | { echo "Error: failed to codesign $i"; exit 1; }
+  codesign --force --verbose=4 --verify --sign "$identity" $line || { echo "Error: failed to codesign $line"; exit 1; }
 done
 
 echo "Signing application..."

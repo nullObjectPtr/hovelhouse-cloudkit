@@ -156,9 +156,12 @@ namespace HovelHouse.CloudKit
                     appEntitlements.root.AddIfMissing(PushNotificationEntitlementKey, apsEnvironment);
                 }
 
+                var documentText = FixupBustedXML(appEntitlements);
+
                 var appEntitlementsPath = Path.Combine(path,
                    string.Format("../{0}.entitlements", PlayerSettings.applicationIdentifier.Split('.').Last()));
-                appEntitlements.WriteToFile(appEntitlementsPath);
+
+                File.WriteAllText(appEntitlementsPath, documentText);
 
                 string scriptPath = Path.GetFullPath("Packages/com.hovelhouse.cloudkit/ShellScripts/resign.sh");
 
@@ -213,6 +216,16 @@ namespace HovelHouse.CloudKit
             {
                 throw new BuildFailedException(ex);
             }
+        }
+
+        // This fixes an issue where Unity will output the xml token '<array />'
+        // for an empty array in a pList document
+        // x-code command line utilities do not know how to parse this token and
+        // this can result in a situation where code signing fails
+        private static string FixupBustedXML(PlistDocument appEntitlements)
+        {
+            var documentText = appEntitlements.WriteToString();
+            return documentText.Replace("<array />", "<array/>");
         }
 
         private static void PostProcessXCodeProject(string path)
