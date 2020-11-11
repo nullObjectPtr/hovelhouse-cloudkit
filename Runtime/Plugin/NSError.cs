@@ -80,6 +80,14 @@ namespace HovelHouse.CloudKit
         // TODO: DLLPROPERTYSTRINGARRAY
 
         
+        #if UNITY_IPHONE || UNITY_TVOS
+        [DllImport("__Internal")]
+        #else
+        [DllImport("HHCloudKitMacOS")]
+        #endif
+        private static extern IntPtr NSError_GetPropDomain(HandleRef ptr);
+
+        
 
         #endregion
 
@@ -149,6 +157,17 @@ namespace HovelHouse.CloudKit
 
         
         // TODO: PROPERTYSTRINGARRAY
+        
+        /// <value>Domain</value>
+        public string Domain
+        {
+            get 
+            { 
+                IntPtr domain = NSError_GetPropDomain(Handle);
+                return Marshal.PtrToStringAuto(domain);
+            }
+        }
+
         
 
         

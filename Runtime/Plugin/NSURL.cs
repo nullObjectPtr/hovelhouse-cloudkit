@@ -1,7 +1,7 @@
 //
 //  NSURL.cs
 //
-//  Created by Jonathan Culp <jonathanculp@gmail.com> on 05/28/2020
+//  Created by Jonathan Culp <jonathanculp@gmail.com> on 10/28/2020
 //  Copyright © 2020 HovelHouseApps. All rights reserved.
 //  Unauthorized copying of this file, via any medium is strictly prohibited
 //  Proprietary and confidential
@@ -64,6 +64,112 @@ namespace HovelHouse.CloudKit
         [DllImport("HHCloudKitMacOS")]
         #endif
         private static extern IntPtr NSURL_GetPropAbsoluteString(HandleRef ptr);
+
+        
+        #if UNITY_IPHONE || UNITY_TVOS
+        [DllImport("__Internal")]
+        #else
+        [DllImport("HHCloudKitMacOS")]
+        #endif
+        private static extern IntPtr NSURL_GetPropAbsoluteURL(HandleRef ptr);
+
+        
+        #if UNITY_IPHONE || UNITY_TVOS
+        [DllImport("__Internal")]
+        #else
+        [DllImport("HHCloudKitMacOS")]
+        #endif
+        private static extern IntPtr NSURL_GetPropBaseURL(HandleRef ptr);
+
+        
+        #if UNITY_IPHONE || UNITY_TVOS
+        [DllImport("__Internal")]
+        #else
+        [DllImport("HHCloudKitMacOS")]
+        #endif
+        private static extern IntPtr NSURL_GetPropLastPathComponent(HandleRef ptr);
+
+        
+        #if UNITY_IPHONE || UNITY_TVOS
+        [DllImport("__Internal")]
+        #else
+        [DllImport("HHCloudKitMacOS")]
+        #endif
+        private static extern IntPtr NSURL_GetPropHost(HandleRef ptr);
+
+        
+        #if UNITY_IPHONE || UNITY_TVOS
+        [DllImport("__Internal")]
+        #else
+        [DllImport("HHCloudKitMacOS")]
+        #endif
+        private static extern IntPtr NSURL_GetPropPassword(HandleRef ptr);
+
+        
+        #if UNITY_IPHONE || UNITY_TVOS
+        [DllImport("__Internal")]
+        #else
+        [DllImport("HHCloudKitMacOS")]
+        #endif
+        private static extern IntPtr NSURL_GetPropPath(HandleRef ptr);
+
+        // TODO: DLLPROPERTYSTRINGARRAY
+
+        
+        #if UNITY_IPHONE || UNITY_TVOS
+        [DllImport("__Internal")]
+        #else
+        [DllImport("HHCloudKitMacOS")]
+        #endif
+        private static extern IntPtr NSURL_GetPropPathExtension(HandleRef ptr);
+
+        
+        #if UNITY_IPHONE || UNITY_TVOS
+        [DllImport("__Internal")]
+        #else
+        [DllImport("HHCloudKitMacOS")]
+        #endif
+        private static extern IntPtr NSURL_GetPropQuery(HandleRef ptr);
+
+        
+        #if UNITY_IPHONE || UNITY_TVOS
+        [DllImport("__Internal")]
+        #else
+        [DllImport("HHCloudKitMacOS")]
+        #endif
+        private static extern IntPtr NSURL_GetPropRelativePath(HandleRef ptr);
+
+        
+        #if UNITY_IPHONE || UNITY_TVOS
+        [DllImport("__Internal")]
+        #else
+        [DllImport("HHCloudKitMacOS")]
+        #endif
+        private static extern IntPtr NSURL_GetPropResourceSpecifier(HandleRef ptr);
+
+        
+        #if UNITY_IPHONE || UNITY_TVOS
+        [DllImport("__Internal")]
+        #else
+        [DllImport("HHCloudKitMacOS")]
+        #endif
+        private static extern IntPtr NSURL_GetPropScheme(HandleRef ptr);
+
+        
+        #if UNITY_IPHONE || UNITY_TVOS
+        [DllImport("__Internal")]
+        #else
+        [DllImport("HHCloudKitMacOS")]
+        #endif
+        private static extern IntPtr NSURL_GetPropStandardizedURL(HandleRef ptr);
+
+        
+        #if UNITY_IPHONE || UNITY_TVOS
+        [DllImport("__Internal")]
+        #else
+        [DllImport("HHCloudKitMacOS")]
+        #endif
+        private static extern IntPtr NSURL_GetPropUser(HandleRef ptr);
 
         
 
@@ -136,6 +242,151 @@ namespace HovelHouse.CloudKit
             { 
                 IntPtr absoluteString = NSURL_GetPropAbsoluteString(Handle);
                 return Marshal.PtrToStringAuto(absoluteString);
+            }
+        }
+
+        
+        /// <value>AbsoluteURL</value>
+        public NSURL AbsoluteURL
+        {
+            get 
+            { 
+                IntPtr absoluteURL = NSURL_GetPropAbsoluteURL(Handle);
+                return absoluteURL == IntPtr.Zero ? null : new NSURL(absoluteURL);
+            }
+        }
+
+        
+        /// <value>BaseURL</value>
+        public NSURL BaseURL
+        {
+            get 
+            { 
+                IntPtr baseURL = NSURL_GetPropBaseURL(Handle);
+                return baseURL == IntPtr.Zero ? null : new NSURL(baseURL);
+            }
+        }
+
+        
+        /// <value>LastPathComponent</value>
+        public string LastPathComponent
+        {
+            get 
+            { 
+                IntPtr lastPathComponent = NSURL_GetPropLastPathComponent(Handle);
+                return Marshal.PtrToStringAuto(lastPathComponent);
+            }
+        }
+
+        
+        /// <value>Host</value>
+        public string Host
+        {
+            get 
+            { 
+                IntPtr host = NSURL_GetPropHost(Handle);
+                return Marshal.PtrToStringAuto(host);
+            }
+        }
+
+        
+        /// <value>Password</value>
+        public string Password
+        {
+            get 
+            { 
+                IntPtr password = NSURL_GetPropPassword(Handle);
+                return Marshal.PtrToStringAuto(password);
+            }
+        }
+
+        
+        /// <value>Path</value>
+        public string Path
+        {
+            get 
+            { 
+                IntPtr path = NSURL_GetPropPath(Handle);
+                return Marshal.PtrToStringAuto(path);
+            }
+        }
+
+        
+        // TODO: PROPERTYSTRINGARRAY
+        
+        /// <value>PathExtension</value>
+        public string PathExtension
+        {
+            get 
+            { 
+                IntPtr pathExtension = NSURL_GetPropPathExtension(Handle);
+                return Marshal.PtrToStringAuto(pathExtension);
+            }
+        }
+
+        
+        /// <value>Query</value>
+        public string Query
+        {
+            get 
+            { 
+                IntPtr query = NSURL_GetPropQuery(Handle);
+                return Marshal.PtrToStringAuto(query);
+            }
+        }
+
+        
+        /// <value>RelativePath</value>
+        public string RelativePath
+        {
+            get 
+            { 
+                IntPtr relativePath = NSURL_GetPropRelativePath(Handle);
+                return Marshal.PtrToStringAuto(relativePath);
+            }
+        }
+
+        
+        /// <value>ResourceSpecifier</value>
+        public string ResourceSpecifier
+        {
+            get 
+            { 
+                IntPtr resourceSpecifier = NSURL_GetPropResourceSpecifier(Handle);
+                return Marshal.PtrToStringAuto(resourceSpecifier);
+            }
+        }
+
+        
+        /// <value>Scheme</value>
+        public string Scheme
+        {
+            get 
+            { 
+                IntPtr scheme = NSURL_GetPropScheme(Handle);
+                return Marshal.PtrToStringAuto(scheme);
+            }
+        }
+
+        
+        /// <value>StandardizedURL</value>
+        public NSURL StandardizedURL
+        {
+            get 
+            { 
+                IntPtr standardizedURL = NSURL_GetPropStandardizedURL(Handle);
+                return standardizedURL == IntPtr.Zero ? null : new NSURL(standardizedURL);
+            }
+        }
+
+        
+        /// <value>User</value>
+        public string User
+        {
+            get 
+            { 
+                IntPtr user = NSURL_GetPropUser(Handle);
+                return Marshal.PtrToStringAuto(user);
             }
         }
 
