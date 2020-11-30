@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 ## [Unreleased]
 - split the iOS fat binary into two separate libs, one for arm64 and one for armv7 to reduce build size
 
+## [1.1.6] - 2020-11-30
+### Changed
+- MacOS bundle built with arm64 architecture for new apple silicon macs
+
+### Added
+- added functions for fetching information from the NSError userInfo dictionary
+- added CKErrorCode enum
+
 ## [1.1.5] - 2020-11-10
 ### Changed
 - added the QueuePriority property from NSOperation to CKOperation, this helps address a bug iOS 14.1
