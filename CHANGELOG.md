@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 ## [Unreleased]
 - split the iOS fat binary into two separate libs, one for arm64 and one for armv7 to reduce build size
 
+## [1.1.5] - 2020-11-10
+### Changed
+- added the QueuePriority property from NSOperation to CKOperation, this helps address a bug iOS 14.1
+
 ## [1.1.4] - 2020-10-28
 ### Changed
 - added additional properties to NSURL to make dealing with CKAsset a bit easier
