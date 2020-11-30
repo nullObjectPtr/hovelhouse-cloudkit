@@ -73,6 +73,21 @@ namespace HovelHouse.CloudKit
         private static extern void CKOperation_SetPropGroup(HandleRef ptr, IntPtr group, out IntPtr exceptionPtr);
 
         
+        #if UNITY_IPHONE || UNITY_TVOS
+        [DllImport("__Internal")]
+        #else
+        [DllImport("HHCloudKitMacOS")]
+        #endif
+        private static extern NSOperationQueuePriority CKOperation_GetPropQueuePriority(HandleRef ptr);
+        
+        #if UNITY_IPHONE || UNITY_TVOS
+        [DllImport("__Internal")]
+        #else
+        [DllImport("HHCloudKitMacOS")]
+        #endif
+        private static extern void CKOperation_SetPropQueuePriority(HandleRef ptr, long queuePriority, out IntPtr exceptionPtr);
+
+        
 
         #endregion
 
@@ -124,6 +139,21 @@ namespace HovelHouse.CloudKit
             set
             {
                 CKOperation_SetPropGroup(Handle, value != null ? HandleRef.ToIntPtr(value.Handle) : IntPtr.Zero, out IntPtr exceptionPtr);
+            }
+        }
+
+        
+        /// <value>QueuePriority</value>
+        public NSOperationQueuePriority QueuePriority
+        {
+            get 
+            { 
+                NSOperationQueuePriority queuePriority = CKOperation_GetPropQueuePriority(Handle);
+                return queuePriority;
+            }
+            set
+            {
+                CKOperation_SetPropQueuePriority(Handle, (long) value, out IntPtr exceptionPtr);
             }
         }
 
