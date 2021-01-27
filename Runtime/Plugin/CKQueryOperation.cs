@@ -2,7 +2,7 @@
 //  CKQueryOperation.cs
 //
 //  Created by Jonathan Culp <jonathanculp@gmail.com> on 05/28/2020
-//  Copyright © 2020 HovelHouseApps. All rights reserved.
+//  Copyright © 2021 HovelHouseApps. All rights reserved.
 //  Unauthorized copying of this file, via any medium is strictly prohibited
 //  Proprietary and confidential
 //
@@ -20,7 +20,7 @@ namespace HovelHouse.CloudKit
     /// <summary>
     /// A database operation used to lookup record ids using the provided query
     /// </summary>
-    public class CKQueryOperation : CKObject, IDisposable
+    public class CKQueryOperation : CKDatabaseOperation, IDisposable
     {
         #region dll
 
@@ -347,7 +347,7 @@ namespace HovelHouse.CloudKit
             
         private bool disposedValue = false; // To detect redundant calls
         
-        protected virtual void Dispose(bool disposing)
+        protected override void Dispose(bool disposing)
         {
             if (!disposedValue)
             {
@@ -369,7 +369,7 @@ namespace HovelHouse.CloudKit
         }
 
         // This code added to correctly implement the disposable pattern.
-        public void Dispose()
+        public new void Dispose()
         {
             // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
             Dispose(true);

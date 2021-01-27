@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 ## [Unreleased]
 - split the iOS fat binary into two separate libs, one for arm64 and one for armv7 to reduce build size
 
+## [1.1.7] - 2021-01-27
+### Changed
+- Added missing contructor function to NSSortDescriptor. Added a code sample for how to use it
+- Fixed issue where CKQueryOperation did not inherit from CKDatabaseOperation
+
 ## [1.1.6] - 2020-11-30
 ### Changed
 - MacOS bundle built with arm64 architecture for new apple silicon macs
