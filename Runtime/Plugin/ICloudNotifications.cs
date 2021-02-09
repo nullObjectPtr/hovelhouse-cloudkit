@@ -2,12 +2,14 @@
 //  ICloudNotifications.cs
 //
 //  Created by Jonathan Culp <jonathanculp@gmail.com> on 05/28/2020
-//  Copyright © 2020 HovelHouseApps. All rights reserved.
+//  Copyright © 2021 HovelHouseApps. All rights reserved.
 //  Unauthorized copying of this file, via any medium is strictly prohibited
 //  Proprietary and confidential
 //
 
 using System;
+using System.Linq;
+using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using AOT;
@@ -21,14 +23,16 @@ namespace HovelHouse.CloudKit
     public class ICloudNotifications : CKObject
     {
         #region dll
+        
+        #if UNITY_IPHONE || UNITY_TVOS
+        const string dll = "__Internal";
+        #else
+        const string dll = "HHCloudKitMacOS";
+        #endif
 
         // Class Methods
         
-        #if UNITY_IPHONE || UNITY_TVOS
-        [DllImport("__Internal")]
-        #else
-        [DllImport("HHCloudKitMacOS")]
-        #endif
+        [DllImport(dll)]
         private static extern void ICloudNotifications_nada(
             HandleRef ptr, 
             out IntPtr exceptionPtr);
@@ -45,30 +49,18 @@ namespace HovelHouse.CloudKit
 #endif
 
 
-#if UNITY_IPHONE || UNITY_TVOS
-        [DllImport("__Internal")]
-#else
-        [DllImport("HHCloudKitMacOS")]
-#endif
+        [DllImport(dll)]
         private static extern IntPtr SetNotificationHandler(CKNotificationDelegate handler);
 
         // Properties
+        
 
-
-#if UNITY_IPHONE || UNITY_TVOS
-        [DllImport("__Internal")]
-#else
-        [DllImport("HHCloudKitMacOS")]
-#endif
+        [DllImport(dll)]
         private static extern IntPtr AddNSUbiquityIdentityDidChangeNotificationObserver(NotificationDelegate handler, ref IntPtr exceptionPtr);
 
-#if UNITY_IPHONE || UNITY_TVOS
-        [DllImport("__Internal")]
-#else
-        [DllImport("HHCloudKitMacOS")]
-#endif
+        [DllImport(dll)]
         private static extern void RemoveNSUbiquityIdentityDidChangeNotificationObserver(HandleRef observerHandle, ref IntPtr exceptionPtr);
-
+        
 
         #endregion
 

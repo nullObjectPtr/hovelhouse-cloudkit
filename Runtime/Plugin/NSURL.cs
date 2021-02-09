@@ -1,8 +1,8 @@
 //
 //  NSURL.cs
 //
-//  Created by Jonathan Culp <jonathanculp@gmail.com> on 10/28/2020
-//  Copyright © 2020 HovelHouseApps. All rights reserved.
+//  Created by Jonathan Culp <jonathanculp@gmail.com> on 05/28/2020
+//  Copyright © 2021 HovelHouseApps. All rights reserved.
 //  Unauthorized copying of this file, via any medium is strictly prohibited
 //  Proprietary and confidential
 //
@@ -26,24 +26,22 @@ namespace HovelHouse.CloudKit
     public class NSURL : CKObject, IDisposable
     {
         #region dll
+        
+        #if UNITY_IPHONE || UNITY_TVOS
+        const string dll = "__Internal";
+        #else
+        const string dll = "HHCloudKitMacOS";
+        #endif
 
         // Class Methods
         
-        #if UNITY_IPHONE || UNITY_TVOS
-        [DllImport("__Internal")]
-        #else
-        [DllImport("HHCloudKitMacOS")]
-        #endif
+        [DllImport(dll)]
         private static extern IntPtr NSURL_URLWithString(
             string URLString,
             out IntPtr exceptionPtr);
 
         
-        #if UNITY_IPHONE || UNITY_TVOS
-        [DllImport("__Internal")]
-        #else
-        [DllImport("HHCloudKitMacOS")]
-        #endif
+        [DllImport(dll)]
         private static extern IntPtr NSURL_fileURLWithPath(
             string path,
             out IntPtr exceptionPtr);
@@ -58,117 +56,61 @@ namespace HovelHouse.CloudKit
 
         // Properties
         
-        #if UNITY_IPHONE || UNITY_TVOS
-        [DllImport("__Internal")]
-        #else
-        [DllImport("HHCloudKitMacOS")]
-        #endif
+        [DllImport(dll)]
         private static extern IntPtr NSURL_GetPropAbsoluteString(HandleRef ptr);
 
         
-        #if UNITY_IPHONE || UNITY_TVOS
-        [DllImport("__Internal")]
-        #else
-        [DllImport("HHCloudKitMacOS")]
-        #endif
+        [DllImport(dll)]
         private static extern IntPtr NSURL_GetPropAbsoluteURL(HandleRef ptr);
 
         
-        #if UNITY_IPHONE || UNITY_TVOS
-        [DllImport("__Internal")]
-        #else
-        [DllImport("HHCloudKitMacOS")]
-        #endif
+        [DllImport(dll)]
         private static extern IntPtr NSURL_GetPropBaseURL(HandleRef ptr);
 
         
-        #if UNITY_IPHONE || UNITY_TVOS
-        [DllImport("__Internal")]
-        #else
-        [DllImport("HHCloudKitMacOS")]
-        #endif
+        [DllImport(dll)]
         private static extern IntPtr NSURL_GetPropLastPathComponent(HandleRef ptr);
 
         
-        #if UNITY_IPHONE || UNITY_TVOS
-        [DllImport("__Internal")]
-        #else
-        [DllImport("HHCloudKitMacOS")]
-        #endif
+        [DllImport(dll)]
         private static extern IntPtr NSURL_GetPropHost(HandleRef ptr);
 
         
-        #if UNITY_IPHONE || UNITY_TVOS
-        [DllImport("__Internal")]
-        #else
-        [DllImport("HHCloudKitMacOS")]
-        #endif
+        [DllImport(dll)]
         private static extern IntPtr NSURL_GetPropPassword(HandleRef ptr);
 
         
-        #if UNITY_IPHONE || UNITY_TVOS
-        [DllImport("__Internal")]
-        #else
-        [DllImport("HHCloudKitMacOS")]
-        #endif
+        [DllImport(dll)]
         private static extern IntPtr NSURL_GetPropPath(HandleRef ptr);
 
         // TODO: DLLPROPERTYSTRINGARRAY
 
         
-        #if UNITY_IPHONE || UNITY_TVOS
-        [DllImport("__Internal")]
-        #else
-        [DllImport("HHCloudKitMacOS")]
-        #endif
+        [DllImport(dll)]
         private static extern IntPtr NSURL_GetPropPathExtension(HandleRef ptr);
 
         
-        #if UNITY_IPHONE || UNITY_TVOS
-        [DllImport("__Internal")]
-        #else
-        [DllImport("HHCloudKitMacOS")]
-        #endif
+        [DllImport(dll)]
         private static extern IntPtr NSURL_GetPropQuery(HandleRef ptr);
 
         
-        #if UNITY_IPHONE || UNITY_TVOS
-        [DllImport("__Internal")]
-        #else
-        [DllImport("HHCloudKitMacOS")]
-        #endif
+        [DllImport(dll)]
         private static extern IntPtr NSURL_GetPropRelativePath(HandleRef ptr);
 
         
-        #if UNITY_IPHONE || UNITY_TVOS
-        [DllImport("__Internal")]
-        #else
-        [DllImport("HHCloudKitMacOS")]
-        #endif
+        [DllImport(dll)]
         private static extern IntPtr NSURL_GetPropResourceSpecifier(HandleRef ptr);
 
         
-        #if UNITY_IPHONE || UNITY_TVOS
-        [DllImport("__Internal")]
-        #else
-        [DllImport("HHCloudKitMacOS")]
-        #endif
+        [DllImport(dll)]
         private static extern IntPtr NSURL_GetPropScheme(HandleRef ptr);
 
         
-        #if UNITY_IPHONE || UNITY_TVOS
-        [DllImport("__Internal")]
-        #else
-        [DllImport("HHCloudKitMacOS")]
-        #endif
+        [DllImport(dll)]
         private static extern IntPtr NSURL_GetPropStandardizedURL(HandleRef ptr);
 
         
-        #if UNITY_IPHONE || UNITY_TVOS
-        [DllImport("__Internal")]
-        #else
-        [DllImport("HHCloudKitMacOS")]
-        #endif
+        [DllImport(dll)]
         private static extern IntPtr NSURL_GetPropUser(HandleRef ptr);
 
         
@@ -396,11 +338,7 @@ namespace HovelHouse.CloudKit
 
         
         #region IDisposable Support
-        #if UNITY_IPHONE || UNITY_TVOS
-        [DllImport("__Internal")]
-        #else
-        [DllImport("HHCloudKitMacOS")]
-        #endif
+        [DllImport(dll)]
         private static extern void NSURL_Dispose(HandleRef handle);
             
         private bool disposedValue = false; // To detect redundant calls

@@ -2,7 +2,7 @@
 //  CKOperationConfiguration.cs
 //
 //  Created by Jonathan Culp <jonathanculp@gmail.com> on 05/28/2020
-//  Copyright © 2020 HovelHouseApps. All rights reserved.
+//  Copyright © 2021 HovelHouseApps. All rights reserved.
 //  Unauthorized copying of this file, via any medium is strictly prohibited
 //  Proprietary and confidential
 //
@@ -26,6 +26,12 @@ namespace HovelHouse.CloudKit
     public class CKOperationConfiguration : CKObject, IDisposable
     {
         #region dll
+        
+        #if UNITY_IPHONE || UNITY_TVOS
+        const string dll = "__Internal";
+        #else
+        const string dll = "HHCloudKitMacOS";
+        #endif
 
         // Class Methods
         
@@ -38,48 +44,24 @@ namespace HovelHouse.CloudKit
 
         // Properties
         
-        #if UNITY_IPHONE || UNITY_TVOS
-        [DllImport("__Internal")]
-        #else
-        [DllImport("HHCloudKitMacOS")]
-        #endif
+        [DllImport(dll)]
         private static extern bool CKOperationConfiguration_GetPropAllowsCellularAccess(HandleRef ptr);
         
-        #if UNITY_IPHONE || UNITY_TVOS
-        [DllImport("__Internal")]
-        #else
-        [DllImport("HHCloudKitMacOS")]
-        #endif
+        [DllImport(dll)]
         private static extern void CKOperationConfiguration_SetPropAllowsCellularAccess(HandleRef ptr, bool allowsCellularAccess, out IntPtr exceptionPtr);
 
         
-        #if UNITY_IPHONE || UNITY_TVOS
-        [DllImport("__Internal")]
-        #else
-        [DllImport("HHCloudKitMacOS")]
-        #endif
+        [DllImport(dll)]
         private static extern IntPtr CKOperationConfiguration_GetPropContainer(HandleRef ptr);
         
-        #if UNITY_IPHONE || UNITY_TVOS
-        [DllImport("__Internal")]
-        #else
-        [DllImport("HHCloudKitMacOS")]
-        #endif
+        [DllImport(dll)]
         private static extern void CKOperationConfiguration_SetPropContainer(HandleRef ptr, IntPtr container, out IntPtr exceptionPtr);
 
         
-        #if UNITY_IPHONE || UNITY_TVOS
-        [DllImport("__Internal")]
-        #else
-        [DllImport("HHCloudKitMacOS")]
-        #endif
+        [DllImport(dll)]
         private static extern NSQualityOfService CKOperationConfiguration_GetPropQualityOfService(HandleRef ptr);
         
-        #if UNITY_IPHONE || UNITY_TVOS
-        [DllImport("__Internal")]
-        #else
-        [DllImport("HHCloudKitMacOS")]
-        #endif
+        [DllImport(dll)]
         private static extern void CKOperationConfiguration_SetPropQualityOfService(HandleRef ptr, long qualityOfService, out IntPtr exceptionPtr);
 
         
@@ -146,11 +128,7 @@ namespace HovelHouse.CloudKit
 
         
         #region IDisposable Support
-        #if UNITY_IPHONE || UNITY_TVOS
-        [DllImport("__Internal")]
-        #else
-        [DllImport("HHCloudKitMacOS")]
-        #endif
+        [DllImport(dll)]
         private static extern void CKOperationConfiguration_Dispose(HandleRef handle);
             
         private bool disposedValue = false; // To detect redundant calls

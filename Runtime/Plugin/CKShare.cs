@@ -2,7 +2,7 @@
 //  CKShare.cs
 //
 //  Created by Jonathan Culp <jonathanculp@gmail.com> on 05/28/2020
-//  Copyright © 2020 HovelHouseApps. All rights reserved.
+//  Copyright © 2021 HovelHouseApps. All rights reserved.
 //  Unauthorized copying of this file, via any medium is strictly prohibited
 //  Proprietary and confidential
 //
@@ -23,36 +23,30 @@ namespace HovelHouse.CloudKit
     public class CKShare : CKRecord, IDisposable
     {
         #region dll
+        
+        #if UNITY_IPHONE || UNITY_TVOS
+        const string dll = "__Internal";
+        #else
+        const string dll = "HHCloudKitMacOS";
+        #endif
 
         // Class Methods
         
 
         
-        #if UNITY_IPHONE || UNITY_TVOS
-        [DllImport("__Internal")]
-        #else
-        [DllImport("HHCloudKitMacOS")]
-        #endif
+        [DllImport(dll)]
         private static extern IntPtr CKShare_initWithCoder(
             IntPtr aDecoder, 
             out IntPtr exceptionPtr
             );
         
-        #if UNITY_IPHONE || UNITY_TVOS
-        [DllImport("__Internal")]
-        #else
-        [DllImport("HHCloudKitMacOS")]
-        #endif
+        [DllImport(dll)]
         private static extern IntPtr CKShare_initWithRootRecord(
             IntPtr rootRecord, 
             out IntPtr exceptionPtr
             );
         
-        #if UNITY_IPHONE || UNITY_TVOS
-        [DllImport("__Internal")]
-        #else
-        [DllImport("HHCloudKitMacOS")]
-        #endif
+        [DllImport(dll)]
         private static extern IntPtr CKShare_initWithRootRecord_shareID(
             IntPtr rootRecord, 
             IntPtr shareID, 
@@ -61,22 +55,14 @@ namespace HovelHouse.CloudKit
         
 
         
-        #if UNITY_IPHONE || UNITY_TVOS
-        [DllImport("__Internal")]
-        #else
-        [DllImport("HHCloudKitMacOS")]
-        #endif
+        [DllImport(dll)]
         private static extern void CKShare_addParticipant(
             HandleRef ptr, 
             IntPtr participant,
             out IntPtr exceptionPtr);
 
         
-        #if UNITY_IPHONE || UNITY_TVOS
-        [DllImport("__Internal")]
-        #else
-        [DllImport("HHCloudKitMacOS")]
-        #endif
+        [DllImport(dll)]
         private static extern void CKShare_removeParticipant(
             HandleRef ptr, 
             IntPtr participant,
@@ -88,50 +74,26 @@ namespace HovelHouse.CloudKit
 
         // Properties
         
-        #if UNITY_IPHONE || UNITY_TVOS
-        [DllImport("__Internal")]
-        #else
-        [DllImport("HHCloudKitMacOS")]
-        #endif
+        [DllImport(dll)]
         private static extern CKShareParticipantPermission CKShare_GetPropPublicPermission(HandleRef ptr);
         
-        #if UNITY_IPHONE || UNITY_TVOS
-        [DllImport("__Internal")]
-        #else
-        [DllImport("HHCloudKitMacOS")]
-        #endif
+        [DllImport(dll)]
         private static extern void CKShare_SetPropPublicPermission(HandleRef ptr, long publicPermission, out IntPtr exceptionPtr);
 
         
-        #if UNITY_IPHONE || UNITY_TVOS
-        [DllImport("__Internal")]
-        #else
-        [DllImport("HHCloudKitMacOS")]
-        #endif
+        [DllImport(dll)]
         private static extern IntPtr CKShare_GetPropURL(HandleRef ptr);
 
         
-        #if UNITY_IPHONE || UNITY_TVOS
-        [DllImport("__Internal")]
-        #else
-        [DllImport("HHCloudKitMacOS")]
-        #endif
+        [DllImport(dll)]
         private static extern IntPtr CKShare_GetPropCurrentUserParticipant(HandleRef ptr);
 
         
-        #if UNITY_IPHONE || UNITY_TVOS
-        [DllImport("__Internal")]
-        #else
-        [DllImport("HHCloudKitMacOS")]
-        #endif
+        [DllImport(dll)]
         private static extern IntPtr CKShare_GetPropOwner(HandleRef ptr);
 
         
-        #if UNITY_IPHONE || UNITY_TVOS
-        [DllImport("__Internal")]
-        #else
-        [DllImport("HHCloudKitMacOS")]
-        #endif
+        [DllImport(dll)]
         private static extern void CKShare_GetPropParticipants(HandleRef ptr, ref IntPtr buffer, ref long count);
 
         
@@ -331,11 +293,7 @@ namespace HovelHouse.CloudKit
 
         
         #region IDisposable Support
-        #if UNITY_IPHONE || UNITY_TVOS
-        [DllImport("__Internal")]
-        #else
-        [DllImport("HHCloudKitMacOS")]
-        #endif
+        [DllImport(dll)]
         private static extern void CKShare_Dispose(HandleRef handle);
             
         private bool disposedValue = false; // To detect redundant calls

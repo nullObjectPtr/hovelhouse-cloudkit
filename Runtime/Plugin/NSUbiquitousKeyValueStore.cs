@@ -2,7 +2,7 @@
 //  NSUbiquitousKeyValueStore.cs
 //
 //  Created by Jonathan Culp <jonathanculp@gmail.com> on 05/28/2020
-//  Copyright © 2020 HovelHouseApps. All rights reserved.
+//  Copyright © 2021 HovelHouseApps. All rights reserved.
 //  Unauthorized copying of this file, via any medium is strictly prohibited
 //  Proprietary and confidential
 //
@@ -23,6 +23,12 @@ namespace HovelHouse.CloudKit
     public class NSUbiquitousKeyValueStore : CKObject, IDisposable
     {
         #region dll
+        
+        #if UNITY_IPHONE || UNITY_TVOS
+        const string dll = "__Internal";
+        #else
+        const string dll = "HHCloudKitMacOS";
+        #endif
 
         // Class Methods
         
@@ -30,55 +36,35 @@ namespace HovelHouse.CloudKit
         
 
         
-        #if UNITY_IPHONE || UNITY_TVOS
-        [DllImport("__Internal")]
-        #else
-        [DllImport("HHCloudKitMacOS")]
-        #endif
+        [DllImport(dll)]
         private static extern bool NSUbiquitousKeyValueStore_boolForKey(
             HandleRef ptr, 
             string aKey,
             out IntPtr exceptionPtr);
 
         
-        #if UNITY_IPHONE || UNITY_TVOS
-        [DllImport("__Internal")]
-        #else
-        [DllImport("HHCloudKitMacOS")]
-        #endif
+        [DllImport(dll)]
         private static extern long NSUbiquitousKeyValueStore_longLongForKey(
             HandleRef ptr, 
             string aKey,
             out IntPtr exceptionPtr);
 
         
-        #if UNITY_IPHONE || UNITY_TVOS
-        [DllImport("__Internal")]
-        #else
-        [DllImport("HHCloudKitMacOS")]
-        #endif
+        [DllImport(dll)]
         private static extern double NSUbiquitousKeyValueStore_doubleForKey(
             HandleRef ptr, 
             string aKey,
             out IntPtr exceptionPtr);
 
         
-        #if UNITY_IPHONE || UNITY_TVOS
-        [DllImport("__Internal")]
-        #else
-        [DllImport("HHCloudKitMacOS")]
-        #endif
+        [DllImport(dll)]
         private static extern IntPtr NSUbiquitousKeyValueStore_stringForKey(
             HandleRef ptr, 
             string aKey,
             out IntPtr exceptionPtr);
 
         
-        #if UNITY_IPHONE || UNITY_TVOS
-        [DllImport("__Internal")]
-        #else
-        [DllImport("HHCloudKitMacOS")]
-        #endif
+        [DllImport(dll)]
         private static extern void NSUbiquitousKeyValueStore_setBool_forKey(
             HandleRef ptr, 
             bool value,
@@ -86,11 +72,7 @@ namespace HovelHouse.CloudKit
             out IntPtr exceptionPtr);
 
         
-        #if UNITY_IPHONE || UNITY_TVOS
-        [DllImport("__Internal")]
-        #else
-        [DllImport("HHCloudKitMacOS")]
-        #endif
+        [DllImport(dll)]
         private static extern void NSUbiquitousKeyValueStore_setDouble_forKey(
             HandleRef ptr, 
             double value,
@@ -98,11 +80,7 @@ namespace HovelHouse.CloudKit
             out IntPtr exceptionPtr);
 
         
-        #if UNITY_IPHONE || UNITY_TVOS
-        [DllImport("__Internal")]
-        #else
-        [DllImport("HHCloudKitMacOS")]
-        #endif
+        [DllImport(dll)]
         private static extern void NSUbiquitousKeyValueStore_setLongLong_forKey(
             HandleRef ptr, 
             long value,
@@ -110,11 +88,7 @@ namespace HovelHouse.CloudKit
             out IntPtr exceptionPtr);
 
         
-        #if UNITY_IPHONE || UNITY_TVOS
-        [DllImport("__Internal")]
-        #else
-        [DllImport("HHCloudKitMacOS")]
-        #endif
+        [DllImport(dll)]
         private static extern void NSUbiquitousKeyValueStore_setString_forKey(
             HandleRef ptr, 
             string aString,
@@ -122,32 +96,20 @@ namespace HovelHouse.CloudKit
             out IntPtr exceptionPtr);
 
         
-        #if UNITY_IPHONE || UNITY_TVOS
-        [DllImport("__Internal")]
-        #else
-        [DllImport("HHCloudKitMacOS")]
-        #endif
+        [DllImport(dll)]
         private static extern void NSUbiquitousKeyValueStore_removeObjectForKey(
             HandleRef ptr, 
             string aKey,
             out IntPtr exceptionPtr);
 
         
-        #if UNITY_IPHONE || UNITY_TVOS
-        [DllImport("__Internal")]
-        #else
-        [DllImport("HHCloudKitMacOS")]
-        #endif
+        [DllImport(dll)]
         private static extern bool NSUbiquitousKeyValueStore_synchronize(
             HandleRef ptr, 
             out IntPtr exceptionPtr);
 
         
-        #if UNITY_IPHONE || UNITY_TVOS
-        [DllImport("__Internal")]
-        #else
-        [DllImport("HHCloudKitMacOS")]
-        #endif
+        [DllImport(dll)]
                 private static extern IntPtr NSUbiquitousKeyValueStore_bufferForKey(
             HandleRef ptr,
             string key,
@@ -156,19 +118,11 @@ namespace HovelHouse.CloudKit
             ref IntPtr exceptionPtr);
 
         
-        #if UNITY_IPHONE || UNITY_TVOS
-        [DllImport("__Internal")]
-        #else
-        [DllImport("HHCloudKitMacOS")]
-        #endif
+        [DllImport(dll)]
         private static extern IntPtr AddNSUbiquitousKeyValueStoreDidChangeExternallyNotificationObserver(NSUbiquitousKeyValueStoreDidChangeExternallyDelegate handler);
 
         
-        #if UNITY_IPHONE || UNITY_TVOS
-        [DllImport("__Internal")]
-        #else
-        [DllImport("HHCloudKitMacOS")]
-        #endif
+        [DllImport(dll)]
         private static extern void RemoveNSUbiquitousKeyValueStoreDidChangeExternallyNotificationObserver(HandleRef observerHandle, ref IntPtr exceptionPtr);
 
         
@@ -177,11 +131,7 @@ namespace HovelHouse.CloudKit
 
         // Properties
         
-        #if UNITY_IPHONE || UNITY_TVOS
-        [DllImport("__Internal")]
-        #else
-        [DllImport("HHCloudKitMacOS")]
-        #endif
+        [DllImport(dll)]
         private static extern IntPtr NSUbiquitousKeyValueStore_GetPropDefaultStore();
 
         
@@ -555,11 +505,7 @@ public void RemoveDidChangeExternallyNotificationObserver(Unsubscriber unsubscri
 
         
         #region IDisposable Support
-        #if UNITY_IPHONE || UNITY_TVOS
-        [DllImport("__Internal")]
-        #else
-        [DllImport("HHCloudKitMacOS")]
-        #endif
+        [DllImport(dll)]
         private static extern void NSUbiquitousKeyValueStore_Dispose(HandleRef handle);
             
         private bool disposedValue = false; // To detect redundant calls
