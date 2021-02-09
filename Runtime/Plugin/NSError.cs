@@ -86,6 +86,16 @@ namespace HovelHouse.CloudKit
             HandleRef ptr, 
             string key,
             out IntPtr exceptionPtr);
+        
+        #if UNITY_IPHONE || UNITY_TVOS
+        [DllImport("__Internal")]
+        #else
+        [DllImport("HHCloudKitMacOS")]
+        #endif
+        private static extern IntPtr NSError_partialErrorForItemId(
+            HandleRef ptr, 
+            HandleRef itemIdPtr,
+            out IntPtr exceptionPtr);
 
         
         #if UNITY_IPHONE || UNITY_TVOS
@@ -281,6 +291,27 @@ namespace HovelHouse.CloudKit
             
             return val == IntPtr.Zero ? null : new NSError(val);
         }
+        
+        // See:
+        // https://developer.apple.com/documentation/cloudkit/ckpartialerrorsbyitemidkey?language=objc
+        // for how this works
+        public NSError PartialErrorForItemId(
+            CKObject itemId)
+        {
+            var val = NSError_partialErrorForItemId(
+                Handle, 
+                itemId.Handle,
+                out var exceptionPtr);
+
+            if(exceptionPtr != IntPtr.Zero)
+            {
+                var nativeException = new NSException(exceptionPtr);
+                throw new CloudKitException(nativeException, nativeException.Reason);
+            }
+            
+            return val == IntPtr.Zero ? null : new NSError(val);
+        }
+        
         
 
         
