@@ -2,7 +2,7 @@
 //  NSFileManager.cs
 //
 //  Created by Jonathan Culp <jonathanculp@gmail.com> on 05/28/2020
-//  Copyright © 2020 HovelHouseApps. All rights reserved.
+//  Copyright © 2021 HovelHouseApps. All rights reserved.
 //  Unauthorized copying of this file, via any medium is strictly prohibited
 //  Proprietary and confidential
 //
@@ -26,14 +26,16 @@ namespace HovelHouse.CloudKit
     public class NSFileManager : CKObject, IDisposable
     {
         #region dll
+        
+        #if UNITY_IPHONE || UNITY_TVOS
+        const string dll = "__Internal";
+        #else
+        const string dll = "HHCloudKitMacOS";
+        #endif
 
         // Class Methods
         
-        #if UNITY_IPHONE || UNITY_TVOS
-        [DllImport("__Internal")]
-        #else
-        [DllImport("HHCloudKitMacOS")]
-        #endif
+        [DllImport(dll)]
         private static extern IntPtr NSFileManager_defaultManager(
             out IntPtr exceptionPtr);
 
@@ -42,33 +44,21 @@ namespace HovelHouse.CloudKit
         
 
         
-        #if UNITY_IPHONE || UNITY_TVOS
-        [DllImport("__Internal")]
-        #else
-        [DllImport("HHCloudKitMacOS")]
-        #endif
+        [DllImport(dll)]
         private static extern IntPtr NSFileManager_URLForUbiquityContainerIdentifier(
             HandleRef ptr, 
             string containerIdentifier,
             out IntPtr exceptionPtr);
 
         
-        #if UNITY_IPHONE || UNITY_TVOS
-        [DllImport("__Internal")]
-        #else
-        [DllImport("HHCloudKitMacOS")]
-        #endif
+        [DllImport(dll)]
         private static extern bool NSFileManager_isUbiquitousItemAtURL(
             HandleRef ptr, 
             IntPtr url,
             out IntPtr exceptionPtr);
 
         
-        #if UNITY_IPHONE || UNITY_TVOS
-        [DllImport("__Internal")]
-        #else
-        [DllImport("HHCloudKitMacOS")]
-        #endif
+        [DllImport(dll)]
         private static extern bool NSFileManager_startDownloadingUbiquitousItemAtURL_error(
             HandleRef ptr, 
             IntPtr url,
@@ -76,11 +66,7 @@ namespace HovelHouse.CloudKit
             out IntPtr exceptionPtr);
 
         
-        #if UNITY_IPHONE || UNITY_TVOS
-        [DllImport("__Internal")]
-        #else
-        [DllImport("HHCloudKitMacOS")]
-        #endif
+        [DllImport(dll)]
         private static extern bool NSFileManager_evictUbiquitousItemAtURL_error(
             HandleRef ptr, 
             IntPtr url,
@@ -88,12 +74,8 @@ namespace HovelHouse.CloudKit
             out IntPtr exceptionPtr);
 
         
-        #if UNITY_IPHONE || UNITY_TVOS
-        [DllImport("__Internal")]
-        #else
-        [DllImport("HHCloudKitMacOS")]
-        #endif
-                private static extern bool NSFileManager_setUbiquitous_itemAtURL_destinationURL_error(
+        [DllImport(dll)]
+        private static extern bool NSFileManager_setUbiquitous_itemAtURL_destinationURL_error(
             HandleRef ptr, 
             bool flag,
             IntPtr url,
@@ -107,11 +89,7 @@ namespace HovelHouse.CloudKit
 
         // Properties
         
-        #if UNITY_IPHONE || UNITY_TVOS
-        [DllImport("__Internal")]
-        #else
-        [DllImport("HHCloudKitMacOS")]
-        #endif
+        [DllImport(dll)]
         private static extern IntPtr NSFileManager_GetPropUbiquityIdentityToken(HandleRef ptr);
 
         
@@ -300,11 +278,7 @@ namespace HovelHouse.CloudKit
 
         
         #region IDisposable Support
-        #if UNITY_IPHONE || UNITY_TVOS
-        [DllImport("__Internal")]
-        #else
-        [DllImport("HHCloudKitMacOS")]
-        #endif
+        [DllImport(dll)]
         private static extern void NSFileManager_Dispose(HandleRef handle);
             
         private bool disposedValue = false; // To detect redundant calls

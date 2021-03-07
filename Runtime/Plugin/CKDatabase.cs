@@ -2,7 +2,7 @@
 //  CKDatabase.cs
 //
 //  Created by Jonathan Culp <jonathanculp@gmail.com> on 05/28/2020
-//  Copyright © 2020 HovelHouseApps. All rights reserved.
+//  Copyright © 2021 HovelHouseApps. All rights reserved.
 //  Unauthorized copying of this file, via any medium is strictly prohibited
 //  Proprietary and confidential
 //
@@ -26,6 +26,12 @@ namespace HovelHouse.CloudKit
     public class CKDatabase : CKObject, IDisposable
     {
         #region dll
+        
+        #if UNITY_IPHONE || UNITY_TVOS
+        const string dll = "__Internal";
+        #else
+        const string dll = "HHCloudKitMacOS";
+        #endif
 
         // Class Methods
         
@@ -35,22 +41,14 @@ namespace HovelHouse.CloudKit
         
 
         
-        #if UNITY_IPHONE || UNITY_TVOS
-        [DllImport("__Internal")]
-        #else
-        [DllImport("HHCloudKitMacOS")]
-        #endif
+        [DllImport(dll)]
         private static extern void CKDatabase_addOperation(
             HandleRef ptr, 
             IntPtr operation,
             out IntPtr exceptionPtr);
 
         
-        #if UNITY_IPHONE || UNITY_TVOS
-        [DllImport("__Internal")]
-        #else
-        [DllImport("HHCloudKitMacOS")]
-        #endif
+        [DllImport(dll)]
         private static extern void CKDatabase_fetchRecordWithID_completionHandler(
             HandleRef ptr, 
             IntPtr recordID,
@@ -58,11 +56,7 @@ namespace HovelHouse.CloudKit
             out IntPtr exceptionPtr);
 
         
-        #if UNITY_IPHONE || UNITY_TVOS
-        [DllImport("__Internal")]
-        #else
-        [DllImport("HHCloudKitMacOS")]
-        #endif
+        [DllImport(dll)]
         private static extern void CKDatabase_saveRecord_completionHandler(
             HandleRef ptr, 
             IntPtr record,
@@ -70,11 +64,7 @@ namespace HovelHouse.CloudKit
             out IntPtr exceptionPtr);
 
         
-        #if UNITY_IPHONE || UNITY_TVOS
-        [DllImport("__Internal")]
-        #else
-        [DllImport("HHCloudKitMacOS")]
-        #endif
+        [DllImport(dll)]
         private static extern void CKDatabase_deleteRecordWithID_completionHandler(
             HandleRef ptr, 
             IntPtr recordID,
@@ -82,11 +72,7 @@ namespace HovelHouse.CloudKit
             out IntPtr exceptionPtr);
 
         
-        #if UNITY_IPHONE || UNITY_TVOS
-        [DllImport("__Internal")]
-        #else
-        [DllImport("HHCloudKitMacOS")]
-        #endif
+        [DllImport(dll)]
         private static extern void CKDatabase_fetchRecordZoneWithID_completionHandler(
             HandleRef ptr, 
             IntPtr zoneID,
@@ -94,11 +80,7 @@ namespace HovelHouse.CloudKit
             out IntPtr exceptionPtr);
 
         
-        #if UNITY_IPHONE || UNITY_TVOS
-        [DllImport("__Internal")]
-        #else
-        [DllImport("HHCloudKitMacOS")]
-        #endif
+        [DllImport(dll)]
         private static extern void CKDatabase_saveRecordZone_completionHandler(
             HandleRef ptr, 
             IntPtr zone,
@@ -106,11 +88,7 @@ namespace HovelHouse.CloudKit
             out IntPtr exceptionPtr);
 
         
-        #if UNITY_IPHONE || UNITY_TVOS
-        [DllImport("__Internal")]
-        #else
-        [DllImport("HHCloudKitMacOS")]
-        #endif
+        [DllImport(dll)]
         private static extern void CKDatabase_deleteRecordZoneWithID_completionHandler(
             HandleRef ptr, 
             IntPtr zoneID,
@@ -118,11 +96,7 @@ namespace HovelHouse.CloudKit
             out IntPtr exceptionPtr);
 
         
-        #if UNITY_IPHONE || UNITY_TVOS
-        [DllImport("__Internal")]
-        #else
-        [DllImport("HHCloudKitMacOS")]
-        #endif
+        [DllImport(dll)]
         private static extern void CKDatabase_fetchSubscriptionWithID_completionHandler(
             HandleRef ptr, 
             string subscriptionID,
@@ -130,11 +104,7 @@ namespace HovelHouse.CloudKit
             out IntPtr exceptionPtr);
 
         
-        #if UNITY_IPHONE || UNITY_TVOS
-        [DllImport("__Internal")]
-        #else
-        [DllImport("HHCloudKitMacOS")]
-        #endif
+        [DllImport(dll)]
         private static extern void CKDatabase_saveSubscription_completionHandler(
             HandleRef ptr, 
             IntPtr subscription,
@@ -142,11 +112,7 @@ namespace HovelHouse.CloudKit
             out IntPtr exceptionPtr);
 
         
-        #if UNITY_IPHONE || UNITY_TVOS
-        [DllImport("__Internal")]
-        #else
-        [DllImport("HHCloudKitMacOS")]
-        #endif
+        [DllImport(dll)]
         private static extern void CKDatabase_deleteSubscriptionWithID_completionHandler(
             HandleRef ptr, 
             string subscriptionID,
@@ -154,33 +120,21 @@ namespace HovelHouse.CloudKit
             out IntPtr exceptionPtr);
 
         
-        #if UNITY_IPHONE || UNITY_TVOS
-        [DllImport("__Internal")]
-        #else
-        [DllImport("HHCloudKitMacOS")]
-        #endif
+        [DllImport(dll)]
         private static extern void CKDatabase_fetchAllSubscriptionsWithCompletionHandler(
             HandleRef ptr, 
             ulong invocationId, CKSubscriptionArrayDelegate completionHandler,
             out IntPtr exceptionPtr);
 
         
-        #if UNITY_IPHONE || UNITY_TVOS
-        [DllImport("__Internal")]
-        #else
-        [DllImport("HHCloudKitMacOS")]
-        #endif
+        [DllImport(dll)]
         private static extern void CKDatabase_fetchAllRecordZonesWithCompletionHandler(
             HandleRef ptr, 
             ulong invocationId, CKRecordZoneListDelegate completionHandler,
             out IntPtr exceptionPtr);
 
         
-        #if UNITY_IPHONE || UNITY_TVOS
-        [DllImport("__Internal")]
-        #else
-        [DllImport("HHCloudKitMacOS")]
-        #endif
+        [DllImport(dll)]
         private static extern void CKDatabase_performQuery_inZoneWithID_completionHandler(
             HandleRef ptr, 
             IntPtr query,
@@ -192,11 +146,7 @@ namespace HovelHouse.CloudKit
 
         // Properties
         
-        #if UNITY_IPHONE || UNITY_TVOS
-        [DllImport("__Internal")]
-        #else
-        [DllImport("HHCloudKitMacOS")]
-        #endif
+        [DllImport(dll)]
         private static extern CKDatabaseScope CKDatabase_GetPropDatabaseScope(HandleRef ptr);
 
         
@@ -813,11 +763,7 @@ namespace HovelHouse.CloudKit
 
         
         #region IDisposable Support
-        #if UNITY_IPHONE || UNITY_TVOS
-        [DllImport("__Internal")]
-        #else
-        [DllImport("HHCloudKitMacOS")]
-        #endif
+        [DllImport(dll)]
         private static extern void CKDatabase_Dispose(HandleRef handle);
             
         private bool disposedValue = false; // To detect redundant calls
