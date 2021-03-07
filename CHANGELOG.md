@@ -3,6 +3,10 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## [1.1.9] - 2021-03-07
+### Added
+- Added properties 'LongLived', 'TimeoutIntervalForRequest', 'TimeoutIntervalForResource', and 'AllowCellularAccess' to CKOperationConfiguration
+
 ## [1.1.8] - 2021-02-03
 ### Added
 - Added support for Date fields in CKRecord

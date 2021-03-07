@@ -1,7 +1,7 @@
 //
 //  CKOperationConfiguration.cs
 //
-//  Created by Jonathan Culp <jonathanculp@gmail.com> on 05/28/2020
+//  Created by Jonathan Culp <jonathanculp@gmail.com> on
 //  Copyright © 2021 HovelHouseApps. All rights reserved.
 //  Unauthorized copying of this file, via any medium is strictly prohibited
 //  Proprietary and confidential
@@ -45,21 +45,48 @@ namespace HovelHouse.CloudKit
         // Properties
         
         [DllImport(dll)]
-        private static extern bool CKOperationConfiguration_GetPropAllowsCellularAccess(HandleRef ptr);
+        private static extern bool CKOperationConfiguration_GetPropLongLived(
+            HandleRef ptr);
+        
+        [DllImport(dll)]
+        private static extern void CKOperationConfiguration_SetPropLongLived(HandleRef ptr, bool longLived, out IntPtr exceptionPtr);
+
+        
+        [DllImport(dll)]
+        private static extern double CKOperationConfiguration_GetPropTimeoutIntervalForRequest(
+            HandleRef ptr);
+        
+        [DllImport(dll)]
+        private static extern void CKOperationConfiguration_SetPropTimeoutIntervalForRequest(HandleRef ptr, double timeoutIntervalForRequest, out IntPtr exceptionPtr);
+
+        
+        [DllImport(dll)]
+        private static extern double CKOperationConfiguration_GetPropTimeoutIntervalForResource(
+            HandleRef ptr);
+        
+        [DllImport(dll)]
+        private static extern void CKOperationConfiguration_SetPropTimeoutIntervalForResource(HandleRef ptr, double timeoutIntervalForResource, out IntPtr exceptionPtr);
+
+        
+        [DllImport(dll)]
+        private static extern bool CKOperationConfiguration_GetPropAllowsCellularAccess(
+            HandleRef ptr);
         
         [DllImport(dll)]
         private static extern void CKOperationConfiguration_SetPropAllowsCellularAccess(HandleRef ptr, bool allowsCellularAccess, out IntPtr exceptionPtr);
 
         
         [DllImport(dll)]
-        private static extern IntPtr CKOperationConfiguration_GetPropContainer(HandleRef ptr);
+        private static extern IntPtr CKOperationConfiguration_GetPropContainer(
+            HandleRef ptr);
         
         [DllImport(dll)]
         private static extern void CKOperationConfiguration_SetPropContainer(HandleRef ptr, IntPtr container, out IntPtr exceptionPtr);
 
         
         [DllImport(dll)]
-        private static extern NSQualityOfService CKOperationConfiguration_GetPropQualityOfService(HandleRef ptr);
+        private static extern NSQualityOfService CKOperationConfiguration_GetPropQualityOfService(
+            HandleRef ptr);
         
         [DllImport(dll)]
         private static extern void CKOperationConfiguration_SetPropQualityOfService(HandleRef ptr, long qualityOfService, out IntPtr exceptionPtr);
@@ -72,38 +99,117 @@ namespace HovelHouse.CloudKit
         
         
         
-        
 
 
         
         
+        
+        /// <value>LongLived</value>
+        public bool LongLived
+        {
+            get
+            {
+                bool longLived = CKOperationConfiguration_GetPropLongLived(Handle);
+                
+                return longLived;
+            }
+            set
+            {
+                CKOperationConfiguration_SetPropLongLived(Handle, value, out IntPtr exceptionPtr);
+                if(exceptionPtr != IntPtr.Zero)
+                {
+                    var nsexception = new NSException(exceptionPtr);
+                    throw new CloudKitException(nsexception, nsexception.Reason);
+                }
+            }
+        }
+
+        
+        /// <value>TimeoutIntervalForRequest</value>
+        public double TimeoutIntervalForRequest
+        {
+            get
+            {
+                double timeoutIntervalForRequest = CKOperationConfiguration_GetPropTimeoutIntervalForRequest(Handle);
+                
+                return timeoutIntervalForRequest;
+            }
+            set
+            {
+                CKOperationConfiguration_SetPropTimeoutIntervalForRequest(Handle, value, out IntPtr exceptionPtr);
+                if(exceptionPtr != IntPtr.Zero)
+                {
+                    var nsexception = new NSException(exceptionPtr);
+                    throw new CloudKitException(nsexception, nsexception.Reason);
+                }
+            }
+        }
+
+        
+        /// <value>TimeoutIntervalForResource</value>
+        public double TimeoutIntervalForResource
+        {
+            get
+            {
+                double timeoutIntervalForResource = CKOperationConfiguration_GetPropTimeoutIntervalForResource(Handle);
+                
+                return timeoutIntervalForResource;
+            }
+            set
+            {
+                CKOperationConfiguration_SetPropTimeoutIntervalForResource(Handle, value, out IntPtr exceptionPtr);
+                if(exceptionPtr != IntPtr.Zero)
+                {
+                    var nsexception = new NSException(exceptionPtr);
+                    throw new CloudKitException(nsexception, nsexception.Reason);
+                }
+            }
+        }
+
         
         /// <value>AllowsCellularAccess</value>
         public bool AllowsCellularAccess
         {
-            get 
-            { 
+            get
+            {
                 bool allowsCellularAccess = CKOperationConfiguration_GetPropAllowsCellularAccess(Handle);
+                
                 return allowsCellularAccess;
             }
             set
             {
                 CKOperationConfiguration_SetPropAllowsCellularAccess(Handle, value, out IntPtr exceptionPtr);
+                if(exceptionPtr != IntPtr.Zero)
+                {
+                    var nsexception = new NSException(exceptionPtr);
+                    throw new CloudKitException(nsexception, nsexception.Reason);
+                }
             }
         }
 
         
         /// <value>Container</value>
+        private CKContainer _container;
         public CKContainer Container
         {
-            get 
-            { 
-                IntPtr container = CKOperationConfiguration_GetPropContainer(Handle);
-                return container == IntPtr.Zero ? null : new CKContainer(container);
+            get
+            {
+                var container = CKOperationConfiguration_GetPropContainer(Handle);
+                if(_container == null || container != (IntPtr)_container.Handle)
+                {
+                    _container = container == IntPtr.Zero ? null : new CKContainer(container);
+                }
+                
+                return _container;
             }
             set
             {
                 CKOperationConfiguration_SetPropContainer(Handle, value != null ? HandleRef.ToIntPtr(value.Handle) : IntPtr.Zero, out IntPtr exceptionPtr);
+                if(exceptionPtr != IntPtr.Zero)
+                {
+                    var nsexception = new NSException(exceptionPtr);
+                    throw new CloudKitException(nsexception, nsexception.Reason);
+                }
             }
         }
 
@@ -111,14 +217,20 @@ namespace HovelHouse.CloudKit
         /// <value>QualityOfService</value>
         public NSQualityOfService QualityOfService
         {
-            get 
-            { 
+            get
+            {
                 NSQualityOfService qualityOfService = CKOperationConfiguration_GetPropQualityOfService(Handle);
-                return qualityOfService;
+                
+                return (NSQualityOfService) qualityOfService;
             }
             set
             {
                 CKOperationConfiguration_SetPropQualityOfService(Handle, (long) value, out IntPtr exceptionPtr);
+                if(exceptionPtr != IntPtr.Zero)
+                {
+                    var nsexception = new NSException(exceptionPtr);
+                    throw new CloudKitException(nsexception, nsexception.Reason);
+                }
             }
         }
 
@@ -137,11 +249,6 @@ namespace HovelHouse.CloudKit
         {
             if (!disposedValue)
             {
-                if (disposing)
-                {
-                    // TODO: dispose managed state (managed objects).
-                }
-                
                 //Debug.Log("CKOperationConfiguration Dispose");
                 CKOperationConfiguration_Dispose(Handle);
                 disposedValue = true;

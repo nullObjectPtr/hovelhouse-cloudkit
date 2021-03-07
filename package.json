@@ -1,6 +1,6 @@
 {
 	"name":"com.hovelhouse.cloudkit",
-	"version":"1.1.8",
+	"version":"1.1.9",
 	"displayName":"Cloud Kit Plugin",
 	"description":"An Apple Arcade ready CloudKit plugin for iOS, macOS and TVOS. Access the full power of the CloudKit native API from Unity. Use a single API across all three Apple platforms. \r\n\r\nThe plugin is a thin wrapper over the native Objective-C API, and gives you access to all of CloudKit's advanced features such as the key-value-store, ubiquity containers, custom shares & zones, database notifications, quality of service configurations, as well as batch and atomic Operations. \r\n\r\nSimply put, our goal is to match the native API feature for feature.\r\n\r\nCheck out our website to see everything it can do. http://www.hovelhouse.com",
 	"unity":"2018.4",
