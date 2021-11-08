@@ -31,12 +31,6 @@ namespace HovelHouse.CloudKit
         #endif
 
         // Class Methods
-        
-        [DllImport(dll)]
-        private static extern void ICloudNotifications_nada(
-            HandleRef ptr, 
-            out IntPtr exceptionPtr);
-
 #if UNITY_STANDALONE_OSX
         [DllImport("HHCloudKitMacOS")]
         private static extern void RequestNotificationTokenMacOs(RegisteredForNotificationsCallback callback);
