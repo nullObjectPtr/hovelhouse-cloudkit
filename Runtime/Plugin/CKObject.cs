@@ -3,6 +3,18 @@ using System.Runtime.InteropServices;
 
 public class CKObject : object
 {
+    #if UNITY_IPHONE || UNITY_TVOS
+    const string dll = "__Internal";
+    #else
+    const string dll = "HHCloudKitMacOS";
+    #endif
+    
+    [DllImport(dll)]
+    
+    private static extern long CKObject_GetHashCode(
+        HandleRef ptr
+    );
+    
     internal HandleRef Handle { get; set; }
 
     internal CKObject() { }
@@ -52,7 +64,7 @@ public class CKObject : object
 
     public override int GetHashCode()
     {
-        return Handle.Handle.ToInt32(); //Handle.GetHashCode();
+        return (int) CKObject_GetHashCode(Handle);
     }
 
     public override string ToString()

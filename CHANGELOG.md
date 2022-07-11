@@ -3,6 +3,10 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## [1.1.10] - 2022-7-11
+### Added
+- Added getter Keys to NSUbiquitousKeyValueStore
+
 ## [1.1.9] - 2021-03-07
 ### Added
 - Added properties 'LongLived', 'TimeoutIntervalForRequest', 'TimeoutIntervalForResource', and 'AllowCellularAccess' to CKOperationConfiguration

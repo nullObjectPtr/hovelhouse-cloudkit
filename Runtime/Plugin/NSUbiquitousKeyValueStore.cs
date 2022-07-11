@@ -95,6 +95,13 @@ namespace HovelHouse.CloudKit
             string aKey,
             out IntPtr exceptionPtr);
 
+        [DllImport(dll)]
+        private static extern void NSUbiquitousKeyValueStore_getKeys(
+            HandleRef ptr,
+            ref IntPtr source,
+            ref long length,
+            ref IntPtr exceptionPtr);
+
         
         [DllImport(dll)]
         private static extern void NSUbiquitousKeyValueStore_removeObjectForKey(
@@ -110,7 +117,7 @@ namespace HovelHouse.CloudKit
 
         
         [DllImport(dll)]
-                private static extern IntPtr NSUbiquitousKeyValueStore_bufferForKey(
+        private static extern IntPtr NSUbiquitousKeyValueStore_bufferForKey(
             HandleRef ptr,
             string key,
             ref IntPtr source,
@@ -392,12 +399,42 @@ namespace HovelHouse.CloudKit
         }
         
 
+        public string[] Keys()
+        {
+            IntPtr bufferPtr = IntPtr.Zero;
+            long bufferLen = 0;
+            IntPtr exceptionPtr = IntPtr.Zero;
+
+            NSUbiquitousKeyValueStore_getKeys(
+                Handle,
+                ref bufferPtr,
+                ref bufferLen,
+                ref exceptionPtr);
+
+            if(exceptionPtr != IntPtr.Zero)
+            {
+                var nativeException = new NSException(exceptionPtr);
+                throw new CloudKitException(nativeException, nativeException.Reason);
+            };
+                
+            string[] val = new string[bufferLen];
+
+            for (int i = 0; i < bufferLen; i++)
+            {
+                IntPtr ptr2 = Marshal.ReadIntPtr(bufferPtr + (i * IntPtr.Size));
+                val[i] = Marshal.PtrToStringAuto(ptr2);
+            }
+
+            Marshal.FreeHGlobal(bufferPtr);
+
+            return val;
+        }
         
         /// <summary>
         /// </summary>
         /// <param name="key"></param>
         /// <returns>val</returns>
-public byte[] BufferForKey(
+        public byte[] BufferForKey(
             string key)
         {
             IntPtr source = IntPtr.Zero;
