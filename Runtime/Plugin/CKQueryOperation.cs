@@ -23,35 +23,29 @@ namespace HovelHouse.CloudKit
     public class CKQueryOperation : CKDatabaseOperation, IDisposable
     {
         #region dll
+        
+        #if UNITY_IPHONE || UNITY_TVOS
+        const string dll = "__Internal";
+        #else
+        const string dll = "HHCloudKitMacOS";
+        #endif
 
         // Class Methods
         
 
         
-        #if UNITY_IPHONE || UNITY_TVOS
-        [DllImport("__Internal")]
-        #else
-        [DllImport("HHCloudKitMacOS")]
-        #endif
+        [DllImport(dll)]
         private static extern IntPtr CKQueryOperation_init(
             out IntPtr exceptionPtr
             );
         
-        #if UNITY_IPHONE || UNITY_TVOS
-        [DllImport("__Internal")]
-        #else
-        [DllImport("HHCloudKitMacOS")]
-        #endif
+        [DllImport(dll)]
         private static extern IntPtr CKQueryOperation_initWithQuery(
             IntPtr query, 
             out IntPtr exceptionPtr
             );
         
-        #if UNITY_IPHONE || UNITY_TVOS
-        [DllImport("__Internal")]
-        #else
-        [DllImport("HHCloudKitMacOS")]
-        #endif
+        [DllImport(dll)]
         private static extern IntPtr CKQueryOperation_initWithCursor(
             IntPtr cursor, 
             out IntPtr exceptionPtr
@@ -64,65 +58,40 @@ namespace HovelHouse.CloudKit
 
         // Properties
         
-        #if UNITY_IPHONE || UNITY_TVOS
-        [DllImport("__Internal")]
-        #else
-        [DllImport("HHCloudKitMacOS")]
-        #endif
+        [DllImport(dll)]
         private static extern IntPtr CKQueryOperation_GetPropQuery(HandleRef ptr);
         
-        #if UNITY_IPHONE || UNITY_TVOS
-        [DllImport("__Internal")]
-        #else
-        [DllImport("HHCloudKitMacOS")]
-        #endif
+        [DllImport(dll)]
         private static extern void CKQueryOperation_SetPropQuery(HandleRef ptr, IntPtr query, out IntPtr exceptionPtr);
 
         
-        #if UNITY_IPHONE || UNITY_TVOS
-        [DllImport("__Internal")]
-        #else
-        [DllImport("HHCloudKitMacOS")]
-        #endif
+        [DllImport(dll)]
         private static extern IntPtr CKQueryOperation_GetPropCursor(HandleRef ptr);
         
-        #if UNITY_IPHONE || UNITY_TVOS
-        [DllImport("__Internal")]
-        #else
-        [DllImport("HHCloudKitMacOS")]
-        #endif
+        [DllImport(dll)]
         private static extern void CKQueryOperation_SetPropCursor(HandleRef ptr, IntPtr cursor, out IntPtr exceptionPtr);
 
         
-        #if UNITY_IPHONE || UNITY_TVOS
-        [DllImport("__Internal")]
-        #else
-        [DllImport("HHCloudKitMacOS")]
-        #endif
+        [DllImport(dll)]
         private static extern IntPtr CKQueryOperation_GetPropZoneID(HandleRef ptr);
         
-        #if UNITY_IPHONE || UNITY_TVOS
-        [DllImport("__Internal")]
-        #else
-        [DllImport("HHCloudKitMacOS")]
-        #endif
+        [DllImport(dll)]
         private static extern void CKQueryOperation_SetPropZoneID(HandleRef ptr, IntPtr zoneID, out IntPtr exceptionPtr);
 
         // TODO: DLLPROPERTYSTRINGARRAY
 
-        #if UNITY_IPHONE || UNITY_TVOS
-        [DllImport("__Internal")]
-        #else
-        [DllImport("HHCloudKitMacOS")]
-        #endif
+        [DllImport(dll)]
         private static extern void CKQueryOperation_SetPropRecordFetchedHandler(HandleRef ptr, RecordFetchedDelegate recordFetchedHandler, out IntPtr exceptionPtr);
 
-        #if UNITY_IPHONE || UNITY_TVOS
-        [DllImport("__Internal")]
-        #else
-        [DllImport("HHCloudKitMacOS")]
-        #endif
+        [DllImport(dll)]
         private static extern void CKQueryOperation_SetPropQueryCompletionHandler(HandleRef ptr, QueryCompletionDelegate queryCompletionHandler, out IntPtr exceptionPtr);
+
+        
+        [DllImport(dll)]
+        private static extern ulong CKQueryOperation_GetPropResultsLimit(HandleRef ptr);
+        
+        [DllImport(dll)]
+        private static extern void CKQueryOperation_SetPropResultsLimit(HandleRef ptr, ulong resultsLimit, out IntPtr exceptionPtr);
 
         
 
@@ -333,16 +302,27 @@ namespace HovelHouse.CloudKit
         }
 
         
+        /// <value>ResultsLimit</value>
+        public ulong ResultsLimit
+        {
+            get 
+            { 
+                ulong resultsLimit = CKQueryOperation_GetPropResultsLimit(Handle);
+                return resultsLimit;
+            }
+            set
+            {
+                CKQueryOperation_SetPropResultsLimit(Handle, value, out IntPtr exceptionPtr);
+            }
+        }
+
+        
 
         
 
         
         #region IDisposable Support
-        #if UNITY_IPHONE || UNITY_TVOS
-        [DllImport("__Internal")]
-        #else
-        [DllImport("HHCloudKitMacOS")]
-        #endif
+        [DllImport(dll)]
         private static extern void CKQueryOperation_Dispose(HandleRef handle);
             
         private bool disposedValue = false; // To detect redundant calls

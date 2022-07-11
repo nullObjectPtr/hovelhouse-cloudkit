@@ -6,21 +6,19 @@ namespace HovelHouse.CloudKit
     public class UbiquityIdentityToken : object, IEquatable<UbiquityIdentityToken>, IDisposable
     {
         private IntPtr Ptr;
-
+        
         #if UNITY_IPHONE || UNITY_TVOS
-        [DllImport("__Internal")]
+        const string dll = "__Internal";
         #else
-        [DllImport("HHCloudKit")]
+        const string dll = "HHCloudKitMacOS";
         #endif
+        
+        [DllImport(dll)]
         private static extern bool UbiquityIdentityToken_isEqual(
             IntPtr ptr,
             IntPtr lhs);
 
-        #if UNITY_IPHONE || UNITY_TVOS
-        [DllImport("__Internal")]
-        #else
-        [DllImport("HHCloudKit")]
-        #endif
+        [DllImport(dll)]
         private static extern bool UbiquityIdentityToken_Dispose(
             IntPtr ptr);
 
@@ -68,12 +66,7 @@ namespace HovelHouse.CloudKit
             return !(lhs == rhs);
         }
 
-        #region IDisposable Support
-#if UNITY_IPHONE || UNITY_TVOS
-        [DllImport("__Internal")]
-#else
-        [DllImport("HHCloudKit")]
-#endif
+        [DllImport(dll)]
         private static extern void NSUbiquitousKeyValueStore_Dispose(HandleRef handle);
 
         private bool disposedValue = false; // To detect redundant calls
@@ -106,6 +99,5 @@ namespace HovelHouse.CloudKit
             Dispose(true);
             GC.SuppressFinalize(this);
         }
-        #endregion
     }
 }

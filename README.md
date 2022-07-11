@@ -1,7 +1,3 @@
-# Important!
-
-This plugin is provided as a Unity Package Manager (UPM) package. It must be placed in the /packages directory for it to run correctly. It will NOT install correctly if you copy it into your assets folder. Please read the full setup instructions below to ensure proper installation.
-
 # Hello
 Thank you for downloading the Hovel House CloudKit Plugin
  
@@ -22,7 +18,7 @@ Setup and installation is covered in this document. Some rudimentary web documen
  
 ## Installing the Unity Package
 
-* Unzip the archive and place the entire directory in the packages directory (this must be done from the finder)
+* Unzip the archive and place the entire directory in the packages directory (this must be done from the finde0)
 
 OR
 

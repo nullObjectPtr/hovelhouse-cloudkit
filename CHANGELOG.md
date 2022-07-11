@@ -2,11 +2,21 @@
 All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
-- split the iOS fat binary into two separate libs, one for arm64 and one for armv7 to reduce build size
+
+## [1.1.9] - 2021-03-07
+### Added
+- Added properties 'LongLived', 'TimeoutIntervalForRequest', 'TimeoutIntervalForResource', and 'AllowCellularAccess' to CKOperationConfiguration
+
+## [1.1.8] - 2021-02-03
+### Added
+- Added support for Date fields in CKRecord
+- Added method PartialErrorForItemId to NSError which can be used to retrieve more specific error information on a per-record basis from an error of type "CkPartialFailure""
+- Added property "resultsLimit" to CKQueryOperation. 
+- Added Examlpe_QueryCursor to demonstrate CKQueryOperations usage
 
 ## [1.1.7] - 2021-01-27
 ### Changed
-- Added missing contructor function to NSSortDescriptor. Added a code sample for how to use it
+- Added missing constructor function to NSSortDescriptor. Added a code sample for how to use it
 - Fixed issue where CKQueryOperation did not inherit from CKDatabaseOperation
 
 ## [1.1.6] - 2020-11-30
